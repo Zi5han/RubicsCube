@@ -130,12 +130,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CubieRenderer.cpp" />
     <ClCompile Include="RubicsCube.cpp" />
+    <ClCompile Include="ShaderUtil.cpp" />
+    <ClCompile Include="TestCubie.cpp" />
     <ClCompile Include="TestGlm.cpp" />
+    <ClCompile Include="TestTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CubieRenderer.h" />
     <ClInclude Include="GameInterface.h" />
+    <ClInclude Include="ShaderUtil.h" />
+    <ClInclude Include="TestCubie.h" />
+    <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="VShader.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="FColor.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+    <None Include="FShader.glsl" />
+    <CopyFileToFolders Include="VColor.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

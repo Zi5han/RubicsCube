@@ -1,14 +1,19 @@
 
+#define GLEW_STATIC
 #include "GameInterface.h"
 #include "TestGlm.h"
-#define GLEW_STATIC
-#include <iostream>
+#include "TestTriangle.h"
+#include "TestCubie.h"
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 TestGlm gGlmTest;
 GameInterface gDummyTest;
+TestTriangle gTestTriangle;
+TestCubie gTestCubie;
 
 GameInterface* gUsedInterface;
 
@@ -35,7 +40,7 @@ void RunCoreLoop(GLFWwindow* window) {
     double lastTime = glfwGetTime();
     double timeDiffrence = 0.0;
 
-    float bg_red = 0.3;
+    float bg_red = 0.3f;
     float bg_green = 0.6f;
     float bg_blue = 1.0f;
 
@@ -57,9 +62,9 @@ void RunCoreLoop(GLFWwindow* window) {
         glfwSwapBuffers(window);
 
 
-        bg_red = (sin(10 * lastTime + (3.14f/3)) / 4.0f) + 0.75f;
-        bg_green = (sin(10 * lastTime + 2 * (3.14f / 3)) / 4.0f) + 0.75f;
-        bg_blue = (sin(10 * lastTime) / 4.0f) + 0.75f;
+        bg_red = (sin(lastTime + (3.14f/3)) / 4.0f) + 0.75f;
+        bg_green = (sin(lastTime + 2 * (3.14f / 3)) / 4.0f) + 0.75f;
+        bg_blue = (sin(lastTime) / 4.0f) + 0.75f;
        
         double currenTime = glfwGetTime();
         timeDiffrence = currenTime - lastTime;
@@ -76,7 +81,9 @@ void ShutdownSystem() {
 int main()
 {
     //gUsedInterface = &gDummyTest;
-    gUsedInterface = &gGlmTest;
+    //gUsedInterface = &gGlmTest;
+    //gUsedInterface = &gTestTriangle;
+    gUsedInterface = &gTestCubie;
     GLFWwindow* window = InitializeSystem();
     RunCoreLoop(window);
     ShutdownSystem();
