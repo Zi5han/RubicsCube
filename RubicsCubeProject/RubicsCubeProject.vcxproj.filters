@@ -16,6 +16,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{130a23c0-2bb9-466a-a302-65e659a03b02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{b3b68c72-f28a-4adc-90d1-4e17f663e5a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RubicsCube.cpp">
@@ -35,6 +38,12 @@
     </ClCompile>
     <ClCompile Include="CubieRenderer.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJModel.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexStructs.h">
+      <Filter>Headerdateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,11 +65,9 @@
     <ClInclude Include="CubieRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Texture.jpg">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
+    <ClInclude Include="OBJModel.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
@@ -72,10 +79,14 @@
     <CopyFileToFolders Include="VColor.glsl">
       <Filter>Shader</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FShader.glsl">
+    <CopyFileToFolders Include="FShader.glsl">
       <Filter>Shader</Filter>
-    </None>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.mtl">
+      <Filter>Assets</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.obj">
+      <Filter>Assets</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

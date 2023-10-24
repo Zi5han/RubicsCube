@@ -4,7 +4,7 @@
 #include "TestGlm.h"
 #include "TestTriangle.h"
 #include "TestCubie.h"
-
+#include "OBJModel.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -88,8 +88,8 @@ void ShutdownSystem() {
 
 }
 
-int main()
-{
+int main() {
+	OBJModel model("Cube.obj");
 	//gUsedInterface = &gDummyTest;
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
