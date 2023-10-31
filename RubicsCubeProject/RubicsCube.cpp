@@ -62,8 +62,14 @@ void RunCoreLoop(GLFWwindow* window) {
 	}
 }
 
+void error_callback(int error, const char* description) {
+	fprintf(stderr, "Fehler %d: %s\n", error, description);
+}
+
 GLFWwindow* InitializeSystem() {
 	glfwInit();
+
+	glfwSetErrorCallback(error_callback);
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
