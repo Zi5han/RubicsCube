@@ -23,6 +23,7 @@ OBJModel::OBJModel(const char* filename) {
 	LoadMaterialFromFile(mtl_filename.c_str());
 	LoadFromFile(obj_filename.c_str());
 	is_OBJ_loaded = true;
+	vertexAmount = m_Faces.size() * 3;
 }
 
 OBJModel::~OBJModel() {
@@ -75,8 +76,23 @@ void OBJModel::LoadFromFile(const char* filename) {
 	}
 }
 
-const std::vector<Vertex>& OBJModel::GetVertexDataCopy() {
-	return std::vector<Vertex>(m_Vertices);
+const std::vector<Vertex>& OBJModel::GetVertexData() {
+	return m_Vertices;
+}
+
+const std::vector<Triangle>& OBJModel::GetTrianglesData()
+{
+	return m_Faces;
+}
+
+ColorValue& OBJModel::getColorValue(const std::string& key)
+{
+	return m_MaterialMap[key];
+}
+
+const int OBJModel::getVertexAmount()
+{
+	return vertexAmount;
 }
 
 void OBJModel::LoadMaterialFromFile(const char* filename) {
@@ -105,7 +121,11 @@ void OBJModel::LoadMaterialFromFile(const char* filename) {
 		}
 		else if (line_words[0].compare("Kd") == 0) {
 			m_MaterialMap.insert(std::make_pair(material_name,
-				ColorValue(atof(line_words[1].c_str()), atof(line_words[2].c_str()), atof(line_words[3].c_str()))));
+				ColorValue(
+					static_cast<float>(atof(line_words[1].c_str())),
+					static_cast<float>(atof(line_words[2].c_str())),
+					static_cast<float>(atof(line_words[3].c_str())))
+			));
 		}
 	}
 }

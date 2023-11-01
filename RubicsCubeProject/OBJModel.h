@@ -13,7 +13,10 @@ public:
 	~OBJModel();
 
 	void LoadFromFile(const char* filename);
-	const std::vector<Vertex>& GetVertexDataCopy();
+	const std::vector<Vertex>& GetVertexData();
+	const std::vector<Triangle>& GetTrianglesData();
+	ColorValue& getColorValue(const std::string& key);
+	const int getVertexAmount();
 
 private:
 	std::map<std::string, ColorValue> m_MaterialMap;
@@ -24,6 +27,7 @@ private:
 	std::vector<Triangle> m_Faces;
 
 	bool is_OBJ_loaded;
+	int vertexAmount;
 
 	void Initialize();
 	void LoadMaterialFromFile(const char* filename);

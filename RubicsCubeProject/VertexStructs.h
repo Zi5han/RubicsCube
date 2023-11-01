@@ -2,7 +2,7 @@
 #include <string>
 
 struct Position {
-	Position(float x_position, float y_position, float z_position) { x = x; y = y; z = z; }
+	Position(float x_position, float y_position, float z_position) { x = x_position; y = y_position; z = z_position; }
 	float x;
 	float y;
 	float z;
@@ -23,8 +23,8 @@ struct Normal {
 
 struct ColorValue {
 	ColorValue() = default;
-	ColorValue(int red, int green, int blue) { r = red; g = green; b = blue; }
-	int r = 0, g = 0, b = 0;
+	ColorValue(float red, float green, float blue) { r = red; g = green; b = blue; }
+	float r = 0, g = 0, b = 0;
 };
 
 struct Vertex {
@@ -40,10 +40,10 @@ struct Vertex {
 		b = colorValue.b;
 	}
 
-	float position_x, position_y, position_z;
-	float normal_x, normal_y, normal_z;
-	float u, v;
-	int r = 0, g = 0, b = 0;
+	float position_x = 0, position_y = 0, position_z = 0;
+	float normal_x = 0, normal_y = 0, normal_z = 0;
+	float u = 0, v = 0;
+	float r = 0, g = 0, b = 0;
 
 private:
 	void Initialize(const Position& position, const UVCoord& uv_coords, const Normal& normals) {

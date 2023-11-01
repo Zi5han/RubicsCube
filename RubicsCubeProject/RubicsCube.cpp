@@ -5,6 +5,7 @@
 #include "TestTriangle.h"
 #include "TestCubie.h"
 #include "OBJModel.h"
+#include "TestObjCubie.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -15,6 +16,7 @@ TestGlm gGlmTest;
 GameInterface gDummyTest;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
+TestObjCubie gTestObjCubie;
 
 GameInterface* gUsedInterface;
 
@@ -89,11 +91,12 @@ void ShutdownSystem() {
 }
 
 int main() {
-	OBJModel model("Cube.obj");
+	//OBJModel model = OBJModel("Cube.obj");
 	//gUsedInterface = &gDummyTest;
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
-	gUsedInterface = &gTestCubie;
+	//gUsedInterface = &gTestCubie;
+	gUsedInterface = &gTestObjCubie;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();
