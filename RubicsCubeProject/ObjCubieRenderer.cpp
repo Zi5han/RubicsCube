@@ -1,6 +1,7 @@
 #include "ObjCubieRenderer.h"
 #include "ShaderUtil.h"
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 void ObjCubieRenderer::Initialize() {
 	m_Model = OBJModel("Cube.obj");
@@ -9,7 +10,7 @@ void ObjCubieRenderer::Initialize() {
 
 	// Amount of faces * amount of vertices per face * amount of coordinates per vertex
 	int arraySize = faces.size() * 3 * 3;
-	float floatArray[540];
+	float* floatArray = new float[arraySize];
 
 	ColorValue tempColor;
 
@@ -39,14 +40,14 @@ void ObjCubieRenderer::Initialize() {
 	// Position
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[0]);
 	TranscribeVec3ToFloatArray(positionField, arraySize, floatArray);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, arraySize * sizeof(float), floatArray, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	// Color
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[1]);
 	TranscribeVec3ToFloatArray(colorField, arraySize, floatArray);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, arraySize * sizeof(float), floatArray, GL_STATIC_DRAW);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 
