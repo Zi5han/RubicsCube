@@ -16,51 +16,88 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{130a23c0-2bb9-466a-a302-65e659a03b02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{b3b68c72-f28a-4adc-90d1-4e17f663e5a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Renderer">
+      <UniqueIdentifier>{9dde8985-5c87-4d22-b7d1-04dacc60bc4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Helper">
+      <UniqueIdentifier>{f5de15ce-1221-46ec-b16a-84af376e8583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Renderer">
+      <UniqueIdentifier>{7ee74ff2-38f2-4936-bccf-8a7e5035136a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\GameInterfaces">
+      <UniqueIdentifier>{16d353ec-8d9b-41a7-a17d-ff664fa11d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\GameInterfaces">
+      <UniqueIdentifier>{383a4637-7444-43cc-9f9e-9b33a85d6f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Helper">
+      <UniqueIdentifier>{b03f808d-47a6-43b5-a0bd-197125dcb934}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RubicsCube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="VertexStructs.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClCompile>
     <ClCompile Include="TestGlm.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
     <ClCompile Include="TestTriangle.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderUtil.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="TestObjCubie.cpp">
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
     <ClCompile Include="TestCubie.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
     <ClCompile Include="CubieRenderer.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderUtil.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJModel.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCubieRenderer.h">
+      <Filter>Headerdateien\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCubieRenderer.cpp">
+      <Filter>Quelldateien\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TestCubie.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TestGlm.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObjCubie.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TestTriangle.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderUtil.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJModel.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CubieRenderer.h">
+      <Filter>Headerdateien\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="GameInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="TestGlm.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestTriangle.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderUtil.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCubie.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="CubieRenderer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Texture.jpg">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
@@ -72,10 +109,14 @@
     <CopyFileToFolders Include="VColor.glsl">
       <Filter>Shader</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FShader.glsl">
+    <CopyFileToFolders Include="FShader.glsl">
       <Filter>Shader</Filter>
-    </None>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.mtl">
+      <Filter>Assets</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.obj">
+      <Filter>Assets</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

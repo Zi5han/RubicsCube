@@ -131,22 +131,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubieRenderer.cpp" />
+    <ClCompile Include="ObjCubieRenderer.cpp" />
+    <ClCompile Include="ObjCubieRenderer.h" />
+    <ClCompile Include="OBJModel.cpp" />
     <ClCompile Include="RubicsCube.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
     <ClCompile Include="TestCubie.cpp" />
     <ClCompile Include="TestGlm.cpp" />
+    <ClCompile Include="TestObjCubie.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
+    <ClCompile Include="VertexStructs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubieRenderer.h" />
     <ClInclude Include="GameInterface.h" />
+    <ClInclude Include="OBJModel.h" />
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="TestCubie.h" />
+    <ClInclude Include="TestObjCubie.h" />
     <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Texture.jpg" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
@@ -159,10 +163,27 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </CopyFileToFolders>
-    <None Include="FShader.glsl" />
+    <CopyFileToFolders Include="FShader.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
     <CopyFileToFolders Include="VColor.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Cube.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Cube.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
