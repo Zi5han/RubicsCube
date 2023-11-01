@@ -68,7 +68,7 @@ void ObjCubieRenderer::Initialize() {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//delete[] floatArray;
+	delete[] floatArray;
 }
 
 void ObjCubieRenderer::Render(const glm::mat4& transformationMatrix) {
