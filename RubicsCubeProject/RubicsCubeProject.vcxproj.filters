@@ -19,14 +19,8 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{b3b68c72-f28a-4adc-90d1-4e17f663e5a8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Renderer">
-      <UniqueIdentifier>{9dde8985-5c87-4d22-b7d1-04dacc60bc4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\Helper">
       <UniqueIdentifier>{f5de15ce-1221-46ec-b16a-84af376e8583}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Renderer">
-      <UniqueIdentifier>{7ee74ff2-38f2-4936-bccf-8a7e5035136a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headerdateien\GameInterfaces">
       <UniqueIdentifier>{16d353ec-8d9b-41a7-a17d-ff664fa11d56}</UniqueIdentifier>
@@ -60,12 +54,6 @@
     <ClCompile Include="OBJModel.cpp">
       <Filter>Quelldateien\Helper</Filter>
     </ClCompile>
-    <ClCompile Include="ObjCubieRenderer.h">
-      <Filter>Headerdateien\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjCubieRenderer.cpp">
-      <Filter>Quelldateien\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Quelldateien\Controlls</Filter>
     </ClCompile>
@@ -75,8 +63,14 @@
     <ClCompile Include="TestMouse.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="TestCompoundCube.cpp">
+    <ClCompile Include="CompoundCube.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="CubieRenderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CubieRenderer.h">
+      <Filter>Headerdateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,7 +95,7 @@
     <ClInclude Include="GameInterface.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
-    <ClInclude Include="TestCompoundCube.h">
+    <ClInclude Include="CompoundCube.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
   </ItemGroup>

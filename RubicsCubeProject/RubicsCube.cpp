@@ -1,14 +1,16 @@
 
 #define GLEW_STATIC
 #include "GameInterface.h"
-#include "TestCompoundCube.h"
+#include "CompoundCube.h"
+#include "TestMouse.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <thread>
 
-TestCompoundCube gCompoundCube;
+CompoundCube gCompoundCube;
+TestMouse gTestMouse;
 
 GameInterface* gUsedInterface;
 
@@ -89,7 +91,8 @@ void ShutdownSystem() {
 }
 
 int main() {
-	gUsedInterface = &gCompoundCube;
+	gUsedInterface = &gTestMouse;
+	//gUsedInterface = &gCompoundCube;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

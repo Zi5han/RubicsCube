@@ -1,10 +1,10 @@
 #pragma once
 #include "GameInterface.h"
-#include "ObjCubieRenderer.h"
+#include "CubieRenderer.h"
 #include "InputSystem.h"
 #include <glm/ext/quaternion_float.hpp>
 
-class TestCompoundCube : public GameInterface {
+class CompoundCube : public GameInterface {
 public:
 	virtual void Initialize(GLFWwindow* window);
 	virtual void Render(float aspectRatio);
@@ -13,7 +13,7 @@ public:
 
 private:
 	InputSystem m_input;
-	ObjCubieRenderer m_cubieRenderer;
+	CubieRenderer m_cubieRenderer;
 	float m_turningAngle;
 	glm::quat m_orientationQuaternion;
 

@@ -1,10 +1,10 @@
-#include "TestCompoundCube.h"
+#include "CompoundCube.h"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <GLFW/glfw3.h>
 
-void TestCompoundCube::Initialize(GLFWwindow* window) {
+void CompoundCube::Initialize(GLFWwindow* window) {
 	m_input.SetWindow(window);
 	m_input.ObserverKey(GLFW_KEY_SPACE);
 	m_input.ObserverKey(GLFW_KEY_RIGHT);
@@ -17,7 +17,7 @@ void TestCompoundCube::Initialize(GLFWwindow* window) {
 	m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
-void TestCompoundCube::Render(float aspectRatio) {
+void CompoundCube::Render(float aspectRatio) {
 	glm::mat4 globalTransformation = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f) *
 		glm::lookAt(glm::vec3(0.0f, 0.0f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::mat4_cast(m_orientationQuaternion);
@@ -39,11 +39,11 @@ void TestCompoundCube::Render(float aspectRatio) {
 	}
 }
 
-void TestCompoundCube::ClearResources() {
+void CompoundCube::ClearResources() {
 	m_cubieRenderer.ClearResources();
 }
 
-void TestCompoundCube::Update(double deltaTime) {
+void CompoundCube::Update(double deltaTime) {
 	m_input.Update();
 	if (m_input.IsKeyDown(GLFW_KEY_SPACE))
 		m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
