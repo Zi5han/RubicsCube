@@ -101,8 +101,8 @@ int main() {
 	//gUsedInterface = &gDummyTest;
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
-	//gUsedInterface = &gTestCubie;
-	gUsedInterface = &gTestObjCubie;
+	gUsedInterface = &gTestCubie;
+	//gUsedInterface = &gTestObjCubie;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

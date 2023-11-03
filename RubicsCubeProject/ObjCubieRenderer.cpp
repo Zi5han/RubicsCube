@@ -88,8 +88,8 @@ void ObjCubieRenderer::ClearResources() {
 	glDeleteProgram(m_shaderProgram);
 }
 
-float ObjCubieRenderer::GetCubieExtenstions() {
-	return 0.0f;
+float ObjCubieRenderer::GetCubieExtention() {
+	return 2.0f;
 }
 
 void ObjCubieRenderer::TranscribeVec3ToFloatArray(const std::vector<glm::vec3>& vecArray, const int arraySize, float* floatArray) {

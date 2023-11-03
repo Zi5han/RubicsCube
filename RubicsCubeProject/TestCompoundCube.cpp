@@ -16,7 +16,7 @@ void TestCompoundCube::Render(float aspectRatio)
 		glm::rotate(glm::mat4(1.0f), m_turningAngle, glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//Offset + 0.1f damit die Luecken zwischen den Minicubies erscheinen.
-	float offset = m_cubieRenderer.GetCubieExtension() + 0.1f;
+	float offset = m_cubieRenderer.GetCubieExtention() + 0.1f;
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
 			for (int k = 0; k < 3; ++k) {

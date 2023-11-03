@@ -1,6 +1,6 @@
 #pragma once
 #include "GameInterface.h"
-#include "CubieRenderer.h"
+#include "ObjCubieRenderer.h"
 
 class TestCompoundCube : public GameInterface
 {
@@ -11,6 +11,6 @@ public:
 	virtual void Update(double deltaTime);
 
 private:
-	CubieRenderer m_cubieRenderer;
+	ObjCubieRenderer m_cubieRenderer;
 	float m_turningAngle;
 };
