@@ -14,4 +14,4 @@ public:
 private:
 	GLFWwindow* m_window;
 	int m_key;
-}
+};

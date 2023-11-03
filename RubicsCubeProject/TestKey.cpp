@@ -40,9 +40,9 @@ void TestKey::Update(double deltaTime) {
 
 	float yVelocity = 0.0f;
 	if (m_input.IsKeyDown(GLFW_KEY_RIGHT))
-		xVelocity = glm::radians(90.0f);
+		yVelocity = glm::radians(90.0f);
 	if (m_input.IsKeyDown(GLFW_KEY_LEFT))
-		xVelocity = glm::radians(-90.0f);
+		yVelocity = glm::radians(-90.0f);
 
 	glm::quat velocityQuaternion = glm::quat(0.0f, glm::vec3(xVelocity, yVelocity, 0.0f));
 
