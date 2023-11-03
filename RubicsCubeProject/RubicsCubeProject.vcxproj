@@ -136,6 +136,7 @@
     <ClCompile Include="OBJModel.cpp" />
     <ClCompile Include="RubicsCube.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
+    <ClCompile Include="TestCompoundCube.cpp" />
     <ClCompile Include="TestCubie.cpp" />
     <ClCompile Include="TestGlm.cpp" />
     <ClCompile Include="TestObjCubie.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="GameInterface.h" />
     <ClInclude Include="OBJModel.h" />
     <ClInclude Include="ShaderUtil.h" />
+    <ClInclude Include="TestCompoundCube.h" />
     <ClInclude Include="TestCubie.h" />
     <ClInclude Include="TestObjCubie.h" />
     <ClInclude Include="TestTriangle.h" />

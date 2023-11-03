@@ -72,6 +72,9 @@
     <ClCompile Include="ObjCubieRenderer.cpp">
       <Filter>Quelldateien\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="TestCompoundCube.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestCubie.h">
