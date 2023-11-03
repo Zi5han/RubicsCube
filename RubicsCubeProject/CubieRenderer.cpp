@@ -56,8 +56,8 @@ void CubieRenderer::ClearResources() {
 	glDeleteProgram(m_shaderProgram);
 }
 
-float CubieRenderer::GetCubieExtenstions() {
-	return 0.0f;
+float CubieRenderer::GetCubieExtension() {
+	return 2.0f * m_offset;
 }
 
 void CubieRenderer::AddSidePosition(int sideType, int direction, std::vector<glm::vec3>& positionArray) {
