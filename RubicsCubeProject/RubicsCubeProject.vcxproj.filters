@@ -37,6 +37,12 @@
     <Filter Include="Quelldateien\Helper">
       <UniqueIdentifier>{b03f808d-47a6-43b5-a0bd-197125dcb934}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Controlls">
+      <UniqueIdentifier>{14e26c2a-010b-4e66-8723-a1654b49fadd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Controlls">
+      <UniqueIdentifier>{913709ae-3ce3-45f9-b474-33681742c270}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RubicsCube.cpp">
@@ -72,20 +78,23 @@
     <ClCompile Include="ObjCubieRenderer.cpp">
       <Filter>Quelldateien\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="TestCompoundCube.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleCubieRenderer.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Quelldateien\Controlls</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardObserver.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Controlls</Filter>
     </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="TestMouse.cpp">
+      <Filter>Quelldateien\GameInterfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleCubieRenderer.cpp">
+      <Filter>Quelldateien\GameInterfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCompoundCube.cpp">
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
     <ClCompile Include="TestKey.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,29 +119,27 @@
     <ClInclude Include="CubieRenderer.h">
       <Filter>Headerdateien\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="GameInterface.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCompoundCube.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleCubieRenderer.h">
-      <Filter>Headerdateien</Filter>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Headerdateien\Controlls</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardObserver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\Controlls</Filter>
     </ClInclude>
     <ClInclude Include="TestKey.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Texture.jpg">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
+    <ClInclude Include="TestMouse.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInterface.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCubieRenderer.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCompoundCube.h">
+      <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
