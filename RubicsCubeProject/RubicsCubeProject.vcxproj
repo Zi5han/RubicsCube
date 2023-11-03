@@ -142,8 +142,6 @@
     <ClCompile Include="TestCompoundCube.cpp" />
     <ClCompile Include="TestCubie.cpp" />
     <ClCompile Include="TestGlm.cpp" />
-    <ClCompile Include="TestObjCubie.cpp" />
-    <ClCompile Include="TestKey.cpp" />
     <ClCompile Include="TestMouse.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
     <ClCompile Include="VertexStructs.h" />
@@ -158,8 +156,6 @@
     <ClInclude Include="SimpleCubieRenderer.h" />
     <ClInclude Include="TestCompoundCube.h" />
     <ClInclude Include="TestCubie.h" />
-    <ClInclude Include="TestObjCubie.h" />
-    <ClInclude Include="TestKey.h" />
     <ClInclude Include="TestMouse.h" />
     <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />

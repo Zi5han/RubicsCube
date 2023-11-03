@@ -17,8 +17,6 @@ private:
 
 	OBJModel m_Model;
 
-	void TranscribeVec3ToFloatArray(const std::vector<glm::vec3>& vecArray, const int arraySize, float* floatArray);
-
 	GLuint m_arrayBufferObject;
 	GLuint m_vertexBufferObject[2];
 	GLuint m_shaderProgram;

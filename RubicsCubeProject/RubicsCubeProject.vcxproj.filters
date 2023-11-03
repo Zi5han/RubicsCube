@@ -57,9 +57,6 @@
     <ClCompile Include="TestTriangle.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="TestObjCubie.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
-    </ClCompile>
     <ClCompile Include="TestCubie.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
@@ -87,14 +84,11 @@
     <ClCompile Include="TestMouse.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleCubieRenderer.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
-    </ClCompile>
     <ClCompile Include="TestCompoundCube.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="TestKey.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
+    <ClCompile Include="SimpleCubieRenderer.cpp">
+      <Filter>Quelldateien\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,9 +96,6 @@
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
     <ClInclude Include="TestGlm.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="TestObjCubie.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
     <ClInclude Include="TestTriangle.h">
@@ -125,20 +116,17 @@
     <ClInclude Include="KeyboardObserver.h">
       <Filter>Headerdateien\Controlls</Filter>
     </ClInclude>
-    <ClInclude Include="TestKey.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
     <ClInclude Include="TestMouse.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
     <ClInclude Include="GameInterface.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleCubieRenderer.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
     <ClInclude Include="TestCompoundCube.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCubieRenderer.h">
+      <Filter>Headerdateien\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

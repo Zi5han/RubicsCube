@@ -1,26 +1,14 @@
 
 #define GLEW_STATIC
 #include "GameInterface.h"
-#include "TestGlm.h"
-#include "TestTriangle.h"
-#include "TestCubie.h"
-#include "OBJModel.h"
-#include "TestObjCubie.h"
-#include "TestKey.h"
-#include "TestMouse.h"
+#include "TestCompoundCube.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <thread>
 
-TestGlm gGlmTest;
-GameInterface gDummyTest;
-TestTriangle gTestTriangle;
-TestCubie gTestCubie;
-TestObjCubie gTestObjCubie;
-TestKey gTestKey;
-TestMouse gTestMouse;
+TestCompoundCube gCompoundCube;
 
 GameInterface* gUsedInterface;
 
@@ -101,14 +89,7 @@ void ShutdownSystem() {
 }
 
 int main() {
-	//OBJModel model = OBJModel("Cube.obj");
-	//gUsedInterface = &gDummyTest;
-	//gUsedInterface = &gGlmTest;
-	//gUsedInterface = &gTestTriangle;
-	//gUsedInterface = &gTestObjCubie;
-	//gUsedInterface = &gTestCubie;
-	//gUsedInterface = &gTestKey;
-	gUsedInterface = &gTestMouse;
+	gUsedInterface = &gCompoundCube;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();
