@@ -13,7 +13,7 @@ void TestMouse::Initialize(GLFWwindow* window)
 void TestMouse::Render(float aspectRatio)
 {
 	m_viewProject = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f) *
-		glm::lookAt(glm::vec3(0.0f, 0.0f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::lookAt(glm::vec3(0.0f, 0.0f, -18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 finalMat = glm::translate(m_viewProject, m_cubePosition);
 
@@ -35,5 +35,5 @@ void TestMouse::Update(double deltaTime)
 	glm::vec3 position, direction;
 
 	m_input.GetPickingRay(m_viewProject, position, direction);
-	m_cubePosition = position + 6.0f * direction;
+	m_cubePosition = position + 18.0f * direction;
 }
