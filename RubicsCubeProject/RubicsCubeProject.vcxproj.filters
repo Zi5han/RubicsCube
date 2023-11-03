@@ -54,15 +54,6 @@
     <ClCompile Include="TestGlm.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="TestTriangle.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCubie.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="CubieRenderer.cpp">
-      <Filter>Quelldateien\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderUtil.cpp">
       <Filter>Quelldateien\Helper</Filter>
     </ClCompile>
@@ -87,18 +78,9 @@
     <ClCompile Include="TestCompoundCube.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleCubieRenderer.cpp">
-      <Filter>Quelldateien\Renderer</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestCubie.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
     <ClInclude Include="TestGlm.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="TestTriangle.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
     <ClInclude Include="ShaderUtil.h">
@@ -106,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="OBJModel.h">
       <Filter>Headerdateien\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="CubieRenderer.h">
-      <Filter>Headerdateien\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>Headerdateien\Controlls</Filter>
@@ -124,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="TestCompoundCube.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleCubieRenderer.h">
-      <Filter>Headerdateien\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

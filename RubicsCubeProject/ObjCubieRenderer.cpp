@@ -81,5 +81,5 @@ void ObjCubieRenderer::ClearResources() {
 }
 
 float ObjCubieRenderer::GetCubieExtention() {
-	return 2.0f;
+	return 2.0f * m_offset;
 }
