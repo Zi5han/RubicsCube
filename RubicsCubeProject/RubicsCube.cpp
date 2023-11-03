@@ -5,7 +5,7 @@
 #include "TestTriangle.h"
 #include "TestCubie.h"
 #include "TestKey.h"
-
+#include "TestMouse.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -17,6 +17,7 @@ GameInterface gDummyTest;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
 TestKey gTestKey;
+TestMouse gTestMouse;
 
 GameInterface* gUsedInterface;
 
@@ -96,7 +97,8 @@ int main()
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
 	//gUsedInterface = &gTestCubie;
-	gUsedInterface = &gTestKey;
+	//gUsedInterface = &gTestKey;
+	gUsedInterface = &gTestMouse;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

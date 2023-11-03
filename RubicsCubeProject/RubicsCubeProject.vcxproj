@@ -140,6 +140,7 @@
     <ClCompile Include="TestCubie.cpp" />
     <ClCompile Include="TestGlm.cpp" />
     <ClCompile Include="TestKey.cpp" />
+    <ClCompile Include="TestMouse.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="TestCompoundCube.h" />
     <ClInclude Include="TestCubie.h" />
     <ClInclude Include="TestKey.h" />
+    <ClInclude Include="TestMouse.h" />
     <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />
   </ItemGroup>

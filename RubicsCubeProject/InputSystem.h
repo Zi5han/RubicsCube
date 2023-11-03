@@ -19,7 +19,8 @@ public:
 	bool IsLeftMouseButtonDown();
 	bool IsRightMouseButtonDown();
 
-	//void GetPickingRay(const glm::mat4&)
+	void GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3& startingPoint, glm::vec3& direction);
+	void GetMousePosition(double& xPosition, double& yPosition);
 
 private:
 	std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
