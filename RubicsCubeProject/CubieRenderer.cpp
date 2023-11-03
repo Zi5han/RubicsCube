@@ -24,8 +24,10 @@ void CubieRenderer::Initialize() {
 	glBindVertexArray(m_arrayBufferObject);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[0]);
-	TranscribeToFloatArray(positionField, floatArray);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
+	//TranscribeToFloatArray(positionField, floatArray);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 12 * positionField.size(), positionField.data(), GL_STATIC_DRAW);
+
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
