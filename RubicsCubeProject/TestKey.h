@@ -14,5 +14,5 @@ public:
 private:
 	CubieRenderer m_cubieRenderer;
 	InputSystem m_input;
-	glm::quat m_orienttationQuaternion;
+	glm::quat m_orientationQuaternion;
 };
