@@ -11,7 +11,7 @@ public:
 	virtual void Update(double deltaTime);
 
 private:
-	//TestCompoundCube m_cubieRenderer;
-	SimpleCubieRenderer m_cubieRenderer;
+	TestCompoundCube m_cubieRenderer;
+	//SimpleCubieRenderer m_cubieRenderer;
 	float m_turningAngle;
 };
