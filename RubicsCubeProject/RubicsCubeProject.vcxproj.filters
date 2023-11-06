@@ -60,9 +60,6 @@
     <ClCompile Include="KeyboardObserver.cpp">
       <Filter>Quelldateien\Controlls</Filter>
     </ClCompile>
-    <ClCompile Include="TestMouse.cpp">
-      <Filter>Quelldateien\GameInterfaces</Filter>
-    </ClCompile>
     <ClCompile Include="CompoundCube.cpp">
       <Filter>Quelldateien\GameInterfaces</Filter>
     </ClCompile>
@@ -71,6 +68,15 @@
     </ClCompile>
     <ClCompile Include="CubieRenderer.h">
       <Filter>Headerdateien</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseControlls.h">
+      <Filter>Headerdateien\Controlls</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMouse.cpp">
+      <Filter>Quelldateien\Controlls</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseControlls.cpp">
+      <Filter>Quelldateien\Controlls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,14 +95,14 @@
     <ClInclude Include="KeyboardObserver.h">
       <Filter>Headerdateien\Controlls</Filter>
     </ClInclude>
-    <ClInclude Include="TestMouse.h">
-      <Filter>Headerdateien\GameInterfaces</Filter>
-    </ClInclude>
     <ClInclude Include="GameInterface.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
     </ClInclude>
     <ClInclude Include="CompoundCube.h">
       <Filter>Headerdateien\GameInterfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMouse.h">
+      <Filter>Headerdateien\Controlls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

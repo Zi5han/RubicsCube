@@ -8,9 +8,11 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <thread>
+#include "MouseControlls.h"
 
 CompoundCube gCompoundCube;
 TestMouse gTestMouse;
+MouseControlls gMouseControlls;
 
 GameInterface* gUsedInterface;
 
@@ -91,8 +93,9 @@ void ShutdownSystem() {
 }
 
 int main() {
-	gUsedInterface = &gTestMouse;
+	//gUsedInterface = &gTestMouse;
 	//gUsedInterface = &gCompoundCube;
+	gUsedInterface = &gMouseControlls;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

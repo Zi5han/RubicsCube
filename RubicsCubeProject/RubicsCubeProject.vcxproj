@@ -132,6 +132,8 @@
   <ItemGroup>
     <ClCompile Include="CubieRenderer.cpp" />
     <ClCompile Include="CubieRenderer.h" />
+    <ClCompile Include="MouseControlls.cpp" />
+    <ClCompile Include="MouseControlls.h" />
     <ClCompile Include="OBJModel.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyboardObserver.cpp" />
