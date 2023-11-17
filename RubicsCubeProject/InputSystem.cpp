@@ -48,3 +48,13 @@ void InputSystem::GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3&
 void InputSystem::GetMousePosition(double& xPosition, double& yPosition) {
 	glfwGetCursorPos(m_window, &xPosition, &yPosition);
 }
+
+void InputSystem::GetMouseNormalizedPosition(double& xPosition, double& yPosition) {
+	glfwGetCursorPos(m_window, &xPosition, &yPosition);
+
+	int screenWidth, screenHeight;
+	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
+
+	xPosition /= screenWidth;
+	yPosition /= screenHeight;
+}

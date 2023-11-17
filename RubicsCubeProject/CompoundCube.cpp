@@ -15,6 +15,8 @@ void CompoundCube::Initialize(GLFWwindow* window) {
 	m_cubieRenderer.Initialize();
 	m_turningAngle = 0.0f;
 	m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+	m_wasRightMouseButtonPressed = false;
 }
 
 void CompoundCube::Render(float aspectRatio) {
@@ -48,17 +50,35 @@ void CompoundCube::Update(double deltaTime) {
 	if (m_input.IsKeyDown(GLFW_KEY_SPACE))
 		m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
-	float xVelocity = 0.0f;
-	if (m_input.IsKeyDown(GLFW_KEY_UP))
-		xVelocity = glm::radians(90.0f);
-	if (m_input.IsKeyDown(GLFW_KEY_DOWN))
-		xVelocity = glm::radians(-90.0f);
+	if (!m_input.IsRightMouseButtonDown()) {
+		m_wasRightMouseButtonPressed = false;
+		return;
+	}
+	if (!m_wasRightMouseButtonPressed) {
+		m_wasRightMouseButtonPressed = true;
+		m_input.GetMouseNormalizedPosition(m_oldXPosition, m_oldYPosition);
+		return;
+	}
+	double currentXPosition, currentYPosition;
 
-	float yVelocity = 0.0f;
-	if (m_input.IsKeyDown(GLFW_KEY_RIGHT))
-		yVelocity = glm::radians(90.0f);
-	if (m_input.IsKeyDown(GLFW_KEY_LEFT))
-		yVelocity = glm::radians(-90.0f);
+	m_input.GetMouseNormalizedPosition(currentXPosition, currentYPosition);
+
+	const float sesitivity = 400;
+
+	float yVelocity = (currentXPosition - m_oldXPosition) * sesitivity;
+	//if (m_input.IsKeyDown(GLFW_KEY_UP))
+	//	xVelocity = glm::radians(90.0f);
+	//if (m_input.IsKeyDown(GLFW_KEY_DOWN))
+	//	xVelocity = glm::radians(-90.0f);
+
+	float xVelocity = -(currentYPosition - m_oldYPosition) * sesitivity;;
+	//if (m_input.IsKeyDown(GLFW_KEY_RIGHT))
+	//	yVelocity = glm::radians(90.0f);
+	//if (m_input.IsKeyDown(GLFW_KEY_LEFT))
+	//	yVelocity = glm::radians(-90.0f);
+
+	m_oldXPosition = currentXPosition;
+	m_oldYPosition = currentYPosition;
 
 	glm::quat velocityQuaternion = glm::quat(0.0f, glm::vec3(xVelocity, yVelocity, 0.0f));
 

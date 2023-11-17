@@ -17,4 +17,7 @@ private:
 	float m_turningAngle;
 	glm::quat m_orientationQuaternion;
 
+	bool m_wasRightMouseButtonPressed;
+	double m_oldXPosition;
+	double m_oldYPosition;
 };
