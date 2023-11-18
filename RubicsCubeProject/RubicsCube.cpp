@@ -76,7 +76,7 @@ GLFWwindow* InitializeSystem() {
 
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Rubics Cube", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
-	glfwSetWindowRefreshCallback(window, RenderWindow);
+	//glfwSetWindowRefreshCallback(window, RenderWindow);
 
 	glewExperimental = true;
 	glewInit();
@@ -94,8 +94,8 @@ void ShutdownSystem() {
 
 int main() {
 	//gUsedInterface = &gTestMouse;
-	gUsedInterface = &gCompoundCube;
-	//gUsedInterface = &gMouseControlls;
+	//gUsedInterface = &gCompoundCube;
+	gUsedInterface = &gMouseControlls;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

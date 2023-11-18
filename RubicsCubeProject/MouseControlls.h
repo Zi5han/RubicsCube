@@ -16,6 +16,12 @@ private:
 	InputSystem m_input;
 	glm::vec3 m_cubePosition;
 	glm::mat4 m_viewProject;
-	glm::vec3 m_deltaMousePosition;
-	glm::vec3 m_oldMousePosition;
+	glm::vec2 m_actiualPosition;
+	//glm::vec3 m_deltaMousePosition;
+	//glm::vec3 m_oldMousePosition;
+
+	bool m_wasRightMouseButtonPressed;
+	glm::dvec2 m_oldPosition;
+	glm::vec2 m_cameraVelocity;
+	float m_cameraHeight;
 };
