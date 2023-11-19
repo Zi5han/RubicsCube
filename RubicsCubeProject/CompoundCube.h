@@ -16,8 +16,9 @@ private:
 	CubieRenderer m_cubieRenderer;
 	float m_turningAngle;
 	glm::quat m_orientationQuaternion;
+	glm::vec2 m_actiualPosition;
 
 	bool m_wasRightMouseButtonPressed;
-	double m_oldXPosition;
-	double m_oldYPosition;
+	glm::dvec2 m_oldPosition;
+
 };

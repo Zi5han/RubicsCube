@@ -94,8 +94,8 @@ void ShutdownSystem() {
 
 int main() {
 	//gUsedInterface = &gTestMouse;
-	//gUsedInterface = &gCompoundCube;
-	gUsedInterface = &gMouseControlls;
+	gUsedInterface = &gCompoundCube;
+	//gUsedInterface = &gMouseControlls;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();
