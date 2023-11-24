@@ -51,6 +51,9 @@
     <ClCompile Include="TestKey.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TestSound.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameInterface.h">
@@ -84,6 +87,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="TestKey.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

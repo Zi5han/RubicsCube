@@ -142,6 +142,7 @@
     <ClCompile Include="TestKey.cpp" />
     <ClCompile Include="TestMouse.cpp" />
     <ClCompile Include="TestTriangle.cpp" />
+    <ClCompile Include="TestSound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubieRenderer.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="TestMouse.h" />
     <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />
+    <ClInclude Include="TestSound.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Texture.jpg" />
