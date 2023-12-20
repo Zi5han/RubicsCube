@@ -6,11 +6,11 @@
 class CubieRenderer {
 public:
 	void Initialize();
-	void Render(const glm::mat4& transformationMatrix);
+	void Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model);
 	void ClearResources();
 
 	float GetCubieExtension();
-	
+
 private:
 	const float m_offset = 0.5f;
 

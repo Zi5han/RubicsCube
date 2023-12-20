@@ -6,12 +6,11 @@
 class TestCubie : public GameInterface {
 public:
 	virtual void Initialize();
-	virtual void Render(float aspectRatio);
+	virtual void RenderInterface(float aspectRatio);
 	virtual void ClearResources();
 	virtual void Update(double deltaTime);
 
 private:
-	TestCompoundCube m_cubieRenderer;
-	//SimpleCubieRenderer m_cubieRenderer;
+	CubieRenderer m_cubieRenderer;
 	float m_turningAngle;
 };

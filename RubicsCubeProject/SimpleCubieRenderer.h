@@ -6,7 +6,7 @@
 class SimpleCubieRenderer {
 public:
 	void Initialize();
-	void Render(const glm::mat4& transformationMatrix);
+	void Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model);
 	void ClearResources();
 
 	float GetCubieExtension();

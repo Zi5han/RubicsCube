@@ -5,10 +5,8 @@ struct GLFWwindow;
 class GameInterface {
 public:
 	virtual void Initialize() {}
-	virtual void Initialize(GLFWwindow* winndow) { Initialize(); }
-
+	virtual void Initialize(GLFWwindow* window) { Initialize(); }
+	virtual void RenderInterface(float aspectRation) {}
 	virtual void Update(double deltaTime) {}
-	virtual void Render(float aspectRation) {}
-
 	virtual void ClearResources() {}
 };

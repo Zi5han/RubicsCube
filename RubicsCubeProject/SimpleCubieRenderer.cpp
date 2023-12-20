@@ -37,11 +37,13 @@ void SimpleCubieRenderer::Initialize() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void SimpleCubieRenderer::Render(const glm::mat4& transformationMatrix) {
+void SimpleCubieRenderer::Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model) {
+	glm::mat4 globalTransformation = projection * view * model;
+
 	glUseProgram(m_shaderProgram);
 	glBindVertexArray(m_arrayBufferObject);
 
-	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(transformationMatrix));
+	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(globalTransformation));
 	glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
 	glBindVertexArray(0);

@@ -6,10 +6,10 @@
 
 class TestKey : public GameInterface {
 public:
-	virtual void Initialize(GLFWwindow* window);
-	virtual void Render(float aspectRatio);
-	virtual void ClearResources();
-	virtual void Update(double deltaTime);
+	virtual void Initialize(GLFWwindow* window) override;
+	virtual void RenderInterface(float aspectRatio) override;
+	virtual void Update(double deltaTime) override;
+	virtual void ClearResources() override;
 
 private:
 	CubieRenderer m_cubieRenderer;

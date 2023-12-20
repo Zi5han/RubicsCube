@@ -9,7 +9,7 @@ void CubieRenderer::Initialize() {
 
 	//Build the cube information
 	for (int sideType = 0; sideType < 3; sideType++) {
-		for (int direction = -1; direction < 2; direction += 2){
+		for (int direction = -1; direction < 2; direction += 2) {
 			AddSidePosition(sideType, direction, positionField);
 			AddSideColor(sideType, direction, colorField);
 		}
@@ -41,11 +41,13 @@ void CubieRenderer::Initialize() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CubieRenderer::Render(const glm::mat4& transformationMatrix) {
+void CubieRenderer::Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model) {
+	glm::mat4 globalTransformation = projection * view * model;
+
 	glUseProgram(m_shaderProgram);
 	glBindVertexArray(m_arrayBufferObject);
 
-	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(transformationMatrix));
+	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(globalTransformation));
 	glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
 	glBindVertexArray(0);
@@ -89,7 +91,7 @@ void CubieRenderer::AddSideColor(int sideType, int direction, std::vector<glm::v
 
 	float baseColor = (direction - 1) ? 0.5f : 1.0f;
 	color[sideType] = baseColor;
-	
+
 	for (int i = 0; i < 6; i++) {
 		colorArray.push_back(color);
 	}

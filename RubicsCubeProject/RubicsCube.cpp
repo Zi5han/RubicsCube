@@ -6,6 +6,7 @@
 #include "TestCubie.h"
 #include "TestKey.h"
 #include "TestMouse.h"
+#include "TestCompoundCube.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -18,6 +19,7 @@ TestTriangle gTestTriangle;
 TestCubie gTestCubie;
 TestKey gTestKey;
 TestMouse gTestMouse;
+TestCompoundCube gCompoundCube;
 
 GameInterface* gUsedInterface;
 
@@ -30,7 +32,7 @@ float bg_blue = 1.0f;
 
 void RenderWindow(GLFWwindow* window) {
 	gUsedInterface->Update(timeDiffrence);
-	//gUsedInterface->Update(0.1); // fürs Debuggen
+	//gUsedInterface->FetchInputs(0.1); // fürs Debuggen
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
@@ -41,9 +43,12 @@ void RenderWindow(GLFWwindow* window) {
 	glClearColor(bg_red, bg_green, bg_blue, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	gUsedInterface->Render(aspectRatio);
-	glfwSwapBuffers(window);
+	int minimized = glfwGetWindowAttrib(window, GLFW_ICONIFIED);
 
+	if (!minimized) {
+		gUsedInterface->RenderInterface(aspectRatio);
+	}
+	glfwSwapBuffers(window);
 
 	bg_red = (sin(lastTime + (3.14f / 3)) / 4.0f) + 0.75f;
 	bg_green = (sin(lastTime + 2 * (3.14f / 3)) / 4.0f) + 0.75f;
@@ -97,8 +102,10 @@ int main()
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
 	//gUsedInterface = &gTestCubie;
+	//gUsedInterface = &gTestCubie;
 	//gUsedInterface = &gTestKey;
-	gUsedInterface = &gTestMouse;
+	//gUsedInterface = &gTestMouse;
+	gUsedInterface = &gCompoundCube;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

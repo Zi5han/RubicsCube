@@ -1,25 +1,31 @@
 #include "InputSystem.h"
 #include <GLFW/glfw3.h>
 
-void InputSystem::Update() {
+//GENERAL
+void InputSystem::FetchInputs() {
 	for (auto i = m_keyMapper.begin(); i != m_keyMapper.end(); i++)
 		i->second->Update();
+	UpdateClickState(GLFW_MOUSE_BUTTON_LEFT, m_leftClickState);
+	UpdateClickState(GLFW_MOUSE_BUTTON_RIGHT, m_rightClickState);
 }
 
-void InputSystem::ObserverKey(int key) {
+void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
 }
 
-bool InputSystem::IsLeftMouseButtonDown() {
-	return glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+void InputSystem::SetViewProjection(const glm::mat4& projectionView) {
+	m_projectionViewMat = projectionView;
 }
 
-bool InputSystem::IsRightMouseButtonDown() {
-	return glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
+//MOUSE
+glm::vec2 InputSystem::GetMouseWheelScrollOffset() const {
+	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;
+	s_mouseScrollOffset = glm::vec2(0.0f, 0.0f);
+	return mouseScrollOffset;
 }
 
-void InputSystem::GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3& startingPoint, glm::vec3& direction) {
-	double xPosition, yPosition;
+void InputSystem::GetPickingRay(glm::vec3& startingPoint, glm::vec3& direction) const {
+	float xPosition, yPosition;
 	GetMousePosition(xPosition, yPosition);
 
 	int screenWidth, screenHeight;
@@ -32,7 +38,7 @@ void InputSystem::GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3&
 	glm::vec4 farPoint = nearPoint;
 	farPoint.z = 0.99f;
 
-	glm::mat4 inverse = glm::inverse(transfomationMatrix);
+	glm::mat4 inverse = glm::inverse(m_projectionViewMat);
 	nearPoint = inverse * nearPoint;
 	farPoint = inverse * farPoint;
 
@@ -45,6 +51,45 @@ void InputSystem::GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3&
 	direction = glm::normalize(direction);
 }
 
-void InputSystem::GetMousePosition(double& xPosition, double& yPosition) {
-	glfwGetCursorPos(m_window, &xPosition, &yPosition);
+void InputSystem::GetMousePosition(float& xPos, float& yPos) const {
+	double xPos_double, yPos_double;
+	glfwGetCursorPos(m_window, &xPos_double, &yPos_double);
+
+	xPos = static_cast<float>(xPos_double);
+	yPos = static_cast<float>(yPos_double);
 }
+
+//HELPING METHODS
+void InputSystem::UpdateClickState(int button, ClickState& clickState) {
+	if (!(glfwGetMouseButton(m_window, button) == GLFW_PRESS)) {
+		if (clickState == ClickState::CLICK || clickState == ClickState::HOLD) {
+			clickState = ClickState::RELEASE;
+		}
+		else {
+			clickState = ClickState::NO_ACTION;
+		}
+	}
+	else if (clickState == ClickState::NO_ACTION || clickState == ClickState::RELEASE) {
+		clickState = ClickState::CLICK;
+
+		GetPickingRay(m_dragStartRayOrigin, m_dragStartRayDirection);
+		GetMousePosition(m_dragStartPosition.x, m_dragStartPosition.y);
+		//GetMouseNormalizedPosition(m_mouseDragStartNormalizedScreenPosition.x, m_mouseDragStartNormalizedScreenPosition.y);
+
+		GetMousePosition(m_dragStartPosition.x, m_dragStartPosition.y);
+	}
+	else {
+		clickState = ClickState::HOLD;
+	}
+}
+
+void InputSystem::NormalizeMousePosition(const float xAbsPos, const float yAbsPos, float& out_xNormPos, float& out_yNormPos) const {
+	int screenWidth, screenHeight;
+	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
+
+	out_xNormPos = xAbsPos / screenWidth;
+	out_yNormPos = yAbsPos / screenHeight;
+}
+
+//STATIC
+glm::ivec2 InputSystem::s_mouseScrollOffset = glm::vec2(0.0f, 0.0f);

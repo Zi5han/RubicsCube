@@ -7,22 +7,55 @@
 
 class InputSystem {
 public:
-	InputSystem() { m_window = nullptr; };
+	enum ClickState {
+		NO_ACTION = 0,
+		CLICK = 1,
+		HOLD = 2,
+		RELEASE = 3
+	};
+
 	void SetWindow(GLFWwindow* window) { m_window = window; };
-	void Update();
-	void ObserverKey(int key);
+	void FetchInputs();
+	void ObserveKey(int key);
+	void SetViewProjection(const glm::mat4& projectionView);
 
-	bool IsKeyDown(int key) { return m_keyMapper[key]->m_isDown; };
-	bool WasKeyPressed(int key) { return m_keyMapper[key]->m_wasPressed; };
-	bool WasKeyReleased(int key) { return m_keyMapper[key]->m_wasReleased; };
+	glm::vec2 GetMouseWheelScrollOffset() const;
+	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
+	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
 
-	bool IsLeftMouseButtonDown();
-	bool IsRightMouseButtonDown();
+	void GetPickingRay(glm::vec3& startingPoint, glm::vec3& direction) const;
+	void GetMousePosition(float& xPosition, float& yPosition) const;
+	void GetMouseNormalizedPosition(float& out_xPos, float& out_yPos) const {
+		GetMousePosition(out_xPos, out_yPos);
+		NormalizeMousePosition(out_xPos, out_yPos, out_xPos, out_yPos);;
+	}
 
-	void GetPickingRay(const glm::mat4& transfomationMatrix, glm::vec3& startingPoint, glm::vec3& direction);
-	void GetMousePosition(double& xPosition, double& yPosition);
+	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
+	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
+	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
 
 private:
-	std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
+	mutable std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
 	GLFWwindow* m_window;
+
+	ClickState m_leftClickState;
+	ClickState m_rightClickState;
+
+	glm::vec2 m_dragStartPosition;
+	glm::vec3 m_dragStartRayOrigin;
+	glm::vec3 m_dragStartRayDirection;
+
+	glm::mat4 m_projectionViewMat;
+
+	//HELPING METHODS
+	void UpdateClickState(int button, ClickState& clickState);
+
+	void NormalizeMousePosition(const float xAbsPos, const float yAbsPos, float& out_xNormPos, float& out_yNormPos) const;
+
+	//STATIC
+	static glm::ivec2 s_mouseScrollOffset;
+	static void scrollCallback(GLFWwindow* window, double xScroll, double yScroll) {
+		s_mouseScrollOffset.x = static_cast<int>(xScroll);
+		s_mouseScrollOffset.y = static_cast<int>(yScroll);
+	};
 };

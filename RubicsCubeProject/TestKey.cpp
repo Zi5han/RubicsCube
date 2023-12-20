@@ -4,23 +4,23 @@
 
 void TestKey::Initialize(GLFWwindow* window) {
 	m_input.SetWindow(window);
-	m_input.ObserverKey(GLFW_KEY_SPACE);
-	m_input.ObserverKey(GLFW_KEY_RIGHT);
-	m_input.ObserverKey(GLFW_KEY_LEFT);
-	m_input.ObserverKey(GLFW_KEY_UP);
-	m_input.ObserverKey(GLFW_KEY_DOWN);
+	m_input.ObserveKey(GLFW_KEY_SPACE);
+	m_input.ObserveKey(GLFW_KEY_RIGHT);
+	m_input.ObserveKey(GLFW_KEY_LEFT);
+	m_input.ObserveKey(GLFW_KEY_UP);
+	m_input.ObserveKey(GLFW_KEY_DOWN);
 
 	m_cubieRenderer.Initialize();
 	m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
-void TestKey::Render(float aspectRatio) {
-	glm::mat4 globalTransformation = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f) *
-		glm::lookAt(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)) *
-		glm::mat4_cast(m_orientationQuaternion);
+void TestKey::RenderInterface(float aspectRatio) {
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 model = glm::mat4_cast(m_orientationQuaternion);
 
 	//m_cubieRenderer.Render(globalTransformation);
-	m_cubieRenderer.Render(globalTransformation);
+	m_cubieRenderer.Render(projection, view, model);
 }
 
 void TestKey::ClearResources() {
@@ -28,7 +28,7 @@ void TestKey::ClearResources() {
 }
 
 void TestKey::Update(double deltaTime) {
-	m_input.Update();
+	m_input.FetchInputs();
 	if (m_input.IsKeyDown(GLFW_KEY_SPACE))
 		m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
