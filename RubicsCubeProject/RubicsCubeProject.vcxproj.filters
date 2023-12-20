@@ -54,6 +54,12 @@
     <ClCompile Include="TestSound.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TestMouse.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="LineRenderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameInterface.h">
@@ -92,6 +98,12 @@
     <ClInclude Include="TestSound.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="TestMouse.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LineRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Texture.jpg">
@@ -111,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FShader.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="VLine.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="FLine.glsl">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>

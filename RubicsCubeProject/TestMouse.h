@@ -3,6 +3,7 @@
 #include <glm/vec3.hpp>
 #include "InputSystem.h"
 #include "SimpleCubieRenderer.h"
+#include "LineRenderer.h"
 
 class TestMouse : public GameInterface {
 public:
@@ -13,6 +14,7 @@ public:
 
 private:
 	SimpleCubieRenderer m_cubieRenderer;
+	LineRenderer m_line;
 	InputSystem m_input;
 	glm::vec3 m_cubePosition;
 	glm::mat4 m_viewProjection;

@@ -14,6 +14,7 @@
 #include <thread>
 
 TestGlm gGlmTest;
+
 GameInterface gDummyTest;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
@@ -102,10 +103,9 @@ int main()
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
 	//gUsedInterface = &gTestCubie;
-	//gUsedInterface = &gTestCubie;
 	//gUsedInterface = &gTestKey;
-	//gUsedInterface = &gTestMouse;
-	gUsedInterface = &gCompoundCube;
+	gUsedInterface = &gTestMouse;
+	//gUsedInterface = &gCompoundCube;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

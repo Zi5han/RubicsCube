@@ -133,6 +133,7 @@
     <ClCompile Include="CubieRenderer.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyboardObserver.cpp" />
+    <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="RubicsCube.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
     <ClCompile Include="SimpleCubieRenderer.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="GameInterface.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyboardObserver.h" />
+    <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="SimpleCubieRenderer.h" />
     <ClInclude Include="TestCompoundCube.h" />
@@ -173,11 +175,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <None Include="FLine.glsl" />
     <None Include="FShader.glsl" />
     <CopyFileToFolders Include="VColor.glsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <None Include="VLine.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
