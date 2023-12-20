@@ -11,7 +11,7 @@ void LineRenderer::Initialize() {
 	m_colorLocation = glGetUniformLocation(m_shaderProgram, "color");
 }
 
-void LineRenderer::Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model, const glm::vec3& startPoint, const glm::vec3& endPoint, const glm::vec3& color) {
+void LineRenderer::Render3D(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model, const glm::vec3& startPoint, const glm::vec3& endPoint, const glm::vec3& color) {
 	glm::mat4 globalTransformation = projection * view * model;
 
 	std::vector<float> vertices = {
@@ -33,7 +33,6 @@ void LineRenderer::Render(const glm::mat4& projection, const glm::mat4& view, co
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
-
 	glUseProgram(m_shaderProgram);
 
 	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(globalTransformation));
@@ -46,8 +45,17 @@ void LineRenderer::Render(const glm::mat4& projection, const glm::mat4& view, co
 	glUseProgram(0);
 }
 
+void LineRenderer::Render2D(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model, const glm::vec2& startPoint, const glm::vec2& endPoint, const glm::vec3& color) {
+	// Konvertiere die 2D-Koordinaten in 3D-Koordinaten (z = 0)
+	glm::vec3 startPoint3D(startPoint.x, startPoint.y, 0.0f);
+	glm::vec3 endPoint3D(endPoint.x, endPoint.y, 0.0f);
+
+	Render3D(glm::mat4(1.0f), glm::mat4(1.0f), model, startPoint3D, endPoint3D, color);
+}
+
 void LineRenderer::ClearResources() {
 	glDeleteBuffers(1, &m_vertexBufferObject);
 	glDeleteVertexArrays(1, &m_arrayBufferObject);
 	glDeleteProgram(m_shaderProgram);
+	glDeleteProgram(m_2DLineShaderProgram);
 }

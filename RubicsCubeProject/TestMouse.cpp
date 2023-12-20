@@ -19,7 +19,8 @@ void TestMouse::RenderInterface(float aspectRatio)
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_cubePosition);
 
 	m_cubieRenderer.Render(projection, view, model);
-	m_line.Render(projection, view, glm::mat4(1.0f), glm::vec3(0.0f), m_cubePosition, glm::vec3(1.0f, 0.0f, 0.0f));
+	m_line.Render3D(projection, view, glm::mat4(1.0f), glm::vec3(0.0f), m_cubePosition, glm::vec3(1.0f, 0.0f, 0.0f));
+	m_line.Render2D(projection, view, glm::mat4(1.0f), glm::vec2(0.9f), glm::vec2(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void TestMouse::ClearResources()
