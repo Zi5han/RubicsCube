@@ -1,23 +1,23 @@
 #pragma once
-#include <glm/mat4x4.hpp>
-#include <GL/glew.h>
-#include <vector>
+#include "ShaderUtil.h"
+
+#include <glm/fwd.hpp>
+
+class OBJModel;
 
 class CubieRenderer {
 public:
+	CubieRenderer();
 	void Initialize();
 	void Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model);
 	void ClearResources();
 
-	float GetCubieExtension();
+	float GetCubieExtention();
 
 private:
-	const float m_offset = 0.5f;
+	const float m_offset = 1.0f;
 
-	void AddSidePosition(int sideType, int direction, std::vector<glm::vec3>& positionArray);
-	void AddSideColor(int sideType, int direction, std::vector<glm::vec3>& colorArray);
-	void TranscribeToFloatArray(std::vector<glm::vec3>& vecArray, float* floatArray);
-
+	OBJModel* m_cubeModel;
 	GLuint m_arrayBufferObject;
 	GLuint m_vertexBufferObject[2];
 	GLuint m_shaderProgram;

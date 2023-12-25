@@ -1,5 +1,7 @@
-
 #define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "GameInterface.h"
 #include "TestGlm.h"
 #include "TestTriangle.h"
@@ -8,8 +10,6 @@
 #include "TestMouse.h"
 #include "TestCompoundCube.h"
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <iostream>
 #include <thread>
 

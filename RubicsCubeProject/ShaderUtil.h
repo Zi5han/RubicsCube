@@ -1,5 +1,7 @@
 #pragma once
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
 
 class ShaderUtil {
@@ -12,4 +14,3 @@ private:
 	static void PrintProgramLog(GLuint program);
 	static void PrintOGlErrors();
 };
-

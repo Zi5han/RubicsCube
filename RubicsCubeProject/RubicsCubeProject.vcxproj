@@ -134,6 +134,8 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyboardObserver.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
+    <ClCompile Include="OBJModel.cpp" />
+    <ClCompile Include="OBJModel.h" />
     <ClCompile Include="RubicsCube.cpp" />
     <ClCompile Include="ShaderUtil.cpp" />
     <ClCompile Include="SimpleCubieRenderer.cpp" />
@@ -160,9 +162,15 @@
     <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="TestGlm.h" />
     <ClInclude Include="TestSound.h" />
+    <ClInclude Include="VertexStructs.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Texture.jpg" />
+    <CopyFileToFolders Include="Cube.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Texture.jpg">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
@@ -175,6 +183,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.mtl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
     <None Include="FLine.glsl" />
     <None Include="FShader.glsl" />
     <CopyFileToFolders Include="VColor.glsl">
@@ -182,6 +194,12 @@
       <FileType>Document</FileType>
     </CopyFileToFolders>
     <None Include="VLine.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Cube.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

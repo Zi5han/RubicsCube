@@ -1,17 +1,39 @@
 #include "CubieRenderer.h"
-#include "ShaderUtil.h"
+
+#include "OBJModel.h"
+
 #include <glm/gtc/type_ptr.hpp>
 
+using namespace VertexStructs;
+
+CubieRenderer::CubieRenderer() {
+	m_arrayBufferObject = 0u;
+	m_cubeModel = nullptr;
+	m_shaderProgram = 0u;
+	m_transformLocation = 0u;
+	m_vertexBufferObject[0] = 0u;
+	m_vertexBufferObject[1] = 0u;
+}
+
 void CubieRenderer::Initialize() {
-	float floatArray[6 * 6 * 3];
+	m_cubeModel = new OBJModel("Cube.obj");
+
+	const std::vector<Triangle> faces = m_cubeModel->GetTrianglesData();
+
+	ColorValue tempColor;
+
 	std::vector<glm::vec3> positionField;
 	std::vector<glm::vec3> colorField;
+	std::vector<glm::vec2> uvField;
+	std::vector<glm::vec3> normalField;
 
-	//Build the cube information
-	for (int sideType = 0; sideType < 3; sideType++) {
-		for (int direction = -1; direction < 2; direction += 2) {
-			AddSidePosition(sideType, direction, positionField);
-			AddSideColor(sideType, direction, colorField);
+	for (const auto& face : faces) {
+		tempColor = m_cubeModel->getColorValue(face.material_name);
+		for (const auto& vertex : face.vetices) {
+			positionField.push_back(glm::vec3{ vertex.position_x, vertex.position_y, vertex.position_z });
+			colorField.push_back(glm::vec3{ tempColor.r, tempColor.g, tempColor.b });
+			uvField.push_back(glm::vec2{ vertex.u, vertex.v });
+			normalField.push_back(glm::vec3{ vertex.normal_x, vertex.normal_y, vertex.normal_z });
 		}
 	}
 
@@ -23,19 +45,29 @@ void CubieRenderer::Initialize() {
 
 	glBindVertexArray(m_arrayBufferObject);
 
+	// Position
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[0]);
-	//TranscribeToFloatArray(positionField, floatArray);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, 12 * positionField.size(), positionField.data(), GL_STATIC_DRAW);
-
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * positionField.size(), positionField.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
+	// Color
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[1]);
-	TranscribeToFloatArray(colorField, floatArray);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(floatArray), floatArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * colorField.size(), colorField.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
+
+	//// UV (here might be bugs, cuz UV has only 2 coords, while other fileds have 3)
+	//glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[2]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * uvField.size(), uvField.data(), GL_STATIC_DRAW);
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(2);
+
+	//// Normal
+	//glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[3]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * uvField.size(), uvField.data(), GL_STATIC_DRAW);
+	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(3);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -48,7 +80,7 @@ void CubieRenderer::Render(const glm::mat4& projection, const glm::mat4& view, c
 	glBindVertexArray(m_arrayBufferObject);
 
 	glUniformMatrix4fv(m_transformLocation, 1, GL_FALSE, glm::value_ptr(globalTransformation));
-	glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
+	glDrawArrays(GL_TRIANGLES, 0, m_cubeModel->getVertexAmount());
 
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -60,48 +92,7 @@ void CubieRenderer::ClearResources() {
 	glDeleteProgram(m_shaderProgram);
 }
 
-float CubieRenderer::GetCubieExtension() {
+float CubieRenderer::GetCubieExtention() {
+	//damit die Luecken zwischen den Minicubies erscheinen.
 	return 2.0f * m_offset;
-}
-
-void CubieRenderer::AddSidePosition(int sideType, int direction, std::vector<glm::vec3>& positionArray) {
-	glm::vec3 cornerPoints[2][2];
-
-	int localXDim = (sideType + 1) % 3;
-	int localYDim = (sideType + 2) % 3;
-
-	for (int i = 0; i < 2; i++) {
-		for (int j = 0; j < 2; j++) {
-			glm::vec3 localPoint(direction * m_offset);
-			localPoint[localXDim] = (2 * i - 1) * m_offset;
-			localPoint[localYDim] = (2 * j - 1) * m_offset;
-			cornerPoints[i][j] = localPoint;
-		}
-	}
-	positionArray.push_back(cornerPoints[0][0]);
-	positionArray.push_back(cornerPoints[1][0]);
-	positionArray.push_back(cornerPoints[0][1]);
-	positionArray.push_back(cornerPoints[1][0]);
-	positionArray.push_back(cornerPoints[0][1]);
-	positionArray.push_back(cornerPoints[1][1]);
-}
-
-void CubieRenderer::AddSideColor(int sideType, int direction, std::vector<glm::vec3>& colorArray) {
-	glm::vec3 color = glm::vec3(0.0f);
-
-	float baseColor = (direction - 1) ? 0.5f : 1.0f;
-	color[sideType] = baseColor;
-
-	for (int i = 0; i < 6; i++) {
-		colorArray.push_back(color);
-	}
-}
-
-void CubieRenderer::TranscribeToFloatArray(std::vector<glm::vec3>& vecArray, float* floatArray) {
-	int writingCounter = 0;
-	for (int i = 0; i < 36; i++) {
-		for (int coord = 0; coord < 3; coord++) {
-			floatArray[writingCounter++] = vecArray[i][coord];
-		}
-	}
 }
