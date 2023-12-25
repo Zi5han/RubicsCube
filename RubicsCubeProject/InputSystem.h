@@ -23,12 +23,11 @@ public:
 	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
 	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
 
-	void GetPickingRay(glm::vec3& startingPoint, glm::vec3& direction) const;
-	void GetMousePosition(float& xPosition, float& yPosition) const;
-	void GetMouseNormalizedPosition(float& out_xPos, float& out_yPos) const {
-		GetMousePosition(out_xPos, out_yPos);
-		NormalizeMousePosition(out_xPos, out_yPos, out_xPos, out_yPos);;
-	}
+	void GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
+	glm::vec2 GetMousePosition(bool normalize = false) const;
+
+	void GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
+	glm::vec2 GetDragStartMousePosition(bool normalize = false) const;
 
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
@@ -41,7 +40,7 @@ private:
 	ClickState m_leftClickState;
 	ClickState m_rightClickState;
 
-	glm::vec2 m_dragStartPosition;
+	glm::vec2 m_dragStartScreenPosition;
 	glm::vec3 m_dragStartRayOrigin;
 	glm::vec3 m_dragStartRayDirection;
 
@@ -50,7 +49,7 @@ private:
 	//HELPING METHODS
 	void UpdateClickState(int button, ClickState& clickState);
 
-	void NormalizeMousePosition(const float xAbsPos, const float yAbsPos, float& out_xNormPos, float& out_yNormPos) const;
+	void NormalizeMousePosition(glm::vec2& out_normPos) const;
 
 	//STATIC
 	static glm::ivec2 s_mouseScrollOffset;
