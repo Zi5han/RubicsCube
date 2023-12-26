@@ -19,9 +19,11 @@ void TestMouse::RenderInterface(float aspectRatio)
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_cubePosition);
 
 	m_cubieRenderer.Render(projection, view, model);
-	m_line.Render3D(projection, view, glm::mat4(1.0f), glm::vec3(0.0f), m_cubePosition, glm::vec3(1.0f, 0.0f, 0.0f));
-	// Render2D funktioniert warhschie,ihc noch nicht (TODO)
-	m_line.Render2D(projection, view, glm::mat4(1.0f), m_input.GetDragStartMousePosition(), m_input.GetMousePosition(), glm::vec3(0.0f, 1.0f, 0.0f));
+	//m_line.Render3D(projection, view, glm::mat4(1.0f), glm::vec3(0.0f), m_cubePosition, glm::vec3(1.0f, 0.0f, 0.0f));
+	//m_line.Render2D(projection, view, glm::mat4(1.0f), glm::vec2(0.5f), m_input.GetMousePosition(), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_line.Render2D(m_input.GetDragStart2DMousePosition(true), m_input.GetMouse2DPosition(true), glm::vec3(0.0f, 1.0f, 0.0f));
+
+
 }
 
 void TestMouse::ClearResources()

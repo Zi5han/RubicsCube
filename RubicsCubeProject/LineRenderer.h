@@ -7,9 +7,8 @@ class LineRenderer {
 public:
 	void Initialize();
 	void Render3D(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model,
-		const glm::vec3& startPoint, const glm::vec3& endPoint, const glm::vec3& color = glm::vec3(0.0f));
-	void Render2D(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model,
-		const glm::vec2& startPoint, const glm::vec2& endPoint, const glm::vec3& color = glm::vec3(0.0f));
+		const glm::vec3& startPoint, const glm::vec3& endPoint, const glm::vec3& color = glm::vec3(1.0f));
+	void Render2D(const glm::vec2& startPoint, const glm::vec2& endPoint, const glm::vec3& color = glm::vec3(1.0f));
 	void ClearResources();
 
 private:
