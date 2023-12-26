@@ -1,9 +1,9 @@
 #pragma once
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include "TestCompoundCube.h"
 #include "SimpleCubieRenderer.h"
 
-class TestCubie : public GameInterface {
+class TestCubie : public AbstractGameInterface {
 public:
 	virtual void Initialize();
 	virtual void RenderInterface(float aspectRatio);

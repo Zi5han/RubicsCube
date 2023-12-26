@@ -149,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CubieRenderer.h" />
-    <ClInclude Include="GameInterface.h" />
+    <ClInclude Include="AbstractGameInterface.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyboardObserver.h" />
     <ClInclude Include="LineRenderer.h" />

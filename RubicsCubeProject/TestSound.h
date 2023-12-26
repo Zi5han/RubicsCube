@@ -1,10 +1,10 @@
 #pragma once
 #include "InputSystem.h"
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 
 struct GLFWwindow;
 
-class TestSound : public GameInterface {
+class TestSound : public AbstractGameInterface {
 public:
 	virtual void Initialize(GLFWwindow* winndow);
 

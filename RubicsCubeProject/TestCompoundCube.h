@@ -1,8 +1,8 @@
 #pragma once
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include "CubieRenderer.h"
 
-class TestCompoundCube : public GameInterface
+class TestCompoundCube : public AbstractGameInterface
 {
 public:
 	virtual void Initialize() override;

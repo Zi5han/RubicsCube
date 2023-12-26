@@ -1,8 +1,8 @@
 #pragma once
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include <GL/glew.h>
 
-class TestTriangle : public GameInterface {
+class TestTriangle : public AbstractGameInterface {
 public:
 	virtual void Initialize();
 	virtual void RenderInterface(float aspectRatio);

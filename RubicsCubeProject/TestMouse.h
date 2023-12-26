@@ -1,12 +1,12 @@
 #pragma once
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include <glm/vec3.hpp>
 #include "InputSystem.h"
 #include "SimpleCubieRenderer.h"
 #include "CubieRenderer.h"
 #include "LineRenderer.h"
 
-class TestMouse : public GameInterface {
+class TestMouse : public AbstractGameInterface {
 public:
 	virtual void Initialize(GLFWwindow* window) override;
 	virtual void RenderInterface(float aspectRatio) override;

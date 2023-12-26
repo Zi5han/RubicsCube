@@ -60,9 +60,15 @@
     <ClCompile Include="LineRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="OBJModel.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJModel.h">
+      <Filter>Headerdateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameInterface.h">
+    <ClInclude Include="AbstractGameInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="TestGlm.h">
@@ -104,11 +110,9 @@
     <ClInclude Include="LineRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Texture.jpg">
-      <Filter>Ressourcendateien</Filter>
-    </Image>
+    <ClInclude Include="VertexStructs.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="VShader.glsl">
@@ -120,6 +124,14 @@
     <CopyFileToFolders Include="VColor.glsl">
       <Filter>Shader</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.png">
+      <Filter>Ressourcendateien</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Texture.jpg">
+      <Filter>Ressourcendateien</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Cube.mtl" />
+    <CopyFileToFolders Include="Cube.obj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FShader.glsl">

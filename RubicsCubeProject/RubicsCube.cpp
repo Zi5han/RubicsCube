@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include "TestGlm.h"
 #include "TestTriangle.h"
 #include "TestCubie.h"
@@ -15,14 +15,14 @@
 
 TestGlm gGlmTest;
 
-GameInterface gDummyTest;
+AbstractGameInterface gDummyTest;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
 TestKey gTestKey;
 TestMouse gTestMouse;
 TestCompoundCube gCompoundCube;
 
-GameInterface* gUsedInterface;
+AbstractGameInterface* gUsedInterface;
 
 double lastTime = glfwGetTime();
 double timeDiffrence = 0.0;

@@ -1,10 +1,10 @@
 #pragma once
-#include "GameInterface.h"
+#include "AbstractGameInterface.h"
 #include "CubieRenderer.h"
 #include "InputSystem.h"
 #include <glm/ext/quaternion_float.hpp>
 
-class TestKey : public GameInterface {
+class TestKey : public AbstractGameInterface {
 public:
 	virtual void Initialize(GLFWwindow* window) override;
 	virtual void RenderInterface(float aspectRatio) override;
