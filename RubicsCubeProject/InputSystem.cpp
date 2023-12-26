@@ -13,8 +13,8 @@ void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
 }
 
-void InputSystem::SetViewProjection(const glm::mat4& projectionView) {
-	m_projectionViewMat = projectionView;
+void InputSystem::SetViewProjection(const glm::mat4& projectionViewMat) {
+	m_projectionViewMat = projectionViewMat;
 }
 
 //MOUSE
@@ -24,8 +24,8 @@ glm::vec2 InputSystem::GetMouseWheelScrollOffset() const {
 	return mouseScrollOffset;
 }
 
-void InputSystem::GetPickingRay(glm::vec3& startingPoint, glm::vec3& direction) const {
-	glm::vec2 position = GetMousePosition();
+void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const {
+	glm::vec2 position = GetMouse2DPosition();
 
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
@@ -44,13 +44,13 @@ void InputSystem::GetPickingRay(glm::vec3& startingPoint, glm::vec3& direction) 
 	nearPoint /= nearPoint.w;
 	farPoint /= farPoint.w;
 
-	startingPoint = nearPoint;
-	direction = farPoint - nearPoint;
+	out_origin = nearPoint;
 
-	direction = glm::normalize(direction);
+	out_direction = farPoint - nearPoint;
+	out_direction = glm::normalize(out_direction);
 }
 
-glm::vec2 InputSystem::GetMousePosition(bool normalize) const {
+glm::vec2 InputSystem::GetMouse2DPosition(bool normalize) const {
 	glm::vec2 position;
 	double xPos_double, yPos_double;
 	glfwGetCursorPos(m_window, &xPos_double, &yPos_double);
@@ -68,7 +68,7 @@ void InputSystem::GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_d
 		out_direction = glm::vec3(m_dragStartRayDirection);
 }
 
-glm::vec2 InputSystem::GetDragStartMousePosition(bool normalize) const {
+glm::vec2 InputSystem::GetDragStart2DMousePosition(bool normalize) const {
 	glm::vec2 position = glm::vec2(m_dragStartScreenPosition);
 	if (normalize)
 		NormalizeMousePosition(position);
@@ -89,10 +89,10 @@ void InputSystem::UpdateClickState(int button, ClickState& clickState) {
 		clickState = ClickState::CLICK;
 
 		GetPickingRay(m_dragStartRayOrigin, m_dragStartRayDirection);
-		m_dragStartScreenPosition = GetMousePosition();
+		m_dragStartScreenPosition = GetMouse2DPosition();
 		//GetMouseNormalizedPosition(m_mouseDragStartNormalizedScreenPosition.x, m_mouseDragStartNormalizedScreenPosition.y);
 
-		m_dragStartScreenPosition = GetMousePosition();
+		m_dragStartScreenPosition = GetMouse2DPosition();
 	}
 	else {
 		clickState = ClickState::HOLD;

@@ -24,10 +24,10 @@ public:
 	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
 
 	void GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetMousePosition(bool normalize = false) const;
+	glm::vec2 GetMouse2DPosition(bool normalize = false) const;
 
 	void GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetDragStartMousePosition(bool normalize = false) const;
+	glm::vec2 GetDragStart2DMousePosition(bool normalize = false) const;
 
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
