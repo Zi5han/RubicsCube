@@ -19,8 +19,9 @@ void TestKey::RenderInterface(float aspectRatio) {
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 model = glm::mat4_cast(m_orientationQuaternion);
 
-	//m_cubieRenderer.Render(globalTransformation);
-	m_cubieRenderer.Render(projection, view, model);
+	glm::mat4 projectionView = projection * view;
+
+	m_cubieRenderer.Render(projectionView, model);
 }
 
 void TestKey::ClearResources() {

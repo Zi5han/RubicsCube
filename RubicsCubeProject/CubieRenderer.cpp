@@ -73,8 +73,8 @@ void CubieRenderer::Initialize() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CubieRenderer::Render(const glm::mat4& projection, const glm::mat4& view, const glm::mat4& model) {
-	glm::mat4 globalTransformation = projection * view * model;
+void CubieRenderer::Render(const glm::mat4& projectionView, const glm::mat4& model) {
+	glm::mat4 globalTransformation = projectionView * model;
 
 	glUseProgram(m_shaderProgram);
 	glBindVertexArray(m_arrayBufferObject);

@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CubieRenderer.cpp" />
+    <ClCompile Include="GameInterface.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="KeyboardObserver.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="CubieRenderer.h" />
     <ClInclude Include="AbstractGameInterface.h" />
+    <ClInclude Include="GameInterface.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="KeyboardObserver.h" />
     <ClInclude Include="LineRenderer.h" />
