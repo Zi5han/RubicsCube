@@ -27,10 +27,6 @@ GameInterface* gUsedInterface;
 double lastTime = glfwGetTime();
 double timeDiffrence = 0.0;
 
-float bg_red = 0.3f;
-float bg_green = 0.6f;
-float bg_blue = 1.0f;
-
 void RenderWindow(GLFWwindow* window) {
 	gUsedInterface->Update(timeDiffrence);
 	//gUsedInterface->FetchInputs(0.1); // fürs Debuggen
@@ -41,7 +37,7 @@ void RenderWindow(GLFWwindow* window) {
 	glViewport(0, 0, screenWidth, screenHeight);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glClearColor(bg_red, bg_green, bg_blue, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	int minimized = glfwGetWindowAttrib(window, GLFW_ICONIFIED);
@@ -50,10 +46,6 @@ void RenderWindow(GLFWwindow* window) {
 		gUsedInterface->RenderInterface(aspectRatio);
 	}
 	glfwSwapBuffers(window);
-
-	bg_red = (sin(lastTime + (3.14f / 3)) / 4.0f) + 0.75f;
-	bg_green = (sin(lastTime + 2 * (3.14f / 3)) / 4.0f) + 0.75f;
-	bg_blue = (sin(lastTime) / 4.0f) + 0.75f;
 
 	double currenTime = glfwGetTime();
 	timeDiffrence = currenTime - lastTime;
