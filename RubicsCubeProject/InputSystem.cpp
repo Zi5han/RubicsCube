@@ -25,13 +25,11 @@ glm::vec2 InputSystem::GetMouseWheelScrollOffset() const {
 }
 
 void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const {
-	glm::vec2 position = GetMouse2DPosition();
+	glm::vec2 position = GetScreenPosition();
+	position = NormalizeScreenPosition(position);
 
-	int screenWidth, screenHeight;
-	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
-
-	position.x = (position.x / screenWidth) * 2.0f - 1.0f;
-	position.y = 1.0f - (position.y / screenHeight) * 2.0f;
+	position.x = (position.x) * 2.0f - 1.0f;
+	position.y = 1.0f - (position.y) * 2.0f;
 
 	glm::vec4 nearPoint = glm::vec4(position.x, position.y, -0.99f, 1.0f);
 	glm::vec4 farPoint = nearPoint;
@@ -50,7 +48,7 @@ void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction)
 	out_direction = glm::normalize(out_direction);
 }
 
-glm::vec2 InputSystem::GetMouse2DPosition(bool normalize) const {
+glm::vec2 InputSystem::GetScreenPosition() const {
 	glm::vec2 position;
 	double xPos_double, yPos_double;
 	glfwGetCursorPos(m_window, &xPos_double, &yPos_double);
@@ -58,8 +56,6 @@ glm::vec2 InputSystem::GetMouse2DPosition(bool normalize) const {
 	position.x = static_cast<float>(xPos_double);
 	position.y = static_cast<float>(yPos_double);
 
-	if (normalize)
-		NormalizeMousePosition(position);
 	return position;
 }
 
@@ -68,11 +64,8 @@ void InputSystem::GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_d
 		out_direction = glm::vec3(m_dragStartRayDirection);
 }
 
-glm::vec2 InputSystem::GetDragStart2DMousePosition(bool normalize) const {
-	glm::vec2 position = glm::vec2(m_dragStartScreenPosition);
-	if (normalize)
-		NormalizeMousePosition(position);
-	return position;
+glm::vec2 InputSystem::GetDragStartScreenPosition() const {
+	return m_dragStartScreenPosition;
 }
 
 //HELPING METHODS
@@ -89,22 +82,26 @@ void InputSystem::UpdateClickState(int button, ClickState& clickState) {
 		clickState = ClickState::CLICK;
 
 		GetPickingRay(m_dragStartRayOrigin, m_dragStartRayDirection);
-		m_dragStartScreenPosition = GetMouse2DPosition();
+		m_dragStartScreenPosition = GetScreenPosition();
 		//GetMouseNormalizedPosition(m_mouseDragStartNormalizedScreenPosition.x, m_mouseDragStartNormalizedScreenPosition.y);
 
-		m_dragStartScreenPosition = GetMouse2DPosition();
+		m_dragStartScreenPosition = GetScreenPosition();
 	}
 	else {
 		clickState = ClickState::HOLD;
 	}
 }
 
-void InputSystem::NormalizeMousePosition(glm::vec2& out_normPos) const {
+glm::vec2 InputSystem::NormalizeScreenPosition(const glm::vec2& screenPos) const {
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
 
-	out_normPos.x = out_normPos.x / screenWidth;
-	out_normPos.y = out_normPos.y / screenHeight;
+	glm::vec2 normPos;
+
+	normPos.x = screenPos.x / screenWidth;
+	normPos.y = screenPos.y / screenHeight;
+
+	return normPos;
 }
 
 //STATIC

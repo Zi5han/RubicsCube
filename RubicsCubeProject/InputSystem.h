@@ -24,15 +24,16 @@ public:
 	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
 
 	void GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetMouse2DPosition(bool normalize = false) const;
+	glm::vec2 GetScreenPosition() const;
 
 	void GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetDragStart2DMousePosition(bool normalize = false) const;
+	glm::vec2 GetDragStartScreenPosition() const;
 
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
 	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
 
+	glm::vec2 NormalizeScreenPosition(const glm::vec2& out_normPos) const;
 private:
 	mutable std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
 	GLFWwindow* m_window;
@@ -49,7 +50,6 @@ private:
 	//HELPING METHODS
 	void UpdateClickState(int button, ClickState& clickState);
 
-	void NormalizeMousePosition(glm::vec2& out_normPos) const;
 
 	//STATIC
 	static glm::ivec2 s_mouseScrollOffset;
