@@ -2,31 +2,39 @@
 #include <GLFW/glfw3.h>
 
 //GENERAL
-void InputSystem::FetchInputs() {
+void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& projectionView) {
+	SetWindow(window);
+	SetProjectionView(projectionView);
+}
+
+void InputSystem::Update() {
+	// Update key inputs
 	for (auto i = m_keyMapper.begin(); i != m_keyMapper.end(); i++)
 		i->second->Update();
+
+	// Update mouse button states
 	UpdateClickState(GLFW_MOUSE_BUTTON_LEFT, m_leftClickState);
 	UpdateClickState(GLFW_MOUSE_BUTTON_RIGHT, m_rightClickState);
+
+	// Update current screen position
+	double x, y;
+	glfwGetCursorPos(m_window, &x, &y);
+
+	m_screenPosition.x = static_cast<float>(x);
+	m_screenPosition.y = static_cast<float>(y);
 }
 
 void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
 }
 
-void InputSystem::SetViewProjection(const glm::mat4& projectionViewMat) {
+void InputSystem::SetProjectionView(const glm::mat4& projectionViewMat) {
 	m_projectionViewMat = projectionViewMat;
 }
 
 //MOUSE
-glm::vec2 InputSystem::GetMouseWheelScrollOffset() const {
-	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;
-	s_mouseScrollOffset = glm::vec2(0.0f, 0.0f);
-	return mouseScrollOffset;
-}
-
 void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const {
-	glm::vec2 position = GetScreenPosition();
-	position = NormalizeScreenPosition(position);
+	glm::vec2 position = NormalizeScreenVector(m_screenPosition);
 
 	position.x = (position.x) * 2.0f - 1.0f;
 	position.y = 1.0f - (position.y) * 2.0f;
@@ -48,29 +56,32 @@ void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction)
 	out_direction = glm::normalize(out_direction);
 }
 
-glm::vec2 InputSystem::GetScreenPosition() const {
-	glm::vec2 position;
-	double xPos_double, yPos_double;
-	glfwGetCursorPos(m_window, &xPos_double, &yPos_double);
-
-	position.x = static_cast<float>(xPos_double);
-	position.y = static_cast<float>(yPos_double);
-
-	return position;
-}
-
 void InputSystem::GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const {
-		out_origin = glm::vec3(m_dragStartRayOrigin);
-		out_direction = glm::vec3(m_dragStartRayDirection);
+	out_origin = glm::vec3(m_dragStartRayOrigin);
+	out_direction = glm::vec3(m_dragStartRayDirection);
 }
 
-glm::vec2 InputSystem::GetDragStartScreenPosition() const {
-	return m_dragStartScreenPosition;
+glm::vec2 InputSystem::NormalizeScreenVector(const glm::vec2& screenPosition) const {
+	int screenWidth, screenHeight;
+	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
+
+	glm::vec2 normPos;
+
+	normPos.x = screenPosition.x / screenWidth;
+	normPos.y = screenPosition.y / screenHeight;
+
+	return normPos;
+}
+
+glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
+	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;
+	s_mouseScrollOffset = glm::ivec2(0, 0);
+	return mouseScrollOffset;
 }
 
 //HELPING METHODS
-void InputSystem::UpdateClickState(int button, ClickState& clickState) {
-	if (!(glfwGetMouseButton(m_window, button) == GLFW_PRESS)) {
+void InputSystem::UpdateClickState(int mouseButton, ClickState& clickState) {
+	if (!(glfwGetMouseButton(m_window, mouseButton) == GLFW_PRESS)) {
 		if (clickState == ClickState::CLICK || clickState == ClickState::HOLD) {
 			clickState = ClickState::RELEASE;
 		}
@@ -90,18 +101,6 @@ void InputSystem::UpdateClickState(int button, ClickState& clickState) {
 	else {
 		clickState = ClickState::HOLD;
 	}
-}
-
-glm::vec2 InputSystem::NormalizeScreenPosition(const glm::vec2& screenPos) const {
-	int screenWidth, screenHeight;
-	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
-
-	glm::vec2 normPos;
-
-	normPos.x = screenPos.x / screenWidth;
-	normPos.y = screenPos.y / screenHeight;
-
-	return normPos;
 }
 
 //STATIC

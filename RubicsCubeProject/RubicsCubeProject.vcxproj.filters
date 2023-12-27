@@ -63,8 +63,8 @@
     <ClCompile Include="OBJModel.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="OBJModel.h">
-      <Filter>Headerdateien</Filter>
+    <ClCompile Include="GameInterface.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +111,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="VertexStructs.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInterface.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJModel.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

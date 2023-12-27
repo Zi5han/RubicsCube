@@ -29,7 +29,7 @@ void TestKey::ClearResources() {
 }
 
 void TestKey::Update(double deltaTime) {
-	m_input.FetchInputs();
+	m_input.Update();
 	if (m_input.IsKeyDown(GLFW_KEY_SPACE))
 		m_orientationQuaternion = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 

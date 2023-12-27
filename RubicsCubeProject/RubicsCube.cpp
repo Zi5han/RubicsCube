@@ -29,7 +29,7 @@ double timeDiffrence = 0.0;
 
 void RenderWindow(GLFWwindow* window) {
 	gUsedInterface->Update(timeDiffrence);
-	//gUsedInterface->FetchInputs(0.1); // fürs Debuggen
+	//gUsedInterface->Update(0.1); // fürs Debuggen
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
@@ -55,7 +55,6 @@ void RenderWindow(GLFWwindow* window) {
 }
 
 void RunCoreLoop(GLFWwindow* window) {
-
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -96,8 +95,8 @@ int main()
 	//gUsedInterface = &gTestTriangle;
 	//gUsedInterface = &gTestCubie;
 	//gUsedInterface = &gTestKey;
-	gUsedInterface = &gTestMouse;
-	//gUsedInterface = &gCompoundCube;
+	//gUsedInterface = &gTestMouse;
+	gUsedInterface = &gCompoundCube;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();

@@ -94,5 +94,5 @@ void CubieRenderer::ClearResources() {
 
 float CubieRenderer::GetCubieExtention() {
 	//damit die Luecken zwischen den Minicubies erscheinen.
-	return 2.0f * m_offset;
+	return 1.9f;
 }

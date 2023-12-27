@@ -15,8 +15,6 @@ public:
 	float GetCubieExtention();
 
 private:
-	const float m_offset = 1.0f;
-
 	OBJModel* m_cubeModel;
 	GLuint m_arrayBufferObject;
 	GLuint m_vertexBufferObject[2];

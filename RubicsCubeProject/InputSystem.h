@@ -13,33 +13,39 @@ public:
 		HOLD = 2,
 		RELEASE = 3
 	};
-
+	//GENERAL
+	void Initialize(GLFWwindow* window, const glm::mat4& projectionView = glm::mat4(1.0f));
 	void SetWindow(GLFWwindow* window) { m_window = window; };
-	void FetchInputs();
+	void Update();
 	void ObserveKey(int key);
-	void SetViewProjection(const glm::mat4& projectionView);
+	void SetProjectionView(const glm::mat4& projectionView);
 
-	glm::vec2 GetMouseWheelScrollOffset() const;
+	//MOUSE
 	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
 	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
 
+	glm::vec2 GetScreenPosition() const { return m_screenPosition; };
+	glm::vec2 GetDragStartScreenPosition() const { return m_dragStartScreenPosition; };
 	void GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetScreenPosition() const;
-
 	void GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
-	glm::vec2 GetDragStartScreenPosition() const;
 
+	glm::ivec2 GetMouseWheelScrollOffset() const;
+
+	//KEYBOARD
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
 	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
 
-	glm::vec2 NormalizeScreenPosition(const glm::vec2& out_normPos) const;
+	glm::vec2 NormalizeScreenVector(const glm::vec2& screenPosition) const;
+
 private:
 	mutable std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
 	GLFWwindow* m_window;
 
 	ClickState m_leftClickState;
 	ClickState m_rightClickState;
+
+	glm::vec2 m_screenPosition;
 
 	glm::vec2 m_dragStartScreenPosition;
 	glm::vec3 m_dragStartRayOrigin;
@@ -48,8 +54,7 @@ private:
 	glm::mat4 m_projectionViewMat;
 
 	//HELPING METHODS
-	void UpdateClickState(int button, ClickState& clickState);
-
+	void UpdateClickState(int mouseButton, ClickState& clickState);
 
 	//STATIC
 	static glm::ivec2 s_mouseScrollOffset;

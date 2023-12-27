@@ -3,28 +3,27 @@
 #include <glm/ext.hpp>
 
 void TestMouse::Initialize(GLFWwindow* window) {
-	m_input.SetWindow(window);
-	m_cubePosition = glm::vec3(0.0f);
-	m_viewProjection = glm::mat4(1.0f);
+	m_input.Initialize(window);
 	m_cubieRenderer.Initialize();
 	m_line.Initialize();
+
+	m_cubePosition = glm::vec3(0.0f);
+	m_projectionView = glm::mat4(1.0f);
 }
 
 void TestMouse::RenderInterface(float aspectRatio) {
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	m_viewProjection = projection * view;
+	m_projectionView = projection * view;
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_cubePosition);
 
-	glm::mat4 projectionView = projection * view;
-
-	m_cubieRenderer.Render(projectionView, model);
+	m_cubieRenderer.Render(m_projectionView, model);
 	glm::vec3 dragStart_origin, origin, direction;
 	m_input.GetDragStartPickingRay(dragStart_origin, direction);
 	m_input.GetPickingRay(origin, direction);
 
 	m_line.Render3D(projection, view, glm::mat4(1.0f), dragStart_origin, origin, glm::vec3(1.0f, 0.0f, 0.0f));
-	m_line.Render2D(m_input.NormalizeScreenPosition(m_input.GetDragStartScreenPosition()), m_input.NormalizeScreenPosition(m_input.GetScreenPosition()), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_line.Render2D(m_input.NormalizeScreenVector(m_input.GetDragStartScreenPosition()), m_input.NormalizeScreenVector(m_input.GetScreenPosition()), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void TestMouse::ClearResources() {
@@ -32,12 +31,12 @@ void TestMouse::ClearResources() {
 }
 
 void TestMouse::Update(double deltaTime) {
-	m_input.FetchInputs();
+	m_input.Update();
 	if (m_input.GetLeftClickState() == InputSystem::HOLD)
 	{
 		glm::vec3 position, direction;
 		m_input.GetPickingRay(position, direction);
 		m_cubePosition = position + 9.0f * direction;
 	}
-		m_input.SetViewProjection(m_viewProjection);
+	m_input.SetProjectionView(m_projectionView);
 }
