@@ -1,7 +1,6 @@
 #include "GameInterface.h"
 
-void GameInterface::Initialize()
-{
+void GameInterface::Initialize() {
 	m_cubieRenderer.Initialize();
 	m_turningAngle = 0.0f;
 }
@@ -9,6 +8,22 @@ void GameInterface::Initialize()
 void GameInterface::RenderInterface(float aspectRatio) {
 	RecalculateMatrices(aspectRatio);
 	glm::mat4 viewProjection = m_projection * m_view;
+
+	//Offset + 0.1f damit die Luecken zwischen den Minicubies erscheinen.
+	float offset = m_cubieRenderer.GetCubieExtention() + 0.1f;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				glm::mat4 model = glm::translate(m_model, glm::vec3((i - 1) * offset, (j - 1) * offset, (k - 1) * offset));
+
+				//Rotation der mittleren horizontalen auf jeder Seite
+				//compound = glm::rotate(compound, glm::radians(90.0f) * (i % 2), glm::vec3(1.0f, 0.0f, 0.0f));
+				//compound = glm::rotate(compound, glm::radians(90.0f) * (j % 2), glm::vec3(0.0f, 1.0f, 0.0f));
+				//compound = glm::rotate(compound, glm::radians(90.0f) * (k % 2), glm::vec3(0.0f, 0.0f, 1.0f));
+				m_cubieRenderer.Render(viewProjection, model);
+			}
+		}
+	}
 }
 
 void GameInterface::ClearResources() {

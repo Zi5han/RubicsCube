@@ -9,6 +9,7 @@
 #include "TestKey.h"
 #include "TestMouse.h"
 #include "TestCompoundCube.h"
+#include "GameInterface.h"
 
 #include <iostream>
 #include <thread>
@@ -21,6 +22,7 @@ TestCubie gTestCubie;
 TestKey gTestKey;
 TestMouse gTestMouse;
 TestCompoundCube gCompoundCube;
+GameInterface gameInterface;
 
 AbstractGameInterface* gUsedInterface;
 
@@ -51,7 +53,6 @@ void RenderWindow(GLFWwindow* window) {
 	timeDiffrence = currenTime - lastTime;
 	lastTime = currenTime;
 	std::this_thread::sleep_for(std::chrono::milliseconds(8));
-
 }
 
 void RunCoreLoop(GLFWwindow* window) {
@@ -88,15 +89,15 @@ void ShutdownSystem() {
 
 }
 
-int main()
-{
+int main() {
 	//gUsedInterface = &gDummyTest;
 	//gUsedInterface = &gGlmTest;
 	//gUsedInterface = &gTestTriangle;
 	//gUsedInterface = &gTestCubie;
 	//gUsedInterface = &gTestKey;
 	//gUsedInterface = &gTestMouse;
-	gUsedInterface = &gCompoundCube;
+	//gUsedInterface = &gCompoundCube;
+	gUsedInterface = &gameInterface;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
 	ShutdownSystem();
