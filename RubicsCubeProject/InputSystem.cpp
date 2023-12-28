@@ -5,6 +5,7 @@
 void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& viewProjection) {
 	SetWindow(window);
 	SetViewProjection(viewProjection);
+	glfwSetScrollCallback(window, scrollCallback);
 }
 
 void InputSystem::Update() {
