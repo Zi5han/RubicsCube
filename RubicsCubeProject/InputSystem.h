@@ -13,6 +13,13 @@ public:
 		HOLD = 2,
 		RELEASE = 3
 	};
+
+	enum MouseButton {
+		NO_BUTTON = -1,
+		LEFT_BUTTON = 0,
+		RIGHT_BUTTON = 1
+	};
+
 	//GENERAL
 	void Initialize(GLFWwindow* window, const glm::mat4& viewProjection = glm::mat4(1.0f));
 	void SetWindow(GLFWwindow* window) { m_window = window; };
@@ -35,6 +42,7 @@ public:
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
 	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
+	MouseButton GetActiveMouseButton() const { return m_activeMouseButton; };
 
 	//HELPING METHODS
 	glm::vec2 NormalizeScreenVector(const glm::vec2& screenPosition) const;
@@ -46,6 +54,7 @@ private:
 
 	ClickState m_leftClickState;
 	ClickState m_rightClickState;
+	MouseButton m_activeMouseButton;
 
 	glm::vec2 m_screenPosition;
 
@@ -56,7 +65,7 @@ private:
 	glm::mat4 m_viewProjection;
 
 	//HELPING METHODS
-	void UpdateClickState(int mouseButton, ClickState& clickState);
+	void UpdateClickState(MouseButton mouseButton, ClickState& clickState);
 
 	//STATIC
 	static glm::ivec2 s_mouseScrollOffset;

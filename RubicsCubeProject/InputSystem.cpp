@@ -6,6 +6,8 @@ void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& viewProjection
 	SetWindow(window);
 	SetViewProjection(viewProjection);
 	glfwSetScrollCallback(window, scrollCallback);
+
+	m_activeMouseButton = NO_BUTTON;
 }
 
 void InputSystem::Update() {
@@ -14,8 +16,8 @@ void InputSystem::Update() {
 		i->second->Update();
 
 	// Update mouse button states
-	UpdateClickState(GLFW_MOUSE_BUTTON_LEFT, m_leftClickState);
-	UpdateClickState(GLFW_MOUSE_BUTTON_RIGHT, m_rightClickState);
+	UpdateClickState(LEFT_BUTTON, m_leftClickState);
+	UpdateClickState(RIGHT_BUTTON, m_rightClickState);
 
 	// Update current screen position
 	double x, y;
@@ -92,9 +94,11 @@ glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 }
 
 //HELPING METHODS
-void InputSystem::UpdateClickState(int mouseButton, ClickState& clickState) {
+void InputSystem::UpdateClickState(MouseButton mouseButton, ClickState& clickState) {
 	if (!(glfwGetMouseButton(m_window, mouseButton) == GLFW_PRESS)) {
 		if (clickState == ClickState::CLICK || clickState == ClickState::HOLD) {
+			if (m_activeMouseButton == mouseButton)
+				m_activeMouseButton = NO_BUTTON;
 			clickState = ClickState::RELEASE;
 		}
 		else {
@@ -102,6 +106,8 @@ void InputSystem::UpdateClickState(int mouseButton, ClickState& clickState) {
 		}
 	}
 	else if (clickState == ClickState::NO_ACTION || clickState == ClickState::RELEASE) {
+		if (m_activeMouseButton == NO_BUTTON)
+			m_activeMouseButton = mouseButton;
 		clickState = ClickState::CLICK;
 
 		GetPickingRay(m_dragStartRayOrigin, m_dragStartRayDirection);

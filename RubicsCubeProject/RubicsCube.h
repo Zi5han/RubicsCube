@@ -26,6 +26,15 @@ public:
 		Z = 2
 	};
 
+	enum Face {
+		FRONT = 0,
+		RIGHT = 1,
+		TOP = 2,
+		BACK = 3,
+		LEFT = 4,
+		BOTTOM = 5
+	};
+
 	void Initialize();
 	void Render(const glm::mat4& viewProjection);
 	void Update(const GameInterface& gameInterface);
@@ -33,4 +42,7 @@ public:
 
 private:
 	CubieRenderer m_cubieRenderer;
+
+	glm::quat m_modelRotation;
+	glm::vec2 m_previousScreenPosition;
 };

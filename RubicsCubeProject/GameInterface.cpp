@@ -20,6 +20,7 @@ void GameInterface::RenderInterface(float aspectRatio) {
 
 		m_recalculationNeeded = false;
 	}
+	// Render cube
 	m_rubicsCube.Render(m_projection * m_view);
 }
 
