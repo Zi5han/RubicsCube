@@ -26,10 +26,9 @@ public:
 		Z = 2
 	};
 
-	RubicsCube() {};
 	void Initialize();
 	void Render(const glm::mat4& viewProjection);
-	void Update(float deltaTime);
+	void Update(const GameInterface& gameInterface);
 	void ClearResources();
 
 private:

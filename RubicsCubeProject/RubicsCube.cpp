@@ -22,7 +22,7 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 	}
 }
 
-void RubicsCube::Update(float deltaTime) {
+void RubicsCube::Update(const GameInterface& gameInterface) {
 
 }
 
