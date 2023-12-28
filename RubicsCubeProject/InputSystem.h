@@ -18,7 +18,7 @@ public:
 	void SetWindow(GLFWwindow* window) { m_window = window; };
 	void Update();
 	void ObserveKey(int key);
-	void SetViewProjection(const glm::mat4& viewProjection);
+	void SetViewProjection(const glm::mat4& viewProjection) { m_viewProjection = viewProjection; };
 
 	//MOUSE
 	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
@@ -53,7 +53,7 @@ private:
 	glm::vec3 m_dragStartRayOrigin;
 	glm::vec3 m_dragStartRayDirection;
 
-	glm::mat4 m_viewProjectionMat;
+	glm::mat4 m_viewProjection;
 
 	//HELPING METHODS
 	void UpdateClickState(int mouseButton, ClickState& clickState);

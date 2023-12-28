@@ -28,10 +28,6 @@ void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
 }
 
-void InputSystem::SetViewProjection(const glm::mat4& viewProjectionMat) {
-	m_viewProjectionMat = viewProjectionMat;
-}
-
 //MOUSE
 void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const {
 	glm::vec2 position = NormalizeScreenVector(m_screenPosition);
@@ -43,7 +39,7 @@ void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction)
 	glm::vec4 farPoint = nearPoint;
 	farPoint.z = 0.99f;
 
-	glm::mat4 inverse = glm::inverse(m_viewProjectionMat);
+	glm::mat4 inverse = glm::inverse(m_viewProjection);
 	nearPoint = inverse * nearPoint;
 	farPoint = inverse * farPoint;
 
@@ -78,7 +74,7 @@ glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPosition) const {
 	glm::vec4 h_WorldPosition = glm::vec4(worldPosition, 1.0f);
 
 	// Multiplizieren Sie die Homogenisierungsmatrix mit der Projektion und View-Matrix
-	glm::vec4 clipSpacePosition = m_viewProjectionMat * h_WorldPosition;
+	glm::vec4 clipSpacePosition = m_viewProjection * h_WorldPosition;
 
 	// Konvertieren Sie die Clip-Space-Position in Screen-Space
 	glm::vec2 screenPosition;
@@ -87,7 +83,6 @@ glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPosition) const {
 
 	return screenPosition;
 }
-
 
 glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;
