@@ -6,8 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
-class GameInterface : public AbstractGameInterface
-{
+class GameInterface : public AbstractGameInterface {
 public:
 	virtual void Initialize(GLFWwindow* window) override;
 	virtual void RenderInterface(float aspectRatio) override;
@@ -32,6 +31,4 @@ private:
 	//MATRICES
 	glm::mat4 m_projection;
 	glm::mat4 m_view;
-
-	void RecalculateMatrices(float aspectRatio);
 };

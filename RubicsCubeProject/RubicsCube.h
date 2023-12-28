@@ -1,6 +1,7 @@
 #pragma once
 #include "CubieRenderer.h"
 #include "LineRenderer.h"
+#include "InputSystem.h"
 
 #include <iostream>
 #include <map>
@@ -10,8 +11,6 @@
 #include <glm/ext.hpp>
 
 class GameInterface;
-class CubieRenderer;
-class Cubie3DGrid;
 
 class RubicsCube {
 public:
@@ -36,7 +35,6 @@ public:
 		LEFT = 4,
 		BOTTOM = 5
 	};
-
 	void Initialize();
 	void Render(const glm::mat4& viewProjection);
 	void Update(const GameInterface& gameInterface);
@@ -44,20 +42,23 @@ public:
 
 private:
 	CubieRenderer m_cubieRenderer;
+	const InputSystem* m_inputSystem;
 
 	glm::quat m_modelRotation;
 	glm::vec2 m_previousScreenPosition;
 
 	Face m_clickedFace = UNSET;
 
-	const std::map<Face, glm::vec3> NORMALS_OF_FACES = {
-	   {RIGHT, glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {TOP, glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {FRONT, glm::vec3(0.0f, 0.0f, 1.0f)},
-	   {LEFT, glm::vec3(-1.0f, 0.0f, 0.0f)},
-	   {BOTTOM, glm::vec3(0.0f, -1.0f, 0.0f)},
-	   {BACK, glm::vec3(0.0f, 0.0f, -1.0f)}
-	};
+
+	//ANIMATION
+	State m_animationState = STABLE;
+
+	//HELPING METHODS
+	void h_RotateCube(const GameInterface& gameInterface);
+	void h_DetermineClickedFace(const GameInterface& gameInterface);
+
+	//STATIC
+	const static std::map<RubicsCube::Face, glm::vec3> NORMALS_OF_FACES;
 
 	//DEGUB
 	LineRenderer d_lr;
