@@ -9,7 +9,7 @@ class CubieRenderer {
 public:
 	CubieRenderer();
 	void Initialize();
-	void Render(const glm::mat4& projectionView, const glm::mat4& model);
+	void Render(const glm::mat4& viewProjection, const glm::mat4& model);
 	void ClearResources();
 
 	float GetCubieExtention();

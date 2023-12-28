@@ -2,9 +2,9 @@
 #include <GLFW/glfw3.h>
 
 //GENERAL
-void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& projectionView) {
+void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& viewProjection) {
 	SetWindow(window);
-	SetProjectionView(projectionView);
+	SetViewProjection(viewProjection);
 }
 
 void InputSystem::Update() {
@@ -28,8 +28,8 @@ void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
 }
 
-void InputSystem::SetProjectionView(const glm::mat4& projectionViewMat) {
-	m_projectionViewMat = projectionViewMat;
+void InputSystem::SetViewProjection(const glm::mat4& viewProjectionMat) {
+	m_viewProjectionMat = viewProjectionMat;
 }
 
 //MOUSE
@@ -43,7 +43,7 @@ void InputSystem::GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction)
 	glm::vec4 farPoint = nearPoint;
 	farPoint.z = 0.99f;
 
-	glm::mat4 inverse = glm::inverse(m_projectionViewMat);
+	glm::mat4 inverse = glm::inverse(m_viewProjectionMat);
 	nearPoint = inverse * nearPoint;
 	farPoint = inverse * farPoint;
 
@@ -72,6 +72,22 @@ glm::vec2 InputSystem::NormalizeScreenVector(const glm::vec2& screenPosition) co
 
 	return normPos;
 }
+
+glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPosition) const {
+	// Erstellen Sie eine 4D-Homogenisierungsmatrix für den gegebenen 3D-Weltvektor
+	glm::vec4 h_WorldPosition = glm::vec4(worldPosition, 1.0f);
+
+	// Multiplizieren Sie die Homogenisierungsmatrix mit der Projektion und View-Matrix
+	glm::vec4 clipSpacePosition = m_viewProjectionMat * h_WorldPosition;
+
+	// Konvertieren Sie die Clip-Space-Position in Screen-Space
+	glm::vec2 screenPosition;
+	screenPosition.x = (clipSpacePosition.x / clipSpacePosition.w + 1.0f) / 2.0f;
+	screenPosition.y = (1.0f - (clipSpacePosition.y / clipSpacePosition.w + 1.0f) / 2.0f);
+
+	return screenPosition;
+}
+
 
 glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;

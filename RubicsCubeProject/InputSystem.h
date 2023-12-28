@@ -14,11 +14,11 @@ public:
 		RELEASE = 3
 	};
 	//GENERAL
-	void Initialize(GLFWwindow* window, const glm::mat4& projectionView = glm::mat4(1.0f));
+	void Initialize(GLFWwindow* window, const glm::mat4& viewProjection = glm::mat4(1.0f));
 	void SetWindow(GLFWwindow* window) { m_window = window; };
 	void Update();
 	void ObserveKey(int key);
-	void SetProjectionView(const glm::mat4& projectionView);
+	void SetViewProjection(const glm::mat4& viewProjection);
 
 	//MOUSE
 	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
@@ -36,7 +36,9 @@ public:
 	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
 	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
 
+	//HELPING METHODS
 	glm::vec2 NormalizeScreenVector(const glm::vec2& screenPosition) const;
+	glm::vec2 WorldToScreen(const glm::vec3& worldPosition) const;
 
 private:
 	mutable std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
@@ -51,7 +53,7 @@ private:
 	glm::vec3 m_dragStartRayOrigin;
 	glm::vec3 m_dragStartRayDirection;
 
-	glm::mat4 m_projectionViewMat;
+	glm::mat4 m_viewProjectionMat;
 
 	//HELPING METHODS
 	void UpdateClickState(int mouseButton, ClickState& clickState);

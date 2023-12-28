@@ -8,7 +8,7 @@ void GameInterface::Initialize()
 
 void GameInterface::RenderInterface(float aspectRatio) {
 	RecalculateMatrices(aspectRatio);
-	glm::mat4 projectionView = m_projection * m_view;
+	glm::mat4 viewProjection = m_projection * m_view;
 }
 
 void GameInterface::ClearResources() {

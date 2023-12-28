@@ -14,7 +14,7 @@ void TestCompoundCube::RenderInterface(float aspectRatio) {
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 modelRotation = glm::rotate(glm::mat4(1.0f), m_turningAngle, glm::vec3(1.0f, 1.0f, 1.0f));
 	
-	glm::mat4 projectionView = projection * view;
+	glm::mat4 viewProjection = projection * view;
 	
 	//Offset + 0.1f damit die Luecken zwischen den Minicubies erscheinen.
 	float offset = m_cubieRenderer.GetCubieExtention() + 0.1f;
@@ -27,7 +27,7 @@ void TestCompoundCube::RenderInterface(float aspectRatio) {
 				//compound = glm::rotate(compound, glm::radians(90.0f) * (i % 2), glm::vec3(1.0f, 0.0f, 0.0f));
 				//compound = glm::rotate(compound, glm::radians(90.0f) * (j % 2), glm::vec3(0.0f, 1.0f, 0.0f));
 				//compound = glm::rotate(compound, glm::radians(90.0f) * (k % 2), glm::vec3(0.0f, 0.0f, 1.0f));
-				m_cubieRenderer.Render(projectionView, model);
+				m_cubieRenderer.Render(viewProjection, model);
 			}
 		}
 	}

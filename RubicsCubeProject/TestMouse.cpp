@@ -8,16 +8,16 @@ void TestMouse::Initialize(GLFWwindow* window) {
 	m_line.Initialize();
 
 	m_cubePosition = glm::vec3(0.0f);
-	m_projectionView = glm::mat4(1.0f);
+	m_viewProjection = glm::mat4(1.0f);
 }
 
 void TestMouse::RenderInterface(float aspectRatio) {
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	m_projectionView = projection * view;
+	m_viewProjection = projection * view;
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), m_cubePosition);
 
-	m_cubieRenderer.Render(m_projectionView, model);
+	m_cubieRenderer.Render(m_viewProjection, model);
 	glm::vec3 dragStart_origin, origin, direction;
 	m_input.GetDragStartPickingRay(dragStart_origin, direction);
 	m_input.GetPickingRay(origin, direction);
@@ -38,5 +38,5 @@ void TestMouse::Update(double deltaTime) {
 		m_input.GetPickingRay(position, direction);
 		m_cubePosition = position + 9.0f * direction;
 	}
-	m_input.SetProjectionView(m_projectionView);
+	m_input.SetViewProjection(m_viewProjection);
 }

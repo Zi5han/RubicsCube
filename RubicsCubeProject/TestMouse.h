@@ -19,5 +19,5 @@ private:
 	InputSystem m_input;
 
 	glm::vec3 m_cubePosition;
-	glm::mat4 m_projectionView;
+	glm::mat4 m_viewProjection;
 };
