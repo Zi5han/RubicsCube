@@ -66,6 +66,9 @@
     <ClCompile Include="GameInterface.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RubicsCube.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGameInterface.h">
@@ -117,6 +120,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="OBJModel.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RubicsCube.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

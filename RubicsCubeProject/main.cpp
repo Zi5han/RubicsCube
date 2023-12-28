@@ -27,10 +27,10 @@ GameInterface gameInterface;
 AbstractGameInterface* gUsedInterface;
 
 double lastTime = glfwGetTime();
-double timeDiffrence = 0.0;
+double deltaTime = 0.0;
 
 void RenderWindow(GLFWwindow* window) {
-	gUsedInterface->Update(timeDiffrence);
+	gUsedInterface->Update(deltaTime);
 	//gUsedInterface->Update(0.1); // fürs Debuggen
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
@@ -50,7 +50,7 @@ void RenderWindow(GLFWwindow* window) {
 	glfwSwapBuffers(window);
 
 	double currenTime = glfwGetTime();
-	timeDiffrence = currenTime - lastTime;
+	deltaTime = currenTime - lastTime;
 	lastTime = currenTime;
 	std::this_thread::sleep_for(std::chrono::milliseconds(8));
 }

@@ -32,7 +32,7 @@ private:
 	std::vector<Triangle> m_Faces;
 
 	bool is_OBJ_loaded;
-	int vertexAmount;
+	int m_vertexAmount;
 
 	void Initialize();
 	void LoadMaterialFromFile(const char* filename);

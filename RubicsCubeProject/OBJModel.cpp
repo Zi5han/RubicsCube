@@ -19,7 +19,7 @@ OBJModel::OBJModel(const char* filename) {
 	LoadMaterialFromFile(mtl_filename.c_str());
 	LoadFromFile(obj_filename.c_str());
 	is_OBJ_loaded = true;
-	vertexAmount = static_cast<int>(m_Faces.size() * 3);
+	m_vertexAmount = static_cast<int>(m_Faces.size() * 3);
 }
 
 OBJModel::~OBJModel() {
@@ -88,7 +88,7 @@ ColorValue& OBJModel::getColorValue(const std::string& key)
 
 const int OBJModel::getVertexAmount()
 {
-	return vertexAmount;
+	return m_vertexAmount;
 }
 
 void OBJModel::LoadMaterialFromFile(const char* filename) {

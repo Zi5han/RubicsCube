@@ -1,6 +1,7 @@
 #pragma once
 #include "AbstractGameInterface.h"
-#include "CubieRenderer.h"
+#include "InputSystem.h"
+#include "RubicsCube.h"
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -8,19 +9,27 @@
 class GameInterface : public AbstractGameInterface
 {
 public:
-	virtual void Initialize() override;
+	virtual void Initialize(GLFWwindow* window) override;
 	virtual void RenderInterface(float aspectRatio) override;
 	virtual void Update(double deltaTime) override;
 	virtual void ClearResources() override;
 
-	void RecalculateMatrices(float aspectRatio);
+	const InputSystem& getInputComponent() const { return m_input; };
+
+	void QueueMatrixRecalculation() const { m_recalculationNeeded = true; };
 
 private:
-	CubieRenderer m_cubieRenderer;
-	float m_turningAngle;
+	InputSystem m_input;
+	RubicsCube m_rubicsCube;
+
+	float m_aspectRatio;
+
+	mutable bool m_recalculationNeeded;
+	float m_radius;
 
 	//MATRICES
 	glm::mat4 m_projection;
 	glm::mat4 m_view;
-	glm::mat4 m_model;
+
+	void RecalculateMatrices(float aspectRatio);
 };

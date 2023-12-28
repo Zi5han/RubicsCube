@@ -1,41 +1,32 @@
 #include "GameInterface.h"
+#include "CubieRenderer.h"
 
-void GameInterface::Initialize() {
-	m_cubieRenderer.Initialize();
-	m_turningAngle = 0.0f;
+void GameInterface::Initialize(GLFWwindow* window) {
+	m_input.Initialize(window);
+	m_rubicsCube.Initialize();
 }
 
 void GameInterface::RenderInterface(float aspectRatio) {
-	RecalculateMatrices(aspectRatio);
-	glm::mat4 viewProjection = m_projection * m_view;
-
-	//Offset + 0.1f damit die Luecken zwischen den Minicubies erscheinen.
-	float offset = m_cubieRenderer.GetCubieExtention() + 0.1f;
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
-			for (int k = 0; k < 3; ++k) {
-				glm::mat4 model = glm::translate(m_model, glm::vec3((i - 1) * offset, (j - 1) * offset, (k - 1) * offset));
-
-				//Rotation der mittleren horizontalen auf jeder Seite
-				//compound = glm::rotate(compound, glm::radians(90.0f) * (i % 2), glm::vec3(1.0f, 0.0f, 0.0f));
-				//compound = glm::rotate(compound, glm::radians(90.0f) * (j % 2), glm::vec3(0.0f, 1.0f, 0.0f));
-				//compound = glm::rotate(compound, glm::radians(90.0f) * (k % 2), glm::vec3(0.0f, 0.0f, 1.0f));
-				m_cubieRenderer.Render(viewProjection, model);
-			}
-		}
+	if (m_recalculationNeeded || aspectRatio != m_aspectRatio) {
+		m_aspectRatio = aspectRatio;
+		RecalculateMatrices(m_aspectRatio);
 	}
+	m_rubicsCube.Render(m_projection * m_view);
+}
+
+void GameInterface::Update(double deltaTime) {
+	m_input.Update();
+
+	m_rubicsCube.Update(deltaTime);
 }
 
 void GameInterface::ClearResources() {
-	m_cubieRenderer.ClearResources();
+	m_rubicsCube.ClearResources();
 }
 
 void GameInterface::RecalculateMatrices(float aspectRatio) {
 	m_projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
-	m_view = glm::lookAt(glm::vec3(0.0f, 0.0f, -9.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	m_model = glm::rotate(glm::mat4(1.0f), m_turningAngle, glm::vec3(1.0f, 1.0f, 1.0f));
+	m_view = glm::lookAt(glm::vec3(0.0f, 0.0f, 18.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_recalculationNeeded = false;
 }
 
-void GameInterface::Update(double deltaTime) {
-	m_turningAngle += glm::radians(120.0f) * ((float)deltaTime);
-}
