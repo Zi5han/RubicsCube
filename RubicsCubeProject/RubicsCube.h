@@ -1,5 +1,6 @@
 #pragma once
 #include "CubieRenderer.h"
+#include "LineRenderer.h"
 
 #include <iostream>
 #include <map>
@@ -27,6 +28,7 @@ public:
 	};
 
 	enum Face {
+		UNSET = -1,
 		FRONT = 0,
 		RIGHT = 1,
 		TOP = 2,
@@ -45,4 +47,22 @@ private:
 
 	glm::quat m_modelRotation;
 	glm::vec2 m_previousScreenPosition;
+
+	Face m_clickedFace = UNSET;
+
+	const std::map<Face, glm::vec3> NORMALS_OF_FACES = {
+	   {RIGHT, glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {TOP, glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {FRONT, glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {LEFT, glm::vec3(-1.0f, 0.0f, 0.0f)},
+	   {BOTTOM, glm::vec3(0.0f, -1.0f, 0.0f)},
+	   {BACK, glm::vec3(0.0f, 0.0f, -1.0f)}
+	};
+
+	//DEGUB
+	LineRenderer d_lr;
+	glm::vec3 d_objectSpaceFaceNormal;
+
+	const GameInterface* d_gameInterface;
+	glm::vec3 d_endPoint;
 };

@@ -22,27 +22,27 @@ public:
 
 	//GENERAL
 	void Initialize(GLFWwindow* window, const glm::mat4& viewProjection = glm::mat4(1.0f));
-	void SetWindow(GLFWwindow* window) { m_window = window; };
+	void SetWindow(GLFWwindow* window) { m_window = window; }
 	void Update();
 	void ObserveKey(int key);
-	void SetViewProjection(const glm::mat4& viewProjection) { m_viewProjection = viewProjection; };
+	void SetViewProjection(const glm::mat4& viewProjection) { m_viewProjection = viewProjection; }
 
 	//MOUSE
-	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; };
-	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; };
+	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; }
+	InputSystem::ClickState GetRightClickState() const { return m_rightClickState; }
 
-	glm::vec2 GetScreenPosition() const { return m_screenPosition; };
-	glm::vec2 GetDragStartScreenPosition() const { return m_dragStartScreenPosition; };
+	glm::vec2 GetScreenPosition() const { return m_screenPosition; }
+	glm::vec2 GetDragStartScreenPosition() const { return m_dragStartScreenPosition; }
 	void GetPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
 	void GetDragStartPickingRay(glm::vec3& out_origin, glm::vec3& out_direction) const;
 
 	glm::ivec2 GetMouseWheelScrollOffset() const;
 
 	//KEYBOARD
-	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; };
-	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; };
-	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; };
-	MouseButton GetActiveMouseButton() const { return m_activeMouseButton; };
+	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; }
+	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; }
+	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; }
+	MouseButton GetActiveMouseButton() const { return m_activeMouseButton; }
 
 	//HELPING METHODS
 	glm::vec2 NormalizeScreenVector(const glm::vec2& screenPosition) const;
@@ -72,5 +72,5 @@ private:
 	static void scrollCallback(GLFWwindow* window, double xScroll, double yScroll) {
 		s_mouseScrollOffset.x = static_cast<int>(xScroll);
 		s_mouseScrollOffset.y = static_cast<int>(yScroll);
-	};
+	}
 };

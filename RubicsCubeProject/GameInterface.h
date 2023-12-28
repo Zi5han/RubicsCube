@@ -14,9 +14,11 @@ public:
 	virtual void Update(double deltaTime) override;
 	virtual void ClearResources() override;
 
-	const InputSystem& getInputComponent() const { return m_input; };
+	const InputSystem& GetInputComponent() const { return m_input; }
+	const glm::mat4& GetProjectionMatrix() const { return m_projection; }
+	const glm::mat4& GetViewMatrix() const { return m_view; }
 
-	void QueueMatrixRecalculation() const { m_recalculationNeeded = true; };
+	void QueueMatrixRecalculation() const { m_recalculationNeeded = true; }
 
 private:
 	InputSystem m_input;

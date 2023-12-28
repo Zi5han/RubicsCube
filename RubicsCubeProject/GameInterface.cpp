@@ -18,6 +18,7 @@ void GameInterface::RenderInterface(float aspectRatio) {
 		m_projection = glm::perspective(glm::radians(45.0f), m_aspectRatio, 0.1f, 100.0f);
 		m_view = glm::lookAt(glm::vec3(0.0f, 0.0f, m_radius), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+		m_input.SetViewProjection(m_projection * m_view);
 		m_recalculationNeeded = false;
 	}
 	// Render cube

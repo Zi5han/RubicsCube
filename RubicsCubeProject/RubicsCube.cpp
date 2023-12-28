@@ -1,9 +1,11 @@
 #include "RubicsCube.h"
 #include "InputSystem.h"
 #include "GameInterface.h"
+#include <glm/gtx/intersect.hpp>
 
 void RubicsCube::Initialize() {
 	m_cubieRenderer.Initialize();
+	d_lr.Initialize();
 }
 
 void RubicsCube::Render(const glm::mat4& viewProjection) {
@@ -23,12 +25,19 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 			}
 		}
 	}
+	d_lr.Render3D(d_gameInterface->GetProjectionMatrix(),
+		d_gameInterface->GetViewMatrix(),
+		glm::mat4(1.0f),
+		glm::vec3(0.0f),
+		d_endPoint,
+		glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void RubicsCube::Update(const GameInterface& gameInterface) {
-	const InputSystem& inputSystem = gameInterface.getInputComponent();
+	d_gameInterface = &gameInterface;
+	const InputSystem& inputSystem = gameInterface.GetInputComponent();
 
-	// Cube rotation
+	// CUBE ROTATION
 	if (inputSystem.GetActiveMouseButton() == InputSystem::RIGHT_BUTTON
 		&& inputSystem.GetRightClickState() == InputSystem::HOLD) {
 		// Calculate the difference between the current and previous screen positions
@@ -47,7 +56,41 @@ void RubicsCube::Update(const GameInterface& gameInterface) {
 		m_modelRotation = rotationY * m_modelRotation;
 		m_modelRotation = glm::normalize(m_modelRotation);
 	}
+	else if (inputSystem.GetActiveMouseButton() == InputSystem::LEFT_BUTTON) {
+		// DETERMINE CLICKED FACE
+		glm::vec3 origin, direction;
+		inputSystem.GetPickingRay(origin, direction);
 
+		if (inputSystem.GetLeftClickState() == InputSystem::HOLD) {
+			for (auto normal : NORMALS_OF_FACES) {
+				const glm::vec3 faceNormal = glm::mat3_cast(m_modelRotation) * normal.second;
+				if (glm::dot(direction, faceNormal) > 0)
+					continue;
+				float intersectionDistance;
+				bool intersects = glm::intersectRayPlane(origin, direction, faceNormal * (1.5f + m_cubieRenderer.GetCubieExtention()), faceNormal, intersectionDistance);
+				if (!intersects)
+					continue;
+				glm::vec3 intersectionPoint = origin + intersectionDistance * direction;
+				glm::vec3 intersectionPointInObjectSpace = glm::inverse(glm::mat3_cast(m_modelRotation)) * intersectionPoint;
+				// 0.1f is tolerance
+				if ((intersectionPointInObjectSpace.x > (1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f) ||
+					intersectionPointInObjectSpace.x	< -(1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f) ||
+					intersectionPointInObjectSpace.y	>(1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f) ||
+					intersectionPointInObjectSpace.y	< -(1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f) ||
+					intersectionPointInObjectSpace.z	>(1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f) ||
+					intersectionPointInObjectSpace.z < -(1.5f + m_cubieRenderer.GetCubieExtention() + 0.1f)))
+					continue;
+				m_clickedFace = normal.first;
+				std::cout << m_clickedFace << ' ' <<
+					intersectionPointInObjectSpace.x << ' ' <<
+					intersectionPointInObjectSpace.y << ' ' <<
+					intersectionPointInObjectSpace.z << '\n';
+				d_endPoint = intersectionPoint;
+				break;
+			}
+		}
+
+	}
 	// Safe previous screen position
 	m_previousScreenPosition = inputSystem.GetScreenPosition();
 }
