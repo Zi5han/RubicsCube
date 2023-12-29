@@ -14,7 +14,7 @@ class GameInterface;
 
 class RubicsCube {
 public:
-	enum State {
+	enum AnimationState {
 		STABLE = 0,
 		ROTATING = 1,
 		SNAPING = 2
@@ -51,7 +51,7 @@ private:
 
 
 	//ANIMATION
-	State m_animationState = STABLE;
+	AnimationState m_animationState = STABLE;
 
 	//HELPING METHODS
 	void h_RotateCube(const GameInterface& gameInterface);

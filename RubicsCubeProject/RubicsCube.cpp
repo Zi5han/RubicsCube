@@ -33,9 +33,8 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 }
 
 void RubicsCube::Update(const GameInterface& gameInterface) {
-	if (m_animationState == SNAPING) {}
-	//UpdateAnimtion();
-
+	if (m_animationState == SNAPING)
+		m_animationState = STABLE;
 
 	d_gameInterface = &gameInterface;
 	m_inputSystem = &gameInterface.GetInputComponent();
@@ -47,7 +46,7 @@ void RubicsCube::Update(const GameInterface& gameInterface) {
 	}
 	else if (m_inputSystem->GetActiveMouseButton() == InputSystem::LEFT_BUTTON) {
 		if (m_inputSystem->GetLeftClickState() == InputSystem::CLICK) {
-			if (!m_animationState == SNAPING) {
+			if (m_animationState == STABLE) {
 
 				h_DetermineClickedFace(gameInterface);
 				m_animationState = ROTATING;
