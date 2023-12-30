@@ -16,8 +16,8 @@ void InputSystem::Update() {
 		i->second->Update();
 
 	// Update mouse button states
-	UpdateClickState(LEFT_BUTTON, m_leftClickState);
-	UpdateClickState(RIGHT_BUTTON, m_rightClickState);
+	h_UpdateClickState(LEFT_BUTTON, m_leftClickState);
+	h_UpdateClickState(RIGHT_BUTTON, m_rightClickState);
 
 	// Update current screen position
 	double x, y;
@@ -94,20 +94,17 @@ glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 }
 
 //HELPING METHODS
-void InputSystem::UpdateClickState(MouseButton mouseButton, ClickState& clickState) {
+void InputSystem::h_UpdateClickState(MouseButton mouseButton, ClickState& clickState) {
 	if (!(glfwGetMouseButton(m_window, mouseButton) == GLFW_PRESS)) {
-		if (clickState == ClickState::CLICK || clickState == ClickState::HOLD) {
-			if (m_activeMouseButton == mouseButton)
-				m_activeMouseButton = NO_BUTTON;
+		if (clickState == ClickState::CLICK || clickState == ClickState::HOLD)
 			clickState = ClickState::RELEASE;
-		}
-		else {
+		else if (m_activeMouseButton == mouseButton) {
+			m_activeMouseButton = NO_BUTTON;
 			clickState = ClickState::NO_ACTION;
 		}
 	}
 	else if (clickState == ClickState::NO_ACTION || clickState == ClickState::RELEASE) {
-		if (m_activeMouseButton == NO_BUTTON)
-			m_activeMouseButton = mouseButton;
+		m_activeMouseButton = mouseButton;
 		clickState = ClickState::CLICK;
 
 		GetPickingRay(m_dragStartRayOrigin, m_dragStartRayDirection);

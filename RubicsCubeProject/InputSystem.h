@@ -65,7 +65,7 @@ private:
 	glm::mat4 m_viewProjection;
 
 	//HELPING METHODS
-	void UpdateClickState(MouseButton mouseButton, ClickState& clickState);
+	void h_UpdateClickState(MouseButton mouseButton, ClickState& clickState);
 
 	//STATIC
 	static glm::ivec2 s_mouseScrollOffset;
