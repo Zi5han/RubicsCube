@@ -2,7 +2,7 @@
 #include "GameInterface.h"
 #include <glm/gtx/intersect.hpp>
 
-void RubicsCube::Initialize() {
+void RubicsCube::Initialize(const GameInterface& gameInterface) {
 	m_cubieRenderer.Initialize();
 	d_lr.Initialize();
 
@@ -15,6 +15,7 @@ void RubicsCube::Initialize() {
 				m_grid[x][y][z]->m_number = x + y + z;
 				m_grid[x][y][z]->m_position = glm::vec3((x - 1) * offset, (y - 1) * offset, (z - 1) * offset);
 			}
+	m_inputSystem = &gameInterface.GetInputComponent();
 
 }
 
@@ -34,7 +35,8 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 	d_lr.Render3D(d_gameInterface->GetProjectionMatrix(),
 		d_gameInterface->GetViewMatrix(),
 		glm::mat3_cast(m_modelRotation),
-		glm::vec3(0.0f, 0.0f, 0.0f),
+		//glm::mat3(1.0f)
+		glm::vec3(0.0f),
 		d_endPoint,
 		glm::vec3(1.0f, 0.0f, 0.0f));
 }
@@ -42,33 +44,31 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 void RubicsCube::Update(const GameInterface& gameInterface) {
 	//Animation
 	if (m_animationState == SNAPING) {
-		h_UpdateAnimation(gameInterface);
+		h_UpdateAnimation();
 	}
 
 	d_gameInterface = &gameInterface;
 
-	h_UpdateMouse(gameInterface);
-	h_UpdateKeyInput(gameInterface);
+	h_UpdateMouse();
+	h_UpdateKeyInput();
 
-	m_previousScreenPosition = inputSystem->GetScreenPosition();
+	m_previousScreenPosition = m_inputSystem->GetScreenPosition();
 }
 
-void RubicsCube::h_UpdateMouse(const GameInterface& gameInterface)
+void RubicsCube::h_UpdateMouse()
 {
-	inputSystem = &gameInterface.GetInputComponent();
-
-	if (inputSystem->GetActiveMouseButton() == InputSystem::RIGHT_BUTTON) {
-		if (inputSystem->GetRightClickState() == InputSystem::HOLD) {
-			h_RotateCube(gameInterface);
+	if (m_inputSystem->GetActiveMouseButton() == InputSystem::RIGHT_BUTTON) {
+		if (m_inputSystem->GetRightClickState() == InputSystem::HOLD) {
+			h_RotateCube();
 		}
 	}
-	else if (inputSystem->GetActiveMouseButton() == InputSystem::LEFT_BUTTON) {
-		switch (inputSystem->GetLeftClickState()) {
+	else if (m_inputSystem->GetActiveMouseButton() == InputSystem::LEFT_BUTTON) {
+		switch (m_inputSystem->GetLeftClickState()) {
 
 		case InputSystem::CLICK:
 			if (m_animationState != STABLE)
 				break;
-			h_DetermineClickedFace(gameInterface);
+			h_DetermineClickedFace();
 			m_animationState = ROTATING;
 			break;
 
@@ -76,12 +76,12 @@ void RubicsCube::h_UpdateMouse(const GameInterface& gameInterface)
 			if (m_animationState == SNAPING)
 				break;
 			if (m_animationState == ROTATING) {
-				if (m_activeFaceSlice == UNSET_SLICE)
-					if (glm::length(inputSystem->GetScreenPosition() - inputSystem->GetDragStartScreenPosition()) > 100) {
-						h_DetermineActiveFace(gameInterface);
+				if (!isActiveFaceSet)
+					if (glm::length(m_inputSystem->GetScreenPosition() - m_inputSystem->GetDragStartScreenPosition()) > 10) {
+						h_DetermineActiveFace();
 						break;
 					}
-				h_RotateFace(gameInterface);
+				h_RotateFace();
 			}
 			break;
 
@@ -96,7 +96,7 @@ void RubicsCube::h_UpdateMouse(const GameInterface& gameInterface)
 	}
 }
 
-void RubicsCube::h_UpdateKeyInput(const GameInterface& gameInterface) {
+void RubicsCube::h_UpdateKeyInput() {
 	// TODO
 }
 
@@ -109,9 +109,9 @@ void RubicsCube::ClearResources() {
 }
 
 //HELPING METHODS
-void RubicsCube::h_RotateCube(const GameInterface& gameInterface) {
+void RubicsCube::h_RotateCube() {
 	// Calculate the difference between the current and previous screen positions
-	glm::vec2 delta = inputSystem->GetScreenPosition() - m_previousScreenPosition;
+	glm::vec2 delta = m_inputSystem->GetScreenPosition() - m_previousScreenPosition;
 
 	// Convert the delta vector to radians
 	float angleX = glm::radians(delta.x);
@@ -127,9 +127,9 @@ void RubicsCube::h_RotateCube(const GameInterface& gameInterface) {
 	m_modelRotation = glm::normalize(m_modelRotation);
 }
 
-void RubicsCube::h_DetermineClickedFace(const GameInterface& gameInterface) {
+void RubicsCube::h_DetermineClickedFace() {
 	glm::vec3 origin, direction;
-	inputSystem->GetPickingRay(origin, direction);
+	m_inputSystem->GetPickingRay(origin, direction);
 
 	float planeOffset = 1.5f * m_cubieRenderer.GetCubieExtention();
 	for (auto normal : NORMALS_OF_FACES) {
@@ -159,8 +159,8 @@ void RubicsCube::h_DetermineClickedFace(const GameInterface& gameInterface) {
 			continue;
 
 		m_clickedFace = normal.first;
-		m_rayCubeIntersectionPoint = intersectionPoint;
-		d_endPoint = intersectionPointInObjectSpace;
+		m_facePlaneIntersectionPoint = intersectionPoint;
+		//d_endPoint = intersectionPointInObjectSpace;
 		//std::cout << m_clickedFace << ' ' <<
 		//	d_endPoint.x << ' ' <<
 		//	d_endPoint.y << ' ' <<
@@ -169,37 +169,119 @@ void RubicsCube::h_DetermineClickedFace(const GameInterface& gameInterface) {
 	}
 }
 
-void RubicsCube::h_RotateFace(const GameInterface& gameInterface) {
+void RubicsCube::h_RotateFace() {
 
 }
 
-void RubicsCube::h_DetermineActiveFace(const GameInterface& gameInterface) {
+void RubicsCube::h_DetermineActiveFace() {
+	// Es wird der Schnittpunkt in Object Space bestimmt
 	glm::vec3 intersectionPointInObjectSpace
-		= glm::inverse(glm::mat3_cast(m_modelRotation)) * m_rayCubeIntersectionPoint;
+		= glm::inverse(glm::mat3_cast(m_modelRotation)) * m_facePlaneIntersectionPoint;
 	float planeOffset = 1.5f * m_cubieRenderer.GetCubieExtention();
 
-	//int activeSliceX = static_cast<int>((intersectionPointInObjectSpace.x));
-	//int activeSliceY = static_cast<int>((intersectionPointInObjectSpace.x));
-	//int activeSliceZ = static_cast<int>((intersectionPointInObjectSpace.x));
+	// Die slice indices werden bestimmt
+	int activeSliceX
+		= (intersectionPointInObjectSpace.x >= (-planeOffset / 3)
+			&& intersectionPointInObjectSpace.x <= (planeOffset / 3))
+		? 1 : (intersectionPointInObjectSpace.x > (planeOffset / 3) ? 2 : 0);
+	int activeSliceY
+		= (intersectionPointInObjectSpace.y >= (-planeOffset / 3)
+			&& intersectionPointInObjectSpace.y <= (planeOffset / 3))
+		? 1 : (intersectionPointInObjectSpace.y > (planeOffset / 3) ? 2 : 0);
+	int activeSliceZ
+		= (intersectionPointInObjectSpace.z >= (-planeOffset / 3)
+			&& intersectionPointInObjectSpace.z <= (planeOffset / 3))
+		? 1 : (intersectionPointInObjectSpace.z > (planeOffset / 3) ? 2 : 0);
 
-	//float activeSliceX = intersectionPointInObjectSpace.x;
-	//float activeSliceY = intersectionPointInObjectSpace.y;
-	//float activeSliceZ = intersectionPointInObjectSpace.z;
-	//
-	//if (m_clickedFace == TOP_FACE || m_clickedFace == BOTTOM_FACE) {
-	//	//m_activeCube = activeSliceX;
-	//}
-	//else if (m_clickedFace == LEFT_FACE || m_clickedFace == RIGHT_FACE) {
-	//	//m_activeCube = activeSliceY;
-	//}
-	//else { // m_clickedFace == FRONT || m_clickedFace == BACK
-	//	//m_activeCube = activeSliceZ;
-	//}
-	//
+
+
+	// Es wird der aktuelle Schnittpunkt auf der geklicken Ebene im Object Space bestimmt
+	float intersectionDistance;
+	glm::vec3 origin, direction;
+	m_inputSystem->GetPickingRay(origin, direction);
+	//Warnung: bei freier Kamerasteurung, könnte es auch kein Schnittpunkt geben
+	// Hier wird die Normale in für die Rechnung rotiert, dannach wird die Rotation rückgängig gemacht
+	glm::intersectRayPlane(origin,
+		direction,
+		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(m_clickedFace) * (planeOffset),
+		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(m_clickedFace),
+		intersectionDistance);
+	glm::vec3 currenIntersectionPointInObjectSpace =
+		glm::inverse(glm::mat3_cast(m_modelRotation)) * (origin + intersectionDistance * direction);
+
+	// Normale der geklicken Face wird normalisiert
+	CubeFace positiveNormal = static_cast<CubeFace>(m_clickedFace % 3);
+
+	// Die Drag Richtung wird bestimmt
+	glm::vec3 dragDirection = currenIntersectionPointInObjectSpace - intersectionPointInObjectSpace;
+	glm::vec3 dragDirectionNormal = h_findClosestDirection(
+		dragDirection,
+		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormal + 1) % 3)),
+		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormal + 2) % 3)));
+
+	d_endPoint = dragDirection * 10.0f;
+
+	if (m_clickedFace == LEFT_FACE || m_clickedFace == RIGHT_FACE) {
+		if (dragDirectionNormal.y == 1.0f) {
+			m_activeFaceNormal = Z;
+		}
+		else if (dragDirectionNormal.z == 1.0f) {
+			m_activeFaceNormal = Y;
+		}
+	}
+	else if (m_clickedFace == FRONT_FACE || m_clickedFace == BACK_FACE) {
+		if (dragDirectionNormal.x == 1.0f) {
+			m_activeFaceNormal = Y;
+		}
+		else if (dragDirectionNormal.y == 1.0f) {
+			m_activeFaceNormal = X;
+		}
+	}
+	else { // m_clickedFace == TOP_FACE || m_clickedFace == BOTTOM_FACE
+		if (dragDirectionNormal.x == 1.0f) {
+			m_activeFaceNormal = X;
+		}
+		else if (dragDirectionNormal.z == 1.0f) {
+			m_activeFaceNormal = Z;
+		}
+	}
+
+	if (m_activeFaceNormal == X)
+		std::cout << "x" << "\n";
+	if (m_activeFaceNormal == Y)
+		std::cout << "y" << "\n";
+	if (m_activeFaceNormal == Z)
+		std::cout << "z" << "\n";
+
+
 	//std::cout << activeSliceX << ' ' << activeSliceY << ' ' << activeSliceZ << ' ' << '\n';
+	//std::cout << intersectionPointInObjectSpace.x << ' ' << intersectionPointInObjectSpace.y << ' ' << intersectionPointInObjectSpace.z << ' ' << '\n';
+
 }
 
-void RubicsCube::h_UpdateAnimation(const GameInterface& gameInterface) {
+glm::vec3 RubicsCube::h_findClosestDirection(const glm::vec3& referenceDirection, const glm::vec3& vecU, const glm::vec3& vecV) {
+	float dotProductU = glm::dot(referenceDirection, vecU);
+	float dotProductV = glm::dot(referenceDirection, vecV);
+	float dotProductNegativeU = glm::dot(referenceDirection, -vecU);
+	float dotProductNegativeV = glm::dot(referenceDirection, -vecV);
+
+	float maxDotProduct = std::max({ dotProductU, dotProductV, dotProductNegativeU, dotProductNegativeV });
+
+	if (maxDotProduct == dotProductU)
+		return vecU;
+
+	else if (maxDotProduct == dotProductV)
+		return vecV;
+
+	else if (maxDotProduct == dotProductNegativeU)
+		return vecU;
+
+	else // maxDotProduct == dotProductNegativeV 
+		return vecV;
+
+}
+
+void RubicsCube::h_UpdateAnimation() {
 	m_animationState = STABLE;
 }
 

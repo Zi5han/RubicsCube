@@ -2,7 +2,7 @@
 #include "CubieRenderer.h"
 #include "LineRenderer.h"
 #include "InputSystem.h"
-#include "Cubie.h";
+#include "Cubie.h"
 
 #include <iostream>
 #include <map>
@@ -52,7 +52,7 @@ public:
 		Z_MID_SLICE = 8
 	};
 
-	void Initialize();
+	void Initialize(const GameInterface& gameInterface);
 	void Render(const glm::mat4& viewProjection);
 	void Update(const GameInterface& gameInterface);
 	void ClearResources();
@@ -60,7 +60,7 @@ public:
 private:
 	//COMPONENTS
 	CubieRenderer m_cubieRenderer;
-	const InputSystem* inputSystem;
+	const InputSystem* m_inputSystem;
 
 	//CACHE
 	glm::vec2 m_previousScreenPosition;
@@ -68,24 +68,32 @@ private:
 	//CUBE
 	glm::quat m_modelRotation;
 	std::array <std::array <std::array <Cubie*, 3>, 3>, 3> m_grid;
-	void h_RotateCube(const GameInterface& gameInterface);
+	void h_RotateCube();
 
 	//FACE ROTATION
 	CubeFace m_clickedFace = UNSET_FACE;
-	Axis m_activeFaceAxis = UNSET_AXIS;
-	int m_activeFaceSlice = UNSET_SLICE;
-	glm::vec3 m_rayCubeIntersectionPoint;
-	void h_RotateFace(const GameInterface& gameInterface);
-	void h_DetermineClickedFace(const GameInterface& gameInterface);
-	void h_DetermineActiveFace(const GameInterface& gameInterface);
+
+	Axis m_activeFaceNormal = UNSET_AXIS;
+	int m_xSlice = 0;
+	int m_ySlice = 0;
+	int m_zSlice = 0;
+
+	bool isActiveFaceSet = false;
+	std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
+	glm::vec3 m_facePlaneIntersectionPoint;
+	void h_RotateFace();
+	void h_DetermineClickedFace();
+	void h_DetermineActiveFace();
+	glm::vec3 h_findClosestDirection(const glm::vec3& referenceDirection, const glm::vec3& vectorU, const glm::vec3& vectorV);
+
 
 	//ANIMATION
 	AnimationState m_animationState = STABLE;
-	void h_UpdateAnimation(const GameInterface& gameInterface);
+	void h_UpdateAnimation();
 
 	//INPUT 
-	void h_UpdateMouse(const GameInterface& gameInterface);
-	void h_UpdateKeyInput(const GameInterface& gameInterface);
+	void h_UpdateMouse();
+	void h_UpdateKeyInput();
 
 	//STATIC
 	const static std::map<RubicsCube::CubeFace, glm::vec3> NORMALS_OF_FACES;

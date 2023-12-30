@@ -7,7 +7,7 @@ void GameInterface::Initialize(GLFWwindow* window) {
 	m_input.Initialize(window);
 
 	// Initialize components
-	m_rubicsCube.Initialize();
+	m_rubicsCube.Initialize(*this);
 }
 
 void GameInterface::RenderInterface(float aspectRatio) {
