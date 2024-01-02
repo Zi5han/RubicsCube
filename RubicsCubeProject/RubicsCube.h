@@ -78,10 +78,15 @@ private:
 	int m_ySliceIndex = 0;
 	int m_zSliceIndex = 0;
 
-	bool isActiveFaceSet = false;
 	std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
 	glm::vec3 m_facePlaneIntersectionPoint;
-	void h_RotateFace();
+	void h_DeltaRotateFace();
+
+	typedef void (*CubieFunction)(Cubie*);
+
+	template<typename Func>
+	void h_ForEachInSlice(Func func);
+
 	void h_DetermineClickedFace();
 	void h_DetermineActiveFace();
 	glm::vec3 h_findClosestDirection(const glm::vec3& referenceDirection, const glm::vec3& vectorU, const glm::vec3& vectorV);
@@ -97,7 +102,6 @@ private:
 
 	//STATIC
 	const static std::map<RubicsCube::CubeFace, glm::vec3> NORMALS_OF_FACES;
-	const static std::map<RubicsCube::CubeSlice, glm::vec3> NORMALS_OF_SLICES;
 
 	//DEGUB
 	LineRenderer d_lr;
