@@ -72,20 +72,27 @@ glm::vec2 InputSystem::NormalizeScreenVector(const glm::vec2& screenPosition) co
 	return normPos;
 }
 
-glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPosition) const {
-	// Erstellen Sie eine 4D-Homogenisierungsmatrix für den gegebenen 3D-Weltvektor
-	glm::vec4 h_WorldPosition = glm::vec4(worldPosition, 1.0f);
+glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPoint) const {
+	int screenWidth, screenHeight;
+	glfwGetFramebufferSize(m_window, &screenWidth, &screenHeight);
 
-	// Multiplizieren Sie die Homogenisierungsmatrix mit der Projektion und View-Matrix
-	glm::vec4 clipSpacePosition = m_viewProjection * h_WorldPosition;
+	glm::vec4 clipSpacePoint = m_viewProjection * glm::vec4(worldPoint, 1.0f);
+	clipSpacePoint /= clipSpacePoint.w;
 
-	// Konvertieren Sie die Clip-Space-Position in Screen-Space
 	glm::vec2 screenPosition;
-	screenPosition.x = (clipSpacePosition.x / clipSpacePosition.w + 1.0f) / 2.0f;
-	screenPosition.y = (1.0f - (clipSpacePosition.y / clipSpacePosition.w + 1.0f) / 2.0f);
+	// Transformieren Sie den Punkt vom Clip-Space in den Screen-Space
+	screenPosition.x = (clipSpacePoint.x + 1.0f) / 2.0f;
+	screenPosition.y = (1.0f - clipSpacePoint.y) / 2.0f;
 
+	// Skalieren Sie den Punkt, um ihn in den Bereich des Bildschirms zu bringen
+	screenPosition.x *= screenWidth;
+	screenPosition.y *= screenHeight;
+
+	// Vertauschen Sie die y-Koordinate, da sie in der Regel invertiert ist
+	//screenPosition.y = screenHeight - screenPosition.y;
 	return screenPosition;
 }
+
 
 glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;
