@@ -3,7 +3,7 @@
 
 void GameInterface::Initialize(GLFWwindow* window) {
 	m_radius = 18.0;
-
+	m_window = window;
 	m_input.Initialize(window);
 
 	// Initialize components
