@@ -43,7 +43,7 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 
 void RubicsCube::Update(const GameInterface& gameInterface) {
 	//Animation
-	if (m_animationState == SNAPING) {
+	if (m_animationState == AnimationState::SNAPING) {
 		h_UpdateAnimation();
 	}
 
@@ -66,27 +66,30 @@ void RubicsCube::h_UpdateMouse()
 		switch (m_inputSystem->GetLeftClickState()) {
 
 		case InputSystem::CLICK:
-			if (m_animationState != STABLE)
+			if (m_animationState != AnimationState::STABLE)
 				break;
-			h_DetermineClickedFace();
-			m_animationState = ROTATING;
+			else {
+				h_DetermineClickedFace();
+			}
 			break;
 
 		case InputSystem::HOLD:
-			if (m_animationState == SNAPING)
+			if (m_animationState == AnimationState::SNAPING)
 				break;
-			if (m_animationState == ROTATING) {
-				if (!isActiveFaceSet)
-					if (glm::length(m_inputSystem->GetScreenPosition() - m_inputSystem->GetDragStartScreenPosition()) > 10) {
-						h_DetermineActiveFace();
-						break;
-					}
+			else if (m_animationState == AnimationState::STABLE) {
+				if (m_clickedFace == CubeFace::UNSET_FACE)
+					break;
+				if (glm::length(m_inputSystem->GetScreenPosition() - m_inputSystem->GetDragStartScreenPosition()) > 10) {
+					h_DetermineActiveFace();
+					m_animationState = AnimationState::ROTATING;
+				}
 				h_RotateFace();
 			}
 			break;
 
 		case InputSystem::RELEASE:
-			m_animationState = SNAPING;
+			if (m_animationState != AnimationState::STABLE)
+				m_animationState = AnimationState::SNAPING;
 			break;
 
 		default:
@@ -180,15 +183,15 @@ void RubicsCube::h_DetermineActiveFace() {
 	float planeOffset = 1.5f * m_cubieRenderer.GetCubieExtention();
 
 	// Die slice indices werden bestimmt
-	int activeSliceX
+	m_xSliceIndex
 		= (intersectionPointInObjectSpace.x >= (-planeOffset / 3)
 			&& intersectionPointInObjectSpace.x <= (planeOffset / 3))
 		? 1 : (intersectionPointInObjectSpace.x > (planeOffset / 3) ? 2 : 0);
-	int activeSliceY
+	m_ySliceIndex
 		= (intersectionPointInObjectSpace.y >= (-planeOffset / 3)
 			&& intersectionPointInObjectSpace.y <= (planeOffset / 3))
 		? 1 : (intersectionPointInObjectSpace.y > (planeOffset / 3) ? 2 : 0);
-	int activeSliceZ
+	m_zSliceIndex
 		= (intersectionPointInObjectSpace.z >= (-planeOffset / 3)
 			&& intersectionPointInObjectSpace.z <= (planeOffset / 3))
 		? 1 : (intersectionPointInObjectSpace.z > (planeOffset / 3) ? 2 : 0);
@@ -210,48 +213,47 @@ void RubicsCube::h_DetermineActiveFace() {
 		glm::inverse(glm::mat3_cast(m_modelRotation)) * (origin + intersectionDistance * direction);
 
 	// Normale der geklicken Face wird normalisiert
-	CubeFace positiveNormal = static_cast<CubeFace>(m_clickedFace % 3);
+	int positiveNormalIndex = static_cast<int>(m_clickedFace) % 3;
 
 	// Die Drag Richtung wird bestimmt
 	glm::vec3 dragDirection = currenIntersectionPointInObjectSpace - intersectionPointInObjectSpace;
 	glm::vec3 dragDirectionNormal = h_findClosestDirection(
 		dragDirection,
-		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormal + 1) % 3)),
-		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormal + 2) % 3)));
+		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormalIndex + 1) % 3)),
+		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormalIndex + 2) % 3)));
 
-	d_endPoint = dragDirection * 10.0f;
+	//d_endPoint = dragDirection * 10.0f;
 
-	if (m_clickedFace == LEFT_FACE || m_clickedFace == RIGHT_FACE) {
+	if (m_clickedFace == CubeFace::LEFT_FACE || m_clickedFace == CubeFace::RIGHT_FACE) {
 		if (dragDirectionNormal.y == 1.0f) {
-			m_activeFaceNormal = Z;
+			m_activeFaceNormal = Axis::Z;
 		}
 		else if (dragDirectionNormal.z == 1.0f) {
-			m_activeFaceNormal = Y;
+			m_activeFaceNormal = Axis::Y;
 		}
 	}
-	else if (m_clickedFace == FRONT_FACE || m_clickedFace == BACK_FACE) {
+	else if (m_clickedFace == CubeFace::FRONT_FACE || m_clickedFace == CubeFace::BACK_FACE) {
 		if (dragDirectionNormal.x == 1.0f) {
-			m_activeFaceNormal = Y;
+			m_activeFaceNormal = Axis::Y;
 		}
 		else if (dragDirectionNormal.y == 1.0f) {
-			m_activeFaceNormal = X;
+			m_activeFaceNormal = Axis::X;
 		}
 	}
 	else { // m_clickedFace == TOP_FACE || m_clickedFace == BOTTOM_FACE
 		if (dragDirectionNormal.x == 1.0f) {
-			m_activeFaceNormal = X;
+			m_activeFaceNormal = Axis::Z;
 		}
 		else if (dragDirectionNormal.z == 1.0f) {
-			m_activeFaceNormal = Z;
+			m_activeFaceNormal = Axis::X;
 		}
 	}
 
-	if (m_activeFaceNormal == X)
-		std::cout << "x" << "\n";
-	if (m_activeFaceNormal == Y)
-		std::cout << "y" << "\n";
-	if (m_activeFaceNormal == Z)
-		std::cout << "z" << "\n";
+	std::cout << "Der Slice ist "
+		<< "X: " << m_xSliceIndex << ", "
+		<< "Y: " << m_ySliceIndex << ", "
+		<< "Z: " << m_zSliceIndex << '\n';
+	std::cout << "Die aktive Achse ist: " << static_cast<int>(m_activeFaceNormal) << '\n';
 
 
 	//std::cout << activeSliceX << ' ' << activeSliceY << ' ' << activeSliceZ << ' ' << '\n';
@@ -282,27 +284,27 @@ glm::vec3 RubicsCube::h_findClosestDirection(const glm::vec3& referenceDirection
 }
 
 void RubicsCube::h_UpdateAnimation() {
-	m_animationState = STABLE;
+	m_animationState = AnimationState::STABLE;
 }
 
 //STATIC
 const std::map<RubicsCube::CubeFace, glm::vec3> RubicsCube::NORMALS_OF_FACES = {
-	   {RubicsCube::RIGHT_FACE,		glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {RubicsCube::TOP_FACE,		glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {RubicsCube::FRONT_FACE,		glm::vec3(0.0f, 0.0f, 1.0f)},
-	   {RubicsCube::LEFT_FACE,		glm::vec3(-1.0f, 0.0f, 0.0f)},
-	   {RubicsCube::BOTTOM_FACE,	glm::vec3(0.0f, -1.0f, 0.0f)},
-	   {RubicsCube::BACK_FACE,		glm::vec3(0.0f, 0.0f, -1.0f)}
+	   {CubeFace::RIGHT_FACE,	glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {CubeFace::TOP_FACE,		glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {CubeFace::FRONT_FACE,	glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {CubeFace::LEFT_FACE,	glm::vec3(-1.0f, 0.0f, 0.0f)},
+	   {CubeFace::BOTTOM_FACE,	glm::vec3(0.0f, -1.0f, 0.0f)},
+	   {CubeFace::BACK_FACE,	glm::vec3(0.0f, 0.0f, -1.0f)}
 };
 
 const std::map<RubicsCube::CubeSlice, glm::vec3> RubicsCube::NORMALS_OF_SLICES = {
-	   {RubicsCube::RIGHT_SLICE,	glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {RubicsCube::TOP_SLICE,		glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {RubicsCube::FRONT_SLICE,	glm::vec3(0.0f, 0.0f, 1.0f)},
-	   {RubicsCube::LEFT_SLICE,		glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {RubicsCube::BOTTOM_SLICE,	glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {RubicsCube::BACK_SLICE,		glm::vec3(0.0f, 0.0f, 1.0f)},
-	   {RubicsCube::X_MID_SLICE,	glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {RubicsCube::Y_MID_SLICE,	glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {RubicsCube::Z_MID_SLICE,	glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {CubeSlice::RIGHT_SLICE,	glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {CubeSlice::TOP_SLICE,	glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {CubeSlice::FRONT_SLICE,	glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {CubeSlice::LEFT_SLICE,	glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {CubeSlice::BOTTOM_SLICE,glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {CubeSlice::BACK_SLICE,	glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {CubeSlice::X_MID_SLICE,	glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {CubeSlice::Y_MID_SLICE,	glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {CubeSlice::Z_MID_SLICE,	glm::vec3(0.0f, 0.0f, 1.0f)},
 };

@@ -16,20 +16,20 @@ class GameInterface;
 
 class RubicsCube {
 public:
-	enum AnimationState {
+	enum class AnimationState {
 		STABLE = 0,
 		ROTATING = 1,
 		SNAPING = 2
 	};
 
-	enum Axis {
+	enum class Axis {
 		UNSET_AXIS = -1,
 		X = 0,
 		Y = 1,
 		Z = 2
 	};
 
-	enum CubeFace {
+	enum class CubeFace {
 		UNSET_FACE = -1,
 		RIGHT_FACE = 0,
 		TOP_FACE = 1,
@@ -39,7 +39,7 @@ public:
 		BACK_FACE = 5
 	};
 
-	enum CubeSlice {
+	enum class CubeSlice {
 		UNSET_SLICE = -1,
 		RIGHT_SLICE = 0,
 		TOP_SLICE = 1,
@@ -71,12 +71,12 @@ private:
 	void h_RotateCube();
 
 	//FACE ROTATION
-	CubeFace m_clickedFace = UNSET_FACE;
+	CubeFace m_clickedFace = CubeFace::UNSET_FACE;
 
-	Axis m_activeFaceNormal = UNSET_AXIS;
-	int m_xSlice = 0;
-	int m_ySlice = 0;
-	int m_zSlice = 0;
+	Axis m_activeFaceNormal = Axis::UNSET_AXIS;
+	int m_xSliceIndex = 0;
+	int m_ySliceIndex = 0;
+	int m_zSliceIndex = 0;
 
 	bool isActiveFaceSet = false;
 	std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
@@ -88,7 +88,7 @@ private:
 
 
 	//ANIMATION
-	AnimationState m_animationState = STABLE;
+	AnimationState m_animationState = AnimationState::STABLE;
 	void h_UpdateAnimation();
 
 	//INPUT 
