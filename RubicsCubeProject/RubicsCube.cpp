@@ -32,14 +32,27 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 			}
 		}
 	}
+	glm::vec2 d_scPos = m_inputSystem->GetScreenPosition();
+	glm::vec3 d_Point2Dto3D = m_inputSystem->ScreenToWorld(d_scPos);
+
 	d_lr.Render3D(
 		d_gameInterface->GetProjectionMatrix(),
 		d_gameInterface->GetViewMatrix(),
 		//glm::mat3_cast(m_modelRotation),
 		glm::mat3(1.0f),
 		glm::vec3(0.0f),
-		d_endPoint,
+		d_Point2Dto3D,
 		glm::vec3(1.0f, 0.0f, 0.0f));
+
+	//d_lr.Render3D(
+	//	d_gameInterface->GetProjectionMatrix(),
+	//	d_gameInterface->GetViewMatrix(),
+	//	//glm::mat3_cast(m_modelRotation),
+	//	glm::mat3(1.0f),
+	//	glm::vec3(0.0f),
+	//	d_endPoint,
+	//	glm::vec3(1.0f, 0.0f, 0.0f));
+
 }
 
 void RubicsCube::Update(const GameInterface& gameInterface) {

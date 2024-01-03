@@ -16,7 +16,7 @@ public:
 	const InputSystem& GetInputComponent() const { return m_input; }
 	const glm::mat4& GetProjectionMatrix() const { return m_projection; }
 	const glm::mat4& GetViewMatrix() const { return m_view; }
-	const GLFWwindow* GetWindow() const { return m_window; }
+	GLFWwindow* GetWindow() const { return m_window; }
 
 	void QueueMatrixRecalculation() const { m_recalculationNeeded = true; }
 
@@ -24,7 +24,7 @@ private:
 	InputSystem m_input;
 	RubicsCube m_rubicsCube;
 
-	GLFWwindow* m_window;
+	mutable GLFWwindow* m_window;
 
 	float m_aspectRatio;
 

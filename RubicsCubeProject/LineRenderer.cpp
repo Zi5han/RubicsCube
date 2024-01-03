@@ -4,8 +4,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 void LineRenderer::Initialize() {
-
-
 	m_shaderProgram = ShaderUtil::CreateShaderProgram("VLine.glsl", "FLine.glsl");
 	m_transformLocation = glGetUniformLocation(m_shaderProgram, "transformation");
 	m_colorLocation = glGetUniformLocation(m_shaderProgram, "color");
@@ -43,18 +41,6 @@ void LineRenderer::Render3D(const glm::mat4& projection, const glm::mat4& view, 
 
 	glBindVertexArray(0);
 	glUseProgram(0);
-}
-
-void LineRenderer::Render2D(const glm::vec2& startPoint, const glm::vec2& endPoint, const glm::vec3& color) {
-	// Konvertiere die 2D-Koordinaten in 3D-Koordinaten (z = 0)
-	glm::vec3 startPoint3D(startPoint.x, startPoint.y, 0.0f);
-	glm::vec3 endPoint3D(endPoint.x, endPoint.y, 0.0f);
-
-	glm::mat4 view = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f));
-	view = glm::translate(view, glm::vec3(-1, -1, 0.0f));
-	view = glm::scale(view, glm::vec3(2.0f, 2.0f, 1.0f));
-
-	Render3D(glm::mat4(1.0f), view, glm::mat4(1.0f), startPoint3D, endPoint3D, color);
 }
 
 void LineRenderer::ClearResources() {

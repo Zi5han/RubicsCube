@@ -23,7 +23,6 @@ void TestMouse::RenderInterface(float aspectRatio) {
 	m_input.GetPickingRay(origin, direction);
 
 	m_line.Render3D(projection, view, glm::mat4(1.0f), dragStart_origin, origin, glm::vec3(1.0f, 0.0f, 0.0f));
-	m_line.Render2D(m_input.NormalizeScreenVector(m_input.GetDragStartScreenPosition()), m_input.NormalizeScreenVector(m_input.GetScreenPosition()), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void TestMouse::ClearResources() {

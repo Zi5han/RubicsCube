@@ -93,6 +93,22 @@ glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPoint) const {
 	return screenPosition;
 }
 
+glm::vec3 InputSystem::ScreenToWorld(const glm::vec2& screenPosition) const {
+	glm::vec2 position = NormalizeScreenVector(screenPosition);
+
+	position.x = (position.x) * 2.0f - 1.0f;
+	position.y = 1.0f - (position.y) * 2.0f;
+
+	glm::vec4 nearPoint = glm::vec4(position.x, position.y, -0.99f, 1.0f);
+
+	glm::mat4 inverse = glm::inverse(m_viewProjection);
+	nearPoint = inverse * nearPoint;
+
+	nearPoint /= nearPoint.w;
+
+	return nearPoint;
+}
+
 
 glm::ivec2 InputSystem::GetMouseWheelScrollOffset() const {
 	glm::ivec2 mouseScrollOffset = s_mouseScrollOffset;

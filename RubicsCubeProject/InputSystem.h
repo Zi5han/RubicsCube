@@ -47,6 +47,7 @@ public:
 	//HELPING METHODS
 	glm::vec2 NormalizeScreenVector(const glm::vec2& screenPosition) const;
 	glm::vec2 WorldToScreen(const glm::vec3& worldPosition) const;
+	glm::vec3 ScreenToWorld(const glm::vec2& screenPosition) const;
 
 private:
 	mutable std::map<int, std::unique_ptr<KeyboardObserver>> m_keyMapper;
