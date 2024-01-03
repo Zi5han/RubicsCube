@@ -44,15 +44,16 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 	//	d_Point2Dto3D,
 	//	glm::vec3(1.0f, 0.0f, 0.0f));
 
+	glm::vec3 start = m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f)));
 
 	d_lr.Render3D(
 		d_gameInterface->GetProjectionMatrix(),
 		//glm::mat4(1.0f),
 		d_gameInterface->GetViewMatrix(),
-		//glm::mat3_cast(m_modelRotation),
-		glm::mat3(1.0f),
-		glm::vec3(0.0f),
-		//m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f))),
+		glm::mat3_cast(m_modelRotation),
+		//glm::mat3(1.0f),
+		//glm::vec3(1.0f),
+		start,
 		d_endPoint,
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -236,10 +237,10 @@ void RubicsCube::h_DeltaRotateFace() {
 
 	float deltaRotation = glm::length(scaleProjectedVector * dragNormalInScreenSpace);
 
-	d_endPoint = dragNormalInWorld
-		//- m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f)))
-		;
-	d_endPoint.z = 17;
+	//d_endPoint = m_inputSystem->ScreenToWorld(m_inputSystem->NormalizeScreenVector(deltaDragVector));
+	//	//- m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f)))
+	//	;
+
 
 	//d_endPoint = glm::vec3(faceNormalInScreenSpace * 10.0f, 0.0f);
 	//d_endPoint = glm::vec3(faceNormalInWorld * 10.0f);
