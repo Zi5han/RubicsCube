@@ -88,8 +88,8 @@ glm::vec2 InputSystem::WorldToScreen(const glm::vec3& worldPosition) const {
 }
 
 glm::vec3 InputSystem::ScreenToWorld(const glm::vec2& screenPosition) const {
-	glm::vec2 position = NormalizeScreenVector(screenPosition);
-	//glm::vec2 position = screenPosition;
+	//glm::vec2 position = NormalizeScreenVector(screenPosition);
+	glm::vec2 position = screenPosition;
 
 	position.x = (position.x) * 2.0f - 1.0f;
 	position.y = 1.0f - (position.y) * 2.0f;
