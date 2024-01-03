@@ -101,7 +101,7 @@ private:
 	void h_UpdateKeyInput();
 
 	//STATIC
-	const static std::map<RubicsCube::CubeFace, glm::vec3> NORMALS_OF_FACES;
+	const static std::map<int, glm::vec3> NORMALS_OF_FACES;
 
 	//DEGUB
 	LineRenderer d_lr;

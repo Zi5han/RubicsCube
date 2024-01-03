@@ -32,26 +32,29 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 			}
 		}
 	}
-	glm::vec2 d_scPos = m_inputSystem->GetScreenPosition();
-	glm::vec3 d_Point2Dto3D = m_inputSystem->ScreenToWorld(d_scPos);
-
-	d_lr.Render3D(
-		d_gameInterface->GetProjectionMatrix(),
-		d_gameInterface->GetViewMatrix(),
-		//glm::mat3_cast(m_modelRotation),
-		glm::mat3(1.0f),
-		glm::vec3(0.0f),
-		d_Point2Dto3D,
-		glm::vec3(1.0f, 0.0f, 0.0f));
-
+	//glm::vec2 d_scPos = m_inputSystem->GetScreenPosition();
+	//glm::vec3 d_Point2Dto3D = m_inputSystem->ScreenToWorld(d_scPos);
+	//
 	//d_lr.Render3D(
 	//	d_gameInterface->GetProjectionMatrix(),
 	//	d_gameInterface->GetViewMatrix(),
 	//	//glm::mat3_cast(m_modelRotation),
 	//	glm::mat3(1.0f),
 	//	glm::vec3(0.0f),
-	//	d_endPoint,
+	//	d_Point2Dto3D,
 	//	glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+	d_lr.Render3D(
+		d_gameInterface->GetProjectionMatrix(),
+		//glm::mat4(1.0f),
+		d_gameInterface->GetViewMatrix(),
+		//glm::mat3_cast(m_modelRotation),
+		glm::mat3(1.0f),
+		glm::vec3(0.0f),
+		//m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f))),
+		d_endPoint,
+		glm::vec3(1.0f, 0.0f, 0.0f));
 
 }
 
@@ -127,7 +130,7 @@ void RubicsCube::h_UpdateMouse() {
 					= glm::rotate(
 						glm::mat4(1.0f),
 						glm::radians(0.0f),
-						NORMALS_OF_FACES.at(static_cast<CubeFace>(m_activeFaceNormal))
+						NORMALS_OF_FACES.at(static_cast<int>(m_activeFaceNormal))
 					);
 				h_ForEachInSlice([&rotationMatrix](Cubie* cubie) {
 					cubie->m_visibleRotation = rotationMatrix;
@@ -201,7 +204,7 @@ void RubicsCube::h_DetermineClickedFace() {
 			intersectionPointInObjectSpace.z < -(planeOffset + 0.1f)))
 			continue;
 
-		m_clickedFace = normal.first;
+		m_clickedFace = static_cast<CubeFace>(normal.first);
 		m_facePlaneIntersectionPoint = intersectionPoint;
 		//d_endPoint = intersectionPointInObjectSpace;
 		//std::cout << m_clickedFace << ' ' <<
@@ -215,17 +218,28 @@ void RubicsCube::h_DetermineClickedFace() {
 void RubicsCube::h_DeltaRotateFace() {
 	// TODO: Fix Render2D and Debug this:
 	glm::vec2 deltaDragVector = m_inputSystem->GetScreenPosition() - m_previousScreenPosition;
-	glm::vec3 faceNormalInWorld
-		= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(static_cast<CubeFace>(m_activeFaceNormal));
-	glm::vec2 faceNormalInScreenSpace
-		= m_inputSystem->WorldToScreen(faceNormalInWorld);
 
-	float dotProduct = glm::dot(deltaDragVector, faceNormalInScreenSpace);
-	float scaleVecVecProjection
-		= glm::dot(deltaDragVector, faceNormalInScreenSpace) / glm::length(faceNormalInScreenSpace);
+	int activeFaceIndex = static_cast<int>(m_activeFaceNormal);
+	//glm::vec3 activeFaceNormalInWorld
+	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(activeFaceIndex);
+	int clickedFaceIndex = static_cast<int>(m_clickedFace) % 3;
+	//glm::vec3 clickedFaceNormalInWorld
+	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(clickedFaceIndex);
+	int dragFaceIndex = 3 - activeFaceIndex - clickedFaceIndex;
+	glm::vec3 dragNormalInWorld = glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(dragFaceIndex);
 
-	glm::vec2 projectedVector = scaleVecVecProjection * faceNormalInScreenSpace;
-	float deltaRotation = glm::length(scaleVecVecProjection * faceNormalInScreenSpace);
+	glm::vec2 dragNormalInScreenSpace
+		= m_inputSystem->WorldToScreen(dragNormalInWorld);
+
+	float scaleProjectedVector
+		= glm::dot(deltaDragVector, dragNormalInScreenSpace) / glm::length(dragNormalInScreenSpace);
+
+	float deltaRotation = glm::length(scaleProjectedVector * dragNormalInScreenSpace);
+
+	d_endPoint = dragNormalInWorld
+		//- m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f)))
+		;
+	d_endPoint.z = 17;
 
 	//d_endPoint = glm::vec3(faceNormalInScreenSpace * 10.0f, 0.0f);
 	//d_endPoint = glm::vec3(faceNormalInWorld * 10.0f);
@@ -237,17 +251,16 @@ void RubicsCube::h_DeltaRotateFace() {
 	//glm::vec2 wts = m_inputSystem->WorldToScreen(ori);
 	//d_endPoint = ori;
 	//d_endPoint = glm::vec3(m_inputSystem->WorldToScreen(ori), 0.0f);
-	d_endPoint = glm::vec3(m_inputSystem->GetScreenPosition(), 0.0f);
+	//d_endPoint = glm::vec3(m_inputSystem->GetScreenPosition(), 0.0f);
 	//d_endPoint = glm::vec3(faceNormalInScreenSpace / 100.0f, 0.0f);
 
-	if (dotProduct < 0)
-		deltaRotation *= -1;
+	
 
 	glm::mat4 rotationMatrix
 		= glm::rotate(
 			glm::mat4(1.0f),
 			glm::radians(deltaRotation),
-			NORMALS_OF_FACES.at(static_cast<CubeFace>(m_activeFaceNormal))
+			NORMALS_OF_FACES.at(static_cast<int>(m_activeFaceNormal))
 		);
 	h_ForEachInSlice([&rotationMatrix](Cubie* cubie) {
 		cubie->m_visibleRotation = cubie->m_visibleRotation * rotationMatrix;
@@ -315,8 +328,8 @@ void RubicsCube::h_DetermineActiveFace() {
 	//Hier wird die Normale in für die Rechnung rotiert, dannach wird die Rotation rückgängig gemacht
 	glm::intersectRayPlane(origin,
 		direction,
-		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(m_clickedFace) * (planeOffset),
-		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(m_clickedFace),
+		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(static_cast<int>(m_clickedFace)) * (planeOffset),
+		glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(static_cast<int>(m_clickedFace)),
 		intersectionDistance);
 	glm::vec3 currenIntersectionPointInObjectSpace =
 		glm::inverse(glm::mat3_cast(m_modelRotation)) * (origin + intersectionDistance * direction);
@@ -328,8 +341,8 @@ void RubicsCube::h_DetermineActiveFace() {
 	glm::vec3 dragDirection = currenIntersectionPointInObjectSpace - intersectionPointInObjectSpace;
 	glm::vec3 dragDirectionNormal = h_findClosestDirection(
 		dragDirection,
-		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormalIndex + 1) % 3)),
-		NORMALS_OF_FACES.at(static_cast<CubeFace>((positiveNormalIndex + 2) % 3)));
+		NORMALS_OF_FACES.at((positiveNormalIndex + 1) % 3),
+		NORMALS_OF_FACES.at((positiveNormalIndex + 2) % 3));
 
 	//d_endPoint = dragDirection * 10.0f;
 
@@ -397,11 +410,11 @@ void RubicsCube::h_UpdateAnimation() {
 }
 
 //STATIC
-const std::map<RubicsCube::CubeFace, glm::vec3> RubicsCube::NORMALS_OF_FACES = {
-	   {CubeFace::RIGHT_FACE,	glm::vec3(1.0f, 0.0f, 0.0f)},
-	   {CubeFace::TOP_FACE,		glm::vec3(0.0f, 1.0f, 0.0f)},
-	   {CubeFace::FRONT_FACE,	glm::vec3(0.0f, 0.0f, 1.0f)},
-	   {CubeFace::LEFT_FACE,	glm::vec3(-1.0f, 0.0f, 0.0f)},
-	   {CubeFace::BOTTOM_FACE,	glm::vec3(0.0f, -1.0f, 0.0f)},
-	   {CubeFace::BACK_FACE,	glm::vec3(0.0f, 0.0f, -1.0f)}
+const std::map<int, glm::vec3> RubicsCube::NORMALS_OF_FACES = {
+	   {0,	glm::vec3(1.0f, 0.0f, 0.0f)},
+	   {1,	glm::vec3(0.0f, 1.0f, 0.0f)},
+	   {2,	glm::vec3(0.0f, 0.0f, 1.0f)},
+	   {3,	glm::vec3(-1.0f, 0.0f, 0.0f)},
+	   {4,	glm::vec3(0.0f, -1.0f, 0.0f)},
+	   {5,	glm::vec3(0.0f, 0.0f, -1.0f)}
 };
