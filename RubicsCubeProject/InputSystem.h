@@ -21,11 +21,12 @@ public:
 	};
 
 	//GENERAL
-	void Initialize(GLFWwindow* window, const glm::mat4& viewProjection = glm::mat4(1.0f));
+	void Initialize(GLFWwindow* window,
+		const glm::mat4& projection = glm::mat4(1.0f), const glm::mat4& view = glm::mat4(1.0f));
 	void SetWindow(GLFWwindow* window) { m_window = window; }
 	void Update();
 	void ObserveKey(int key);
-	void SetViewProjection(const glm::mat4& viewProjection) { m_viewProjection = viewProjection; }
+	void SetViewProjection(const glm::mat4& projection, const glm::mat4& view);
 
 	//MOUSE
 	InputSystem::ClickState GetLeftClickState() const { return m_leftClickState; }
@@ -64,6 +65,8 @@ private:
 	glm::vec3 m_dragStartRayDirection;
 
 	glm::mat4 m_viewProjection;
+	glm::mat4 m_view;
+	glm::mat4 m_projection;
 
 	//HELPING METHODS
 	void h_UpdateClickState(MouseButton mouseButton, ClickState& clickState);

@@ -2,9 +2,9 @@
 #include <GLFW/glfw3.h>
 
 //GENERAL
-void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& viewProjection) {
+void InputSystem::Initialize(GLFWwindow* window, const glm::mat4& projection, const glm::mat4& view) {
 	SetWindow(window);
-	SetViewProjection(viewProjection);
+	SetViewProjection(projection, view);
 	glfwSetScrollCallback(window, scrollCallback);
 
 	m_activeMouseButton = NO_BUTTON;
@@ -29,6 +29,12 @@ void InputSystem::Update() {
 
 void InputSystem::ObserveKey(int key) {
 	m_keyMapper[key] = std::make_unique<KeyboardObserver>(KeyboardObserver(m_window, key));
+}
+
+void InputSystem::SetViewProjection(const glm::mat4& projection, const glm::mat4& view) {
+	m_viewProjection = projection * view;
+	m_projection = projection;
+	m_view = view;
 }
 
 //MOUSE

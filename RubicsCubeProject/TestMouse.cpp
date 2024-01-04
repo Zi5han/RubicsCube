@@ -37,5 +37,5 @@ void TestMouse::Update(double deltaTime) {
 		m_input.GetPickingRay(position, direction);
 		m_cubePosition = position + 9.0f * direction;
 	}
-	m_input.SetViewProjection(m_viewProjection);
+	//m_input.SetViewProjection(m_viewProjection); //BROKEN
 }
