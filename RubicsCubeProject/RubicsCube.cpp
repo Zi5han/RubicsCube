@@ -1,6 +1,7 @@
 #include "RubicsCube.h"
 #include "GameInterface.h"
 #include <glm/gtx/intersect.hpp>
+#include <iomanip>
 
 void RubicsCube::Initialize(const GameInterface& gameInterface) {
 	m_cubieRenderer.Initialize();
@@ -228,7 +229,8 @@ void RubicsCube::h_DeltaRotateFace() {
 
 	//Index of the Normal that is not active nor clicked
 	int dragFaceIndex = 3 - activeFaceIndex - clickedFaceIndex;
-	glm::vec3 dragNormalInWorld = glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(dragFaceIndex);
+	glm::vec3 dragNormalInWorld
+		= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(dragFaceIndex);
 
 	glm::vec2 dragNormalInScreenSpace
 		= m_inputSystem->WorldToScreen(dragNormalInWorld)
@@ -242,9 +244,62 @@ void RubicsCube::h_DeltaRotateFace() {
 	if (scaleProjectedVector < 0)
 		deltaRotation *= -1;
 
-	glm::mat4 localAxes = glm::mat4_cast(m_modelRotation); // Eigentlich view * model, aber ich bewege die Kamera nicht :P
+	//glm::vec3 localAxes
+	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(static_cast<int>(m_activeFaceNormal));
+	//
+	//float localAxes_max = 0;
+	//int localAxes_max_index = 0;
+	//for (int i = 0; i < 3; i++) {
+	//	if (localAxes[i] > localAxes_max) {
+	//		localAxes_max = localAxes[i];
+	//		localAxes_max_index = i;
+	//	}
+	//}
+	//std::cout << "\r";
+	//std::cout << std::fixed << std::setprecision(4) << std::setw(8) << localAxes_max_index; // Setzt die Breite jedes Elements auf 5
+	//std::cout << "\n";
+	//
+	//
+	//std::cout << "\r";
+	//for (int i = 0; i < 3; ++i) {
+	//	std::cout << std::fixed << std::setprecision(4) << std::setw(8) << localAxes[i]; // Setzt die Breite jedes Elements auf 5
+	//	std::cout << "\n";
+	//}
+	//
+	//std::cout << "\r";
+	//for (int i = 0; i < 3; ++i) {
+	//	for (int j = 0; j < 3; ++j) {
+	//		std::cout << std::fixed << std::setprecision(4) << std::setw(8) << glm::mat3_cast(m_modelRotation)[i][j]; // Setzt die Breite jedes Elements auf 5
+	//	}
+	//	std::cout << "\n";
+	//}
 
-
+	// Nicht schön
+	if (m_clickedFace == CubeFace::RIGHT_FACE) {
+		if (m_activeFaceNormal == Axis::Y)
+			deltaRotation *= -1;
+	}
+	else if (m_clickedFace == CubeFace::TOP_FACE) {
+		if (m_activeFaceNormal == Axis::Z)
+			deltaRotation *= -1;
+	}
+	else if (m_clickedFace == CubeFace::FRONT_FACE)
+	{
+		if (m_activeFaceNormal == Axis::X)
+			deltaRotation *= -1;
+	}
+	else if (m_clickedFace == CubeFace::LEFT_FACE) {
+		if (m_activeFaceNormal == Axis::Z)
+			deltaRotation *= -1;
+	}
+	else if (m_clickedFace == CubeFace::BOTTOM_FACE) {
+		if (m_activeFaceNormal == Axis::X)
+			deltaRotation *= -1;
+	}
+	else if (m_clickedFace == CubeFace::BACK_FACE) {
+		if (m_activeFaceNormal == Axis::Y)
+			deltaRotation *= -1;
+	}
 
 	glm::mat4 rotationMatrix
 		= glm::rotate(
