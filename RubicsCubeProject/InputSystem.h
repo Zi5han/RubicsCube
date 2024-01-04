@@ -41,8 +41,8 @@ public:
 
 	//KEYBOARD
 	bool IsKeyDown(int key) const { return m_keyMapper[key]->m_isDown; }
-	bool WasKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; }
-	bool WasKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; }
+	bool IsKeyPressed(int key) const { return m_keyMapper[key]->m_wasPressed; }
+	bool IsKeyReleased(int key) const { return m_keyMapper[key]->m_wasReleased; }
 	MouseButton GetActiveMouseButton() const { return m_activeMouseButton; }
 
 	//HELPING METHODS

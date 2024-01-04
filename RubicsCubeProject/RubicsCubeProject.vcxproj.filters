@@ -54,9 +54,6 @@
     <ClCompile Include="TestSound.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TestMouse.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="LineRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="TestSound.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestMouse.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="LineRenderer.h">

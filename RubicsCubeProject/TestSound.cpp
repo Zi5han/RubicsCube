@@ -9,6 +9,6 @@ void TestSound::Initialize(GLFWwindow* window) {
 
 void TestSound::Update(double deltaTime) {
 	m_input.Update();
-	if (m_input.WasKeyPressed(GLFW_KEY_SPACE))
+	if (m_input.IsKeyPressed(GLFW_KEY_SPACE))
 		PlaySound(TEXT("Hammer.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }

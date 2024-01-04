@@ -58,47 +58,56 @@ public:
 	void ClearResources();
 
 private:
+	//INPUT 
+	void i_UpdateMouse();
+	void i_UpdateKeyInput();
+
+	//CUBE
+	void c_RotateCube();
+
+	//FACE ROTATION
+	void fr_DetermineClickedFace();
+	void fr_DetermineActiveFace();
+	glm::vec3 fr_findClosestDirection(const glm::vec3& referenceDirection, const glm::vec3& vectorU, const glm::vec3& vectorV);
+	void fr_DeltaRotateFace();
+
+	//ANIMATION
+	void a_StartSnappingAnimation();
+	void a_UpdateAnimation();
+	void a_NormalizeDegree();
+
+	//OTHER HELPING METHODS
+	template<typename Func>
+	void h_ForEachInSlice(Func func);
+
+private:
 	//COMPONENTS
 	CubieRenderer m_cubieRenderer;
-	const InputSystem* m_inputSystem;
-
-	//CACHE
-	glm::vec2 m_previousScreenPosition;
+	const InputSystem* m_input;
 
 	//CUBE
 	glm::quat m_modelRotation;
 	std::array <std::array <std::array <Cubie*, 3>, 3>, 3> m_grid;
-	void h_RotateCube();
 
 	//FACE ROTATION
-	CubeFace m_clickedFace = CubeFace::UNSET_FACE;
+	//std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
 
-	Axis m_activeFaceNormal = Axis::UNSET_AXIS;
-	int m_xSliceIndex = 0;
-	int m_ySliceIndex = 0;
-	int m_zSliceIndex = 0;
+	CubeFace m_fr_clickedFace = CubeFace::UNSET_FACE;
 
-	std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
-	glm::vec3 m_facePlaneIntersectionPoint;
-	void h_DeltaRotateFace();
+	Axis m_fr_activeFaceNormal = Axis::UNSET_AXIS;
+	int m_fr_xSliceIndex = 0;
+	int m_fr_ySliceIndex = 0;
+	int m_fr_zSliceIndex = 0;
 
-	typedef void (*CubieFunction)(Cubie*);
-
-	template<typename Func>
-	void h_ForEachInSlice(Func func);
-
-	void h_DetermineClickedFace();
-	void h_DetermineActiveFace();
-	glm::vec3 h_findClosestDirection(const glm::vec3& referenceDirection, const glm::vec3& vectorU, const glm::vec3& vectorV);
-
+	glm::vec3 m_fr_facePlaneIntersectionPoint;
 
 	//ANIMATION
-	AnimationState m_animationState = AnimationState::STABLE;
-	void h_UpdateAnimation();
+	AnimationState m_a_animationState = AnimationState::STABLE;
+	float m_a_totalFaceRotationDegree;
+	std::array<std::array<glm::mat4, 3>, 3> m_a_oldSnappedRotation;
 
-	//INPUT 
-	void h_UpdateMouse();
-	void h_UpdateKeyInput();
+	//CACHE
+	glm::vec2 m_previousScreenPosition;
 
 	//STATIC
 	const static std::map<int, glm::vec3> NORMALS_OF_FACES;

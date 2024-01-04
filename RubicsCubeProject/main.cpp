@@ -7,7 +7,6 @@
 #include "TestTriangle.h"
 #include "TestCubie.h"
 #include "TestKey.h"
-#include "TestMouse.h"
 #include "TestCompoundCube.h"
 #include "GameInterface.h"
 
@@ -20,7 +19,6 @@ AbstractGameInterface gDummyTest;
 TestTriangle gTestTriangle;
 TestCubie gTestCubie;
 TestKey gTestKey;
-TestMouse gTestMouse;
 TestCompoundCube gCompoundCube;
 GameInterface gameInterface;
 

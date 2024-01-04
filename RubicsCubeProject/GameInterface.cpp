@@ -8,6 +8,8 @@ void GameInterface::Initialize(GLFWwindow* window) {
 
 	// Initialize components
 	m_rubicsCube.Initialize(*this);
+
+	m_input.ObserveKey(GLFW_KEY_SPACE);
 }
 
 void GameInterface::RenderInterface(float aspectRatio) {
