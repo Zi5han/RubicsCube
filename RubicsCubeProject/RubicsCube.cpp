@@ -368,7 +368,7 @@ void RubicsCube::fr_DeltaRotateFace() {
 			NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal))
 		);
 	h_ForEachInSlice([&rotationMatrix](Cubie* cubie, int index) {
-		cubie->m_visibleRotation = cubie->m_visibleRotation * rotationMatrix;
+		cubie->m_visibleRotation *= rotationMatrix;
 		});
 	m_a_totalFaceRotationDegree += deltaRotation * 10.0f;
 }
@@ -396,7 +396,6 @@ glm::vec3 RubicsCube::fr_findClosestDirection(const glm::vec3& referenceDirectio
 }
 
 //ANIMATION
-
 void RubicsCube::a_StartSnappingAnimation() {
 	// Normalize total face rotation degree
 	while (m_a_totalFaceRotationDegree > 360)
@@ -412,24 +411,20 @@ void RubicsCube::a_StartSnappingAnimation() {
 		m_a_totalFaceRotationDegree = 180.0f;
 	else if (m_a_totalFaceRotationDegree < 315.0f)
 		m_a_totalFaceRotationDegree = 270.0f;
-	else
-		m_a_totalFaceRotationDegree = 0.0f;
 
 	glm::mat4 totalSnappedRotation
 		= glm::rotate(glm::mat4(1.0f),
 			glm::radians(m_a_totalFaceRotationDegree),
 			NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal) % 3));
 
-	std::array<std::array<glm::mat4, 3>, 3> oldSnappedRotation;
+	std::array<std::array<glm::mat4, 3>, 3> oldVisibleRotation;
 
-	h_ForEachInSlice([&totalSnappedRotation, &oldSnappedRotation](Cubie* cubie, int index) {
+	h_ForEachInSlice([&totalSnappedRotation, &oldVisibleRotation](Cubie* cubie, int index) {
 		cubie->m_snapedRotation *= totalSnappedRotation;
 		//cubie->m_visibleRotation = cubie->m_snapedRotation; //DEBUG
-		oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_visibleRotation; oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_snapedRotation;
+		oldVisibleRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_visibleRotation;
 		}
 	);
-
-	m_a_totalFaceRotationDegree = 0;
 
 	//DEBUG
 	std::array<std::array<int, 3>, 3> numbers;
@@ -438,23 +433,89 @@ void RubicsCube::a_StartSnappingAnimation() {
 		}
 	);
 
-	std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
-			std::cout << std::fixed << std::setprecision(4) << std::setw(8) << numbers[i][j]; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
-		}
-		std::cout << "\n";
-	}
+	//std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
+	//for (int i = 0; i < 3; ++i) {
+	//	for (int j = 0; j < 3; ++j) {
+	//		std::cout << std::fixed << std::setprecision(4) << std::setw(8) << numbers[i][j]; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
+	//	}
+	//	std::cout << "\n";
+	//}
 }
 
 void RubicsCube::a_UpdateAnimation() {
-	m_a_animationState = AnimationState::STABLE;
+	//if (1 - m_animationTickCounter <= 0.001f)
+	if (true)
+	{
+		h_ForEachInSlice([](Cubie* cubie, int index) {
+			cubie->m_visibleRotation = cubie->m_snapedRotation;
+			}
+		);
+
+		//Update Grid
+		int rotationCount = 0;
+		if (m_a_totalFaceRotationDegree == 90)
+			rotationCount = 1;
+		if (m_a_totalFaceRotationDegree == 180)
+			rotationCount = 2;
+		if (m_a_totalFaceRotationDegree == 270)
+			rotationCount = 3;
+
+		for (int i = 0; i < rotationCount; i++) {
+			std::array<std::array<Cubie*, 3>, 3> newFace;
+
+			h_ForEachInSlice([&newFace](Cubie* cubie, int index) {
+				newFace[static_cast<int>(index / 3)][index % 3] = cubie;
+				}
+			);
+
+			std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					std::cout << std::fixed << std::setprecision(4)
+						<< std::setw(8) << newFace[i][j]->m_number; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
+				}
+				std::cout << "\n";
+			}
+
+			//Transpose
+			std::array<std::array<Cubie*, 3>, 3> transposeFace;
+			for (int row = 0; row < 3; row++)
+				for (int col = 0; col < 3; col++)
+					transposeFace[row][col] = newFace[col][row];
+
+			//Zeilen invertieren
+			std::array<std::array<Cubie*, 3>, 3> transposeRowInvertedFace;
+			for (int row = 0; row < 3; row++)
+				for (int col = 0; col < 3; col++)
+					transposeRowInvertedFace[row][2 - col] = transposeFace[row][col];
+
+			h_ForEachInSlice([&transposeRowInvertedFace](Cubie*& cubie, int index) {
+				cubie = transposeRowInvertedFace[static_cast<int>(index / 3)][index % 3];
+				}
+			);
+		}
+
+		m_fr_clickedFace = CubeFace::UNSET_FACE;
+
+		m_fr_activeFaceNormal = Axis::UNSET_AXIS;
+		m_fr_xSliceIndex = 0;
+		m_fr_ySliceIndex = 0;
+		m_fr_zSliceIndex = 0;
+
+		m_animationTickCounter = 0;
+		m_a_totalFaceRotationDegree = 0;
+
+		m_a_animationState = AnimationState::STABLE;
+		return;
+	}
+
 }
 
 //OTHER HELPING METHODS
 // Erwartet void (Cubie* cubie, int index) 
 template<typename Func>
 void RubicsCube::h_ForEachInSlice(Func func) {
+	int index = 0;
 	switch (m_fr_activeFaceNormal) {
 	case Axis::X:
 		//
@@ -470,7 +531,8 @@ void RubicsCube::h_ForEachInSlice(Func func) {
 		//
 		for (int i = 2; i >= 0; i--) {
 			for (int j = 2; j >= 0; j--) {
-				func(m_grid[m_fr_xSliceIndex][i][j], i * 3 + j);
+				func(m_grid[m_fr_xSliceIndex][i][j], index);
+				index++;
 			}
 		}
 		break;
@@ -489,7 +551,8 @@ void RubicsCube::h_ForEachInSlice(Func func) {
 		//
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				func(m_grid[i][m_fr_ySliceIndex][j], i * 3 + j);
+				func(m_grid[i][m_fr_ySliceIndex][j], index);
+				index++;
 			}
 		}
 		break;
@@ -508,7 +571,8 @@ void RubicsCube::h_ForEachInSlice(Func func) {
 		//
 		for (int i = 2; i >= 0; i--) {
 			for (int j = 0; j < 3; ++j) {
-				func(m_grid[i][j][m_fr_zSliceIndex], i * 3 + j);
+				func(m_grid[i][j][m_fr_zSliceIndex], index);
+				index++;
 			}
 		}
 		break;

@@ -104,6 +104,7 @@ private:
 	AnimationState m_a_animationState = AnimationState::STABLE;
 	float m_a_totalFaceRotationDegree;
 	std::array<std::array<glm::mat4, 3>, 3> m_a_oldSnappedRotation;
+	int m_animationTickCounter;
 
 	//CACHE
 	glm::vec2 m_previousScreenPosition;
