@@ -404,6 +404,34 @@ void RubicsCube::a_StartSnappingAnimation() {
 	while (m_a_totalFaceRotationDegree < 0)
 		m_a_totalFaceRotationDegree += 360;
 
+	if (m_a_totalFaceRotationDegree < 45.0f)
+		m_a_totalFaceRotationDegree = 0.0f;
+	else if (m_a_totalFaceRotationDegree < 135.0f)
+		m_a_totalFaceRotationDegree = 90.0f;
+	else if (m_a_totalFaceRotationDegree < 225.0f)
+		m_a_totalFaceRotationDegree = 180.0f;
+	else if (m_a_totalFaceRotationDegree < 315.0f)
+		m_a_totalFaceRotationDegree = 270.0f;
+	else
+		m_a_totalFaceRotationDegree = 0.0f;
+
+	glm::mat4 totalSnappedRotation
+		= glm::rotate(glm::mat4(1.0f),
+			glm::radians(m_a_totalFaceRotationDegree),
+			NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal) % 3));
+
+	std::array<std::array<glm::mat4, 3>, 3> oldSnappedRotation;
+
+	h_ForEachInSlice([&totalSnappedRotation, &oldSnappedRotation](Cubie* cubie, int index) {
+		cubie->m_snapedRotation *= totalSnappedRotation;
+		//cubie->m_visibleRotation = cubie->m_snapedRotation; //DEBUG
+		oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_visibleRotation; oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_snapedRotation;
+		}
+	);
+
+	m_a_totalFaceRotationDegree = 0;
+
+	//DEBUG
 	std::array<std::array<int, 3>, 3> numbers;
 	h_ForEachInSlice([&numbers](Cubie* cubie, int index) {
 		numbers[static_cast<int>(index / 3)][index % 3] = cubie->m_number;
@@ -417,13 +445,6 @@ void RubicsCube::a_StartSnappingAnimation() {
 		}
 		std::cout << "\n";
 	}
-
-	//std::array<std::array<glm::mat4, 3>, 3> oldSnappedRotation;
-	//h_ForEachInSlice([&oldSnappedRotation](Cubie* cubie, int index) {
-	//	oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_snapedRotation;
-	//	}
-	//);
-
 }
 
 void RubicsCube::a_UpdateAnimation() {
