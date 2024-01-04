@@ -74,7 +74,6 @@ private:
 	//ANIMATION
 	void a_StartSnappingAnimation();
 	void a_UpdateAnimation();
-	void a_NormalizeDegree();
 
 	//OTHER HELPING METHODS
 	template<typename Func>

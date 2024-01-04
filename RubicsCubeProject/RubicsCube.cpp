@@ -9,11 +9,11 @@ void RubicsCube::Initialize(const GameInterface& gameInterface) {
 
 	float offset = m_cubieRenderer.GetCubieExtention();
 
-	for (int z = 0; z < 3; z++)
+	for (int x = 0; x < 3; x++)
 		for (int y = 0; y < 3; y++)
-			for (int x = 0; x < 3; x++) {
+			for (int z = 0; z < 3; z++) {
 				m_grid[x][y][z] = new Cubie;
-				m_grid[x][y][z]->m_number = x + y + z;
+				m_grid[x][y][z]->m_number = (x * 3 * 3) + (y * 3) + z;
 				m_grid[x][y][z]->m_position = glm::vec3((x - 1) * offset, (y - 1) * offset, (z - 1) * offset);
 			}
 	m_input = &gameInterface.GetInputComponent();
@@ -108,7 +108,7 @@ void RubicsCube::i_UpdateMouse() {
 				//		glm::radians(0.0f),
 				//		NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal))
 				//	);
-				//h_ForEachInSlice([&rotationMatrix](Cubie* cubie) {
+				//h_ForEachInSlice([&rotationMatrix](Cubie* cubie) { //BROKEN
 				//	cubie->m_visibleRotation = rotationMatrix;
 				//	});
 				a_StartSnappingAnimation();
@@ -367,7 +367,7 @@ void RubicsCube::fr_DeltaRotateFace() {
 			glm::radians(deltaRotation * 10.0f),
 			NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal))
 		);
-	h_ForEachInSlice([&rotationMatrix](Cubie* cubie) {
+	h_ForEachInSlice([&rotationMatrix](Cubie* cubie, int index) {
 		cubie->m_visibleRotation = cubie->m_visibleRotation * rotationMatrix;
 		});
 	m_a_totalFaceRotationDegree += deltaRotation * 10.0f;
@@ -398,6 +398,31 @@ glm::vec3 RubicsCube::fr_findClosestDirection(const glm::vec3& referenceDirectio
 //ANIMATION
 
 void RubicsCube::a_StartSnappingAnimation() {
+	// Normalize total face rotation degree
+	while (m_a_totalFaceRotationDegree > 360)
+		m_a_totalFaceRotationDegree -= 360;
+	while (m_a_totalFaceRotationDegree < 0)
+		m_a_totalFaceRotationDegree += 360;
+
+	std::array<std::array<int, 3>, 3> numbers;
+	h_ForEachInSlice([&numbers](Cubie* cubie, int index) {
+		numbers[static_cast<int>(index / 3)][index % 3] = cubie->m_number;
+		}
+	);
+
+	std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			std::cout << std::fixed << std::setprecision(4) << std::setw(8) << numbers[i][j]; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
+		}
+		std::cout << "\n";
+	}
+
+	//std::array<std::array<glm::mat4, 3>, 3> oldSnappedRotation;
+	//h_ForEachInSlice([&oldSnappedRotation](Cubie* cubie, int index) {
+	//	oldSnappedRotation[static_cast<int>(index / 3)][index % 3] = cubie->m_snapedRotation;
+	//	}
+	//);
 
 }
 
@@ -405,36 +430,68 @@ void RubicsCube::a_UpdateAnimation() {
 	m_a_animationState = AnimationState::STABLE;
 }
 
-void RubicsCube::a_NormalizeDegree()
-{
-}
-
 //OTHER HELPING METHODS
-// Erwartet eine 
+// Erwartet void (Cubie* cubie, int index) 
 template<typename Func>
 void RubicsCube::h_ForEachInSlice(Func func) {
 	switch (m_fr_activeFaceNormal) {
 	case Axis::X:
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				func(m_grid[m_fr_xSliceIndex][i][j]);
+		//
+		//              Y
+		//              ^
+		//    [0][0]    |    [0][2]
+		//          +---|---+
+		//          |   |   |
+		//  Z   <-------+   |
+		//          |       |
+		//          +-------+
+		//    [2][0]         [2][2]
+		//
+		for (int i = 2; i >= 0; i--) {
+			for (int j = 2; j >= 0; j--) {
+				func(m_grid[m_fr_xSliceIndex][i][j], i * 3 + j);
 			}
 		}
 		break;
+
 	case Axis::Y:
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				func(m_grid[i][m_fr_ySliceIndex][j]);
+		//
+		//    [0][0]         [0][2]
+		//          +-------+
+		//          |       |
+		//          |   +-------> X
+		//          |   |   |
+		//          +---|---+
+		//    [2][0]    |    [2][2]
+		//              V
+		//              Z
+		//
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				func(m_grid[i][m_fr_ySliceIndex][j], i * 3 + j);
 			}
 		}
 		break;
+
 	case Axis::Z:
-		for (int i = 0; i < 3; ++i) {
+		//
+		//              Y
+		//              ^
+		//    [0][0]    |    [0][2]
+		//          +---|---+
+		//          |   |   |
+		//          |   +-------> X
+		//          |       |
+		//          +-------+
+		//    [2][0]         [2][2]
+		//
+		for (int i = 2; i >= 0; i--) {
 			for (int j = 0; j < 3; ++j) {
-				func(m_grid[i][j][m_fr_zSliceIndex]);
+				func(m_grid[i][j][m_fr_zSliceIndex], i * 3 + j);
 			}
 		}
 		break;
+
 	default:
 		//ERROR
 		break;
