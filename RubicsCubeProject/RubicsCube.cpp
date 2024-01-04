@@ -50,10 +50,10 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 		d_gameInterface->GetProjectionMatrix(),
 		//glm::mat4(1.0f),
 		d_gameInterface->GetViewMatrix(),
-		glm::mat3_cast(m_modelRotation),
-		//glm::mat3(1.0f),
-		//glm::vec3(1.0f),
-		start,
+		//glm::mat3_cast(m_modelRotation),
+		glm::mat3(1.0f),
+		glm::vec3(0.0f),
+		//start,
 		d_endPoint,
 		glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -217,7 +217,6 @@ void RubicsCube::h_DetermineClickedFace() {
 }
 
 void RubicsCube::h_DeltaRotateFace() {
-	// TODO: Fix Render2D and Debug this:
 	glm::vec2 deltaDragVector = m_inputSystem->GetScreenPosition() - m_previousScreenPosition;
 
 	int activeFaceIndex = static_cast<int>(m_activeFaceNormal);
@@ -226,41 +225,31 @@ void RubicsCube::h_DeltaRotateFace() {
 	int clickedFaceIndex = static_cast<int>(m_clickedFace) % 3;
 	//glm::vec3 clickedFaceNormalInWorld
 	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(clickedFaceIndex);
+
+	//Index of the Normal that is not active nor clicked
 	int dragFaceIndex = 3 - activeFaceIndex - clickedFaceIndex;
 	glm::vec3 dragNormalInWorld = glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(dragFaceIndex);
 
 	glm::vec2 dragNormalInScreenSpace
-		= m_inputSystem->WorldToScreen(dragNormalInWorld);
+		= m_inputSystem->WorldToScreen(dragNormalInWorld)
+		- m_inputSystem->WorldToScreen(glm::vec3(0.0f));
 
 	float scaleProjectedVector
 		= glm::dot(deltaDragVector, dragNormalInScreenSpace) / glm::length(dragNormalInScreenSpace);
 
 	float deltaRotation = glm::length(scaleProjectedVector * dragNormalInScreenSpace);
 
-	//d_endPoint = m_inputSystem->ScreenToWorld(m_inputSystem->NormalizeScreenVector(deltaDragVector));
-	//	//- m_inputSystem->ScreenToWorld(m_inputSystem->WorldToScreen(glm::vec3(0.0f)))
-	//	;
+	if (scaleProjectedVector < 0)
+		deltaRotation *= -1;
+
+	glm::mat4 localAxes = glm::mat4_cast(m_modelRotation); // Eigentlich view * model, aber ich bewege die Kamera nicht :P
 
 
-	//d_endPoint = glm::vec3(faceNormalInScreenSpace * 10.0f, 0.0f);
-	//d_endPoint = glm::vec3(faceNormalInWorld * 10.0f);
-	//d_endPoint = glm::vec3(faceNormalInScreenSpace * 10.0f, 0.0f);
-
-	//DEBUG
-	//glm::vec3 ori, dir;
-	//m_inputSystem->GetPickingRay(ori, dir);
-	//glm::vec2 wts = m_inputSystem->WorldToScreen(ori);
-	//d_endPoint = ori;
-	//d_endPoint = glm::vec3(m_inputSystem->WorldToScreen(ori), 0.0f);
-	//d_endPoint = glm::vec3(m_inputSystem->GetScreenPosition(), 0.0f);
-	//d_endPoint = glm::vec3(faceNormalInScreenSpace / 100.0f, 0.0f);
-
-	
 
 	glm::mat4 rotationMatrix
 		= glm::rotate(
 			glm::mat4(1.0f),
-			glm::radians(deltaRotation),
+			glm::radians(deltaRotation * 10.0f),
 			NORMALS_OF_FACES.at(static_cast<int>(m_activeFaceNormal))
 		);
 	h_ForEachInSlice([&rotationMatrix](Cubie* cubie) {
@@ -293,7 +282,7 @@ void RubicsCube::h_ForEachInSlice(Func func) {
 		}
 		break;
 	default:
-		// Handle error
+		//ERROR
 		break;
 	}
 }
