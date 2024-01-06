@@ -426,8 +426,7 @@ void RubicsCube::a_UpdateAnimation(float deltaTime) {
 			= glm::mat4_cast(
 				glm::slerp(this->m_a_oldVisibleRotations[static_cast<int>(index / 3)][index % 3],
 					glm::quat_cast(cubie->m_snapedRotation),
-					m_a_tickCounter)
-			);
+					m_a_tickCounter));
 		}
 	);
 

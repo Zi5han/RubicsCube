@@ -57,18 +57,6 @@ void CubieRenderer::Initialize() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 
-	//// UV (here might be bugs, cuz UV has only 2 coords, while other fileds have 3)
-	//glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[2]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * uvField.size(), uvField.data(), GL_STATIC_DRAW);
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(2);
-
-	//// Normal
-	//glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObject[3]);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * uvField.size(), uvField.data(), GL_STATIC_DRAW);
-	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(3);
-
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -93,6 +81,5 @@ void CubieRenderer::ClearResources() {
 }
 
 float CubieRenderer::GetCubieExtention() {
-	//damit die Luecken zwischen den Minicubies erscheinen.
 	return 2.0f;
 }

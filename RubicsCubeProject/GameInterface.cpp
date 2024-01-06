@@ -28,7 +28,7 @@ void GameInterface::RenderInterface(float aspectRatio) {
 }
 
 void GameInterface::Update(double deltaTime) {
-	m_deltaTime = deltaTime;
+	m_deltaTime = static_cast<float>(deltaTime);
 
 	m_input.Update();
 

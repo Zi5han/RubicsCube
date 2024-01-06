@@ -21,40 +21,16 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TestGlm.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TestTriangle.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="ShaderUtil.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TestCubie.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="CubieRenderer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCompoundCube.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleCubieRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardObserver.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TestKey.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="TestSound.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="LineRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="OBJModel.cpp">
@@ -74,40 +50,16 @@
     <ClInclude Include="AbstractGameInterface.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="TestGlm.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestTriangle.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderUtil.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="TestCubie.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="CubieRenderer.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCompoundCube.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleCubieRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardObserver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestKey.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSound.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="LineRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="VertexStructs.h">
@@ -124,9 +76,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="VShader.glsl">
-      <Filter>Shader</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="FColor.glsl">
       <Filter>Shader</Filter>
     </CopyFileToFolders>
@@ -143,15 +92,6 @@
     <CopyFileToFolders Include="Cube.obj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FShader.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="VLine.glsl">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="FLine.glsl">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="rubics_rotate_sfx.wav">
       <Filter>Ressourcendateien</Filter>
     </None>

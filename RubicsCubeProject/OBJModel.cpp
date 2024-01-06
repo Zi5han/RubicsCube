@@ -76,18 +76,15 @@ const std::vector<Vertex>& OBJModel::GetVertexData() {
 	return m_Vertices;
 }
 
-const std::vector<Triangle>& OBJModel::GetTrianglesData()
-{
+const std::vector<Triangle>& OBJModel::GetTrianglesData() {
 	return m_Faces;
 }
 
-ColorValue& OBJModel::getColorValue(const std::string& key)
-{
+ColorValue& OBJModel::getColorValue(const std::string& key) {
 	return m_MaterialMap[key];
 }
 
-const int OBJModel::getVertexAmount()
-{
+const int OBJModel::getVertexAmount() {
 	return m_vertexAmount;
 }
 
