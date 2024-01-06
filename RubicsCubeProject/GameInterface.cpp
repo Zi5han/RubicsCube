@@ -28,6 +28,8 @@ void GameInterface::RenderInterface(float aspectRatio) {
 }
 
 void GameInterface::Update(double deltaTime) {
+	m_deltaTime = deltaTime;
+
 	m_input.Update();
 
 	// Update components
@@ -39,7 +41,7 @@ void GameInterface::Update(double deltaTime) {
 		m_radius = 10;
 	if (m_radius > 40)
 		m_radius = 40;
-	m_recalculationNeeded = true;
+	QueueMatrixRecalculation();
 }
 
 void GameInterface::ClearResources() {

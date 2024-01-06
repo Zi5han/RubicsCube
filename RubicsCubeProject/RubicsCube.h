@@ -39,19 +39,6 @@ public:
 		BACK_FACE = 5
 	};
 
-	enum class CubeSlice {
-		UNSET_SLICE = -1,
-		RIGHT_SLICE = 0,
-		TOP_SLICE = 1,
-		FRONT_SLICE = 2,
-		LEFT_SLICE = 3,
-		BOTTOM_SLICE = 4,
-		BACK_SLICE = 5,
-		X_MID_SLICE = 6,
-		Y_MID_SLICE = 7,
-		Z_MID_SLICE = 8
-	};
-
 	void Initialize(const GameInterface& gameInterface);
 	void Render(const glm::mat4& viewProjection);
 	void Update(const GameInterface& gameInterface);
@@ -73,7 +60,7 @@ private:
 
 	//ANIMATION
 	void a_StartSnappingAnimation();
-	void a_UpdateAnimation();
+	void a_UpdateAnimation(float deltaTime);
 
 	//OTHER HELPING METHODS
 	template<typename Func>
@@ -89,8 +76,6 @@ private:
 	std::array <std::array <std::array <Cubie*, 3>, 3>, 3> m_grid;
 
 	//FACE ROTATION
-	//std::array<std::array<Cubie*, 3>, 3> m_activeFaceSliceArray;
-
 	CubeFace m_fr_clickedFace = CubeFace::UNSET_FACE;
 
 	Axis m_fr_activeFaceNormal = Axis::UNSET_AXIS;
@@ -103,8 +88,8 @@ private:
 	//ANIMATION
 	AnimationState m_a_animationState = AnimationState::STABLE;
 	float m_a_totalFaceRotationDegree;
-	std::array<std::array<glm::mat4, 3>, 3> m_a_oldSnappedRotation;
-	int m_animationTickCounter;
+	std::array<std::array<glm::quat, 3>, 3> m_a_oldVisibleRotations;
+	float m_animationTickCounter;
 
 	//CACHE
 	glm::vec2 m_previousScreenPosition;

@@ -17,6 +17,7 @@ public:
 	const glm::mat4& GetProjectionMatrix() const { return m_projection; }
 	const glm::mat4& GetViewMatrix() const { return m_view; }
 	GLFWwindow* GetWindow() const { return m_window; }
+	float GetDeltaTime() const { return m_deltaTime; }
 
 	void QueueMatrixRecalculation() const { m_recalculationNeeded = true; }
 
@@ -27,6 +28,7 @@ private:
 	mutable GLFWwindow* m_window;
 
 	float m_aspectRatio;
+	float m_deltaTime;
 
 	mutable bool m_recalculationNeeded;
 	float m_radius;
