@@ -2,10 +2,11 @@
 #include "GameInterface.h"
 #include <glm/gtx/intersect.hpp>
 #include <iomanip>
+#define NOMINMAX
+#include <windows.h>
 
 void RubicsCube::Initialize(const GameInterface& gameInterface) {
 	m_cubieRenderer.Initialize();
-	d_lr.Initialize();
 
 	float offset = m_cubieRenderer.GetCubieExtention();
 
@@ -35,15 +36,11 @@ void RubicsCube::Render(const glm::mat4& viewProjection) {
 }
 
 void RubicsCube::Update(const GameInterface& gameInterface) {
-	//Animation
 	if (m_a_animationState == AnimationState::SNAPING) {
 		a_UpdateAnimation(gameInterface.GetDeltaTime());
 	}
 
-	d_gameInterface = &gameInterface;
-
 	i_UpdateMouse();
-	i_UpdateKeyInput();
 
 	m_previousScreenPosition = m_input->GetScreenPosition();
 }
@@ -101,16 +98,8 @@ void RubicsCube::i_UpdateMouse() {
 
 		case InputSystem::RELEASE:
 			if (m_a_animationState == AnimationState::ROTATING) {
-				//glm::mat4 rotationMatrix
-				//	= glm::rotate(
-				//		glm::mat4(1.0f),
-				//		glm::radians(0.0f),
-				//		NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal))
-				//	);
-				//h_ForEachInSlice([&rotationMatrix](Cubie* cubie) { //BROKEN
-				//	cubie->m_visibleRotation = rotationMatrix;
-				//	});
 				a_StartSnappingAnimation();
+				PlaySound(TEXT("rubics_rotate_sfx.wav"), NULL, SND_FILENAME | SND_ASYNC);
 				m_a_animationState = AnimationState::SNAPING;
 			}
 			break;
@@ -122,11 +111,6 @@ void RubicsCube::i_UpdateMouse() {
 			c_RotateCube();
 		}
 	}
-}
-
-void RubicsCube::i_UpdateKeyInput() {
-	if (m_input->IsKeyReleased(GLFW_KEY_SPACE))
-		m_modelRotation = glm::quat(1.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 //CUBE
@@ -182,11 +166,6 @@ void RubicsCube::fr_DetermineClickedFace() {
 
 		m_fr_clickedFace = static_cast<CubeFace>(normal.first);
 		m_fr_facePlaneIntersectionPoint = intersectionPoint;
-		//d_endPoint = intersectionPointInObjectSpace;
-		//std::cout << m_fr_clickedFace << ' ' <<
-		//	d_endPoint.x << ' ' <<
-		//	d_endPoint.y << ' ' <<
-		//	d_endPoint.z << '\n';
 		break;
 	}
 }
@@ -237,8 +216,6 @@ void RubicsCube::fr_DetermineActiveFace() {
 		NORMALS_OF_FACES.at((positiveNormalIndex + 1) % 3),
 		NORMALS_OF_FACES.at((positiveNormalIndex + 2) % 3));
 
-	//d_endPoint = dragDirection * 10.0f;
-
 	if (m_fr_clickedFace == CubeFace::LEFT_FACE || m_fr_clickedFace == CubeFace::RIGHT_FACE) {
 		if (dragDirectionNormal.y == 1.0f) {
 			m_fr_activeFaceNormal = Axis::Z;
@@ -269,22 +246,13 @@ void RubicsCube::fr_DetermineActiveFace() {
 		<< "Y: " << m_fr_ySliceIndex << ", "
 		<< "Z: " << m_fr_zSliceIndex << '\n';
 	std::cout << "Die aktive Achse ist: " << static_cast<int>(m_fr_activeFaceNormal) << '\n';
-
-
-	//std::cout << activeSliceX << ' ' << activeSliceY << ' ' << activeSliceZ << ' ' << '\n';
-	//std::cout << intersectionPointInObjectSpace.x << ' ' << intersectionPointInObjectSpace.y << ' ' << intersectionPointInObjectSpace.z << ' ' << '\n';
-
 }
 
 void RubicsCube::fr_DeltaRotateFace() {
 	glm::vec2 deltaDragVector = m_input->GetScreenPosition() - m_previousScreenPosition;
 
 	int activeFaceIndex = static_cast<int>(m_fr_activeFaceNormal);
-	//glm::vec3 activeFaceNormalInWorld
-	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(activeFaceIndex);
 	int clickedFaceIndex = static_cast<int>(m_fr_clickedFace) % 3;
-	//glm::vec3 clickedFaceNormalInWorld
-	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(clickedFaceIndex);
 
 	//Index of the Normal that is not active nor clicked
 	int dragFaceIndex = 3 - activeFaceIndex - clickedFaceIndex;
@@ -302,36 +270,6 @@ void RubicsCube::fr_DeltaRotateFace() {
 
 	if (scaleProjectedVector < 0)
 		deltaRotation *= -1;
-
-	//glm::vec3 localAxes
-	//	= glm::mat3_cast(m_modelRotation) * NORMALS_OF_FACES.at(static_cast<int>(m_fr_activeFaceNormal));
-	//
-	//float localAxes_max = 0;
-	//int localAxes_max_index = 0;
-	//for (int i = 0; i < 3; i++) {
-	//	if (localAxes[i] > localAxes_max) {
-	//		localAxes_max = localAxes[i];
-	//		localAxes_max_index = i;
-	//	}
-	//}
-	//std::cout << "\r";
-	//std::cout << std::fixed << std::setprecision(4) << std::setw(8) << localAxes_max_index; // Setzt die Breite jedes Elements auf 5
-	//std::cout << "\n";
-	//
-	//
-	//std::cout << "\r";
-	//for (int i = 0; i < 3; ++i) {
-	//	std::cout << std::fixed << std::setprecision(4) << std::setw(8) << localAxes[i]; // Setzt die Breite jedes Elements auf 5
-	//	std::cout << "\n";
-	//}
-	//
-	//std::cout << "\r";
-	//for (int i = 0; i < 3; ++i) {
-	//	for (int j = 0; j < 3; ++j) {
-	//		std::cout << std::fixed << std::setprecision(4) << std::setw(8) << glm::mat3_cast(m_modelRotation)[i][j]; // Setzt die Breite jedes Elements auf 5
-	//	}
-	//	std::cout << "\n";
-	//}
 
 	// Nicht schön
 	if (m_fr_clickedFace == CubeFace::RIGHT_FACE) {
@@ -422,29 +360,13 @@ void RubicsCube::a_StartSnappingAnimation() {
 
 	h_ForEachInSlice([&totalSnappedRotation, this](Cubie* cubie, int index) {
 		cubie->m_snapedRotation = totalSnappedRotation * cubie->m_snapedRotation;
-		//cubie->m_visibleRotation = cubie->m_snapedRotation; //DEBUG
 		this->m_a_oldVisibleRotations[static_cast<int>(index / 3)][index % 3] = glm::quat_cast(cubie->m_visibleRotation);
 		}
 	);
-
-	//DEBUG
-	std::array<std::array<int, 3>, 3> numbers;
-	h_ForEachInSlice([&numbers](Cubie* cubie, int index) {
-		numbers[static_cast<int>(index / 3)][index % 3] = cubie->m_number;
-		}
-	);
-
-	//std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
-	//for (int i = 0; i < 3; ++i) {
-	//	for (int j = 0; j < 3; ++j) {
-	//		std::cout << std::fixed << std::setprecision(4) << std::setw(8) << numbers[i][j]; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
-	//	}
-	//	std::cout << "\n";
-	//}
 }
 
 void RubicsCube::a_UpdateAnimation(float deltaTime) {
-	if (1 - m_animationTickCounter <= 0.0001f) {
+	if (1 - m_a_tickCounter <= 0.0001f) {
 		h_ForEachInSlice([](Cubie* cubie, int index) {
 			cubie->m_visibleRotation = cubie->m_snapedRotation;
 			}
@@ -466,16 +388,6 @@ void RubicsCube::a_UpdateAnimation(float deltaTime) {
 				newFace[static_cast<int>(index / 3)][index % 3] = cubie;
 				}
 			);
-
-			//DEBUG
-			std::cout << "\r"; // Setzt den Cursor zurück zum Anfang der Zeile
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 3; ++j) {
-					std::cout << std::fixed << std::setprecision(4)
-						<< std::setw(8) << newFace[i][j]->m_number; // Setzt die Genauigkeit auf 4 Stellen nach dem Komma und die Breite jedes Elements auf 8
-				}
-				std::cout << "\n";
-			}
 
 			//Transpose
 			std::array<std::array<Cubie*, 3>, 3> transposeFace;
@@ -504,7 +416,7 @@ void RubicsCube::a_UpdateAnimation(float deltaTime) {
 		m_a_animationState = AnimationState::STABLE;
 
 		m_a_totalFaceRotationDegree = 0;
-		m_animationTickCounter = 0;
+		m_a_tickCounter = 0;
 
 		return;
 	}
@@ -514,17 +426,17 @@ void RubicsCube::a_UpdateAnimation(float deltaTime) {
 			= glm::mat4_cast(
 				glm::slerp(this->m_a_oldVisibleRotations[static_cast<int>(index / 3)][index % 3],
 					glm::quat_cast(cubie->m_snapedRotation),
-					m_animationTickCounter)
+					m_a_tickCounter)
 			);
 		}
 	);
 
 	float nextSnapingAnimationTick
-		= m_animationTickCounter + (0.05f + deltaTime);
-	if (m_animationTickCounter == nextSnapingAnimationTick)
-		m_animationTickCounter = std::nextafterf(m_animationTickCounter, std::numeric_limits<float>::infinity());
+		= m_a_tickCounter + (0.05f + deltaTime);
+	if (m_a_tickCounter == nextSnapingAnimationTick)
+		m_a_tickCounter = std::nextafterf(m_a_tickCounter, std::numeric_limits<float>::infinity());
 	else
-		m_animationTickCounter = nextSnapingAnimationTick;
+		m_a_tickCounter = nextSnapingAnimationTick;
 }
 
 

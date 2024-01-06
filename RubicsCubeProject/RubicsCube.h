@@ -47,7 +47,6 @@ public:
 private:
 	//INPUT 
 	void i_UpdateMouse();
-	void i_UpdateKeyInput();
 
 	//CUBE
 	void c_RotateCube();
@@ -89,18 +88,11 @@ private:
 	AnimationState m_a_animationState = AnimationState::STABLE;
 	float m_a_totalFaceRotationDegree;
 	std::array<std::array<glm::quat, 3>, 3> m_a_oldVisibleRotations;
-	float m_animationTickCounter;
+	float m_a_tickCounter;
 
 	//CACHE
 	glm::vec2 m_previousScreenPosition;
 
 	//STATIC
 	const static std::map<int, glm::vec3> NORMALS_OF_FACES;
-
-	//DEGUB
-	LineRenderer d_lr;
-	glm::vec3 d_objectSpaceFaceNormal;
-
-	const GameInterface* d_gameInterface;
-	glm::vec3 d_endPoint;
 };

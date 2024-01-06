@@ -33,7 +33,13 @@ void GameInterface::Update(double deltaTime) {
 	m_input.Update();
 
 	// Update components
-	m_rubicsCube.Update(*this);
+	if (m_input.IsKeyReleased(GLFW_KEY_SPACE)) {
+		m_rubicsCube.ClearResources();
+		m_rubicsCube = RubicsCube();
+		m_rubicsCube.Initialize(*this);
+	}
+	else
+		m_rubicsCube.Update(*this);
 
 	// Update camera distance
 	m_radius -= m_input.GetMouseWheelScrollOffset().y;

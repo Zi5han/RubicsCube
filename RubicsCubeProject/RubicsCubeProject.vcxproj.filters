@@ -152,5 +152,8 @@
     <None Include="FLine.glsl">
       <Filter>Shader</Filter>
     </None>
+    <None Include="rubics_rotate_sfx.wav">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>
