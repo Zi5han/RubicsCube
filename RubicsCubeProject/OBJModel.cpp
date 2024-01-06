@@ -36,6 +36,7 @@ void OBJModel::Initialize() {
 void OBJModel::LoadFromFile(const char* filename) {
 	std::ifstream file(filename, std::ios::in);
 	if (!file) {
+		std::cout << filename;
 		assert(false && "File could not be loaded");
 		is_OBJ_loaded = false;
 		return;
@@ -92,6 +93,7 @@ void OBJModel::LoadMaterialFromFile(const char* filename) {
 	std::ifstream file(filename, std::ios::in);
 
 	if (!file) {
+		std::cout << filename;
 		assert(false && "File could not be loaded");
 		is_OBJ_loaded = false;
 		return;

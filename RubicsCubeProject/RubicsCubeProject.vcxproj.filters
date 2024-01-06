@@ -42,9 +42,6 @@
     <ClCompile Include="RubicsCube.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Cubie.h">
-      <Filter>Headerdateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGameInterface.h">
@@ -74,6 +71,9 @@
     <ClInclude Include="RubicsCube.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Cubie.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="FColor.glsl">
@@ -90,10 +90,8 @@
     </CopyFileToFolders>
     <CopyFileToFolders Include="Cube.mtl" />
     <CopyFileToFolders Include="Cube.obj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="rubics_rotate_sfx.wav">
+    <CopyFileToFolders Include="rubics_rotate_sfx.wav">
       <Filter>Ressourcendateien</Filter>
-    </None>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
