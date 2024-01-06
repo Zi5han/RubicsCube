@@ -3,23 +3,13 @@
 #include <GLFW/glfw3.h>
 
 #include "AbstractGameInterface.h"
-#include "TestGlm.h"
-#include "TestTriangle.h"
-#include "TestCubie.h"
-#include "TestKey.h"
-#include "TestCompoundCube.h"
 #include "GameInterface.h"
 
 #include <iostream>
 #include <thread>
 
-TestGlm gGlmTest;
 
 AbstractGameInterface gDummyTest;
-TestTriangle gTestTriangle;
-TestCubie gTestCubie;
-TestKey gTestKey;
-TestCompoundCube gCompoundCube;
 GameInterface gameInterface;
 
 AbstractGameInterface* gUsedInterface;
@@ -29,15 +19,18 @@ double deltaTime = 0.0;
 
 void RenderWindow(GLFWwindow* window) {
 	gUsedInterface->Update(deltaTime);
-	//gUsedInterface->Update(0.1); // fürs Debuggen
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	float aspectRatio = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
 
 	glViewport(0, 0, screenWidth, screenHeight);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_FRAMEBUFFER_SRGB);
 	glDepthFunc(GL_LEQUAL);
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	float bgColor[3] = { 28, 112, 230 };
+	for (float& element : bgColor)
+		element /= 256;
+	glClearColor(bgColor[0], bgColor[1], bgColor[2], 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	int minimized = glfwGetWindowAttrib(window, GLFW_ICONIFIED);
@@ -88,13 +81,6 @@ void ShutdownSystem() {
 }
 
 int main() {
-	//gUsedInterface = &gDummyTest;
-	//gUsedInterface = &gGlmTest;
-	//gUsedInterface = &gTestTriangle;
-	//gUsedInterface = &gTestCubie;
-	//gUsedInterface = &gTestKey;
-	//gUsedInterface = &gTestMouse;
-	//gUsedInterface = &gCompoundCube;
 	gUsedInterface = &gameInterface;
 	GLFWwindow* window = InitializeSystem();
 	RunCoreLoop(window);
